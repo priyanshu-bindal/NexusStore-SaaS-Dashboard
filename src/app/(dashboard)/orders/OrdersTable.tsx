@@ -22,10 +22,11 @@ import Link from "next/link";
 
 interface Order {
     id: string;
-    totalAmount: any; // Decimal or number
+    totalAmount: number;
     status: string;
     fulfillmentStatus: string;
     createdAt: Date | string;
+    customerName?: string;
 }
 
 export default function OrdersTable({ orders, totalPages, currentPage }: { orders: Order[], totalPages: number, currentPage: number }) {
@@ -309,7 +310,7 @@ function OrderRow({ order, selected, onSelect, fulfillmentStatus }: { order: Ord
                 {order.createdAt as string}
             </td>
             <td className="px-6 py-4 text-sm font-medium text-slate-900">
-                Guest Customer
+                {order.customerName || "Guest Customer"}
             </td>
             <td className="px-6 py-4">
                 <StatusBadge status={order.status} />

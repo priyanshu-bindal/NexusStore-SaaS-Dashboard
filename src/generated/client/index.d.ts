@@ -49,6 +49,11 @@ export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTok
  */
 export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
 /**
+ * Model TimelineEvent
+ * 
+ */
+export type TimelineEvent = $Result.DefaultSelection<Prisma.$TimelineEventPayload>
+/**
  * Model OrderItem
  * 
  */
@@ -257,6 +262,16 @@ export class PrismaClient<
     * ```
     */
   get order(): Prisma.OrderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.timelineEvent`: Exposes CRUD operations for the **TimelineEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TimelineEvents
+    * const timelineEvents = await prisma.timelineEvent.findMany()
+    * ```
+    */
+  get timelineEvent(): Prisma.TimelineEventDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.orderItem`: Exposes CRUD operations for the **OrderItem** model.
@@ -708,6 +723,7 @@ export namespace Prisma {
     Session: 'Session',
     VerificationToken: 'VerificationToken',
     Order: 'Order',
+    TimelineEvent: 'TimelineEvent',
     OrderItem: 'OrderItem'
   };
 
@@ -724,7 +740,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "store" | "product" | "account" | "session" | "verificationToken" | "order" | "orderItem"
+      modelProps: "user" | "store" | "product" | "account" | "session" | "verificationToken" | "order" | "timelineEvent" | "orderItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1246,6 +1262,80 @@ export namespace Prisma {
           }
         }
       }
+      TimelineEvent: {
+        payload: Prisma.$TimelineEventPayload<ExtArgs>
+        fields: Prisma.TimelineEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TimelineEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TimelineEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload>
+          }
+          findFirst: {
+            args: Prisma.TimelineEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TimelineEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload>
+          }
+          findMany: {
+            args: Prisma.TimelineEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload>[]
+          }
+          create: {
+            args: Prisma.TimelineEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload>
+          }
+          createMany: {
+            args: Prisma.TimelineEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TimelineEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload>[]
+          }
+          delete: {
+            args: Prisma.TimelineEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload>
+          }
+          update: {
+            args: Prisma.TimelineEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.TimelineEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TimelineEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TimelineEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.TimelineEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimelineEventPayload>
+          }
+          aggregate: {
+            args: Prisma.TimelineEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTimelineEvent>
+          }
+          groupBy: {
+            args: Prisma.TimelineEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TimelineEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TimelineEventCountArgs<ExtArgs>
+            result: $Utils.Optional<TimelineEventCountAggregateOutputType> | number
+          }
+        }
+      }
       OrderItem: {
         payload: Prisma.$OrderItemPayload<ExtArgs>
         fields: Prisma.OrderItemFieldRefs
@@ -1435,6 +1525,7 @@ export namespace Prisma {
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
     order?: OrderOmit
+    timelineEvent?: TimelineEventOmit
     orderItem?: OrderItemOmit
   }
 
@@ -1637,10 +1728,12 @@ export namespace Prisma {
 
   export type OrderCountOutputType = {
     orderItems: number
+    timeline: number
   }
 
   export type OrderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orderItems?: boolean | OrderCountOutputTypeCountOrderItemsArgs
+    timeline?: boolean | OrderCountOutputTypeCountTimelineArgs
   }
 
   // Custom InputTypes
@@ -1659,6 +1752,13 @@ export namespace Prisma {
    */
   export type OrderCountOutputTypeCountOrderItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderItemWhereInput
+  }
+
+  /**
+   * OrderCountOutputType without action
+   */
+  export type OrderCountOutputTypeCountTimelineArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimelineEventWhereInput
   }
 
 
@@ -4012,6 +4112,7 @@ export namespace Prisma {
     price: Decimal | null
     category: string | null
     stock: number | null
+    status: string | null
     storeId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4024,6 +4125,7 @@ export namespace Prisma {
     price: Decimal | null
     category: string | null
     stock: number | null
+    status: string | null
     storeId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4037,6 +4139,7 @@ export namespace Prisma {
     images: number
     category: number
     stock: number
+    status: number
     storeId: number
     createdAt: number
     updatedAt: number
@@ -4061,6 +4164,7 @@ export namespace Prisma {
     price?: true
     category?: true
     stock?: true
+    status?: true
     storeId?: true
     createdAt?: true
     updatedAt?: true
@@ -4073,6 +4177,7 @@ export namespace Prisma {
     price?: true
     category?: true
     stock?: true
+    status?: true
     storeId?: true
     createdAt?: true
     updatedAt?: true
@@ -4086,6 +4191,7 @@ export namespace Prisma {
     images?: true
     category?: true
     stock?: true
+    status?: true
     storeId?: true
     createdAt?: true
     updatedAt?: true
@@ -4186,6 +4292,7 @@ export namespace Prisma {
     images: string[]
     category: string | null
     stock: number
+    status: string
     storeId: string
     createdAt: Date
     updatedAt: Date
@@ -4218,6 +4325,7 @@ export namespace Prisma {
     images?: boolean
     category?: boolean
     stock?: boolean
+    status?: boolean
     storeId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4234,6 +4342,7 @@ export namespace Prisma {
     images?: boolean
     category?: boolean
     stock?: boolean
+    status?: boolean
     storeId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4248,6 +4357,7 @@ export namespace Prisma {
     images?: boolean
     category?: boolean
     stock?: boolean
+    status?: boolean
     storeId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4262,12 +4372,13 @@ export namespace Prisma {
     images?: boolean
     category?: boolean
     stock?: boolean
+    status?: boolean
     storeId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "images" | "category" | "stock" | "storeId" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "images" | "category" | "stock" | "status" | "storeId" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     store?: boolean | StoreDefaultArgs<ExtArgs>
     orderItems?: boolean | Product$orderItemsArgs<ExtArgs>
@@ -4294,6 +4405,7 @@ export namespace Prisma {
       images: string[]
       category: string | null
       stock: number
+      status: string
       storeId: string
       createdAt: Date
       updatedAt: Date
@@ -4729,6 +4841,7 @@ export namespace Prisma {
     readonly images: FieldRef<"Product", 'String[]'>
     readonly category: FieldRef<"Product", 'String'>
     readonly stock: FieldRef<"Product", 'Int'>
+    readonly status: FieldRef<"Product", 'String'>
     readonly storeId: FieldRef<"Product", 'String'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
@@ -8584,6 +8697,7 @@ export namespace Prisma {
     store?: boolean | StoreDefaultArgs<ExtArgs>
     user?: boolean | Order$userArgs<ExtArgs>
     orderItems?: boolean | Order$orderItemsArgs<ExtArgs>
+    timeline?: boolean | Order$timelineArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -8626,6 +8740,7 @@ export namespace Prisma {
     store?: boolean | StoreDefaultArgs<ExtArgs>
     user?: boolean | Order$userArgs<ExtArgs>
     orderItems?: boolean | Order$orderItemsArgs<ExtArgs>
+    timeline?: boolean | Order$timelineArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8643,6 +8758,7 @@ export namespace Prisma {
       store: Prisma.$StorePayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs> | null
       orderItems: Prisma.$OrderItemPayload<ExtArgs>[]
+      timeline: Prisma.$TimelineEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9049,6 +9165,7 @@ export namespace Prisma {
     store<T extends StoreDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StoreDefaultArgs<ExtArgs>>): Prisma__StoreClient<$Result.GetResult<Prisma.$StorePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends Order$userArgs<ExtArgs> = {}>(args?: Subset<T, Order$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     orderItems<T extends Order$orderItemsArgs<ExtArgs> = {}>(args?: Subset<T, Order$orderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    timeline<T extends Order$timelineArgs<ExtArgs> = {}>(args?: Subset<T, Order$timelineArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9524,6 +9641,30 @@ export namespace Prisma {
   }
 
   /**
+   * Order.timeline
+   */
+  export type Order$timelineArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
+    where?: TimelineEventWhereInput
+    orderBy?: TimelineEventOrderByWithRelationInput | TimelineEventOrderByWithRelationInput[]
+    cursor?: TimelineEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TimelineEventScalarFieldEnum | TimelineEventScalarFieldEnum[]
+  }
+
+  /**
    * Order without action
    */
   export type OrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9539,6 +9680,1064 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TimelineEvent
+   */
+
+  export type AggregateTimelineEvent = {
+    _count: TimelineEventCountAggregateOutputType | null
+    _min: TimelineEventMinAggregateOutputType | null
+    _max: TimelineEventMaxAggregateOutputType | null
+  }
+
+  export type TimelineEventMinAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    status: string | null
+    note: string | null
+    createdAt: Date | null
+  }
+
+  export type TimelineEventMaxAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    status: string | null
+    note: string | null
+    createdAt: Date | null
+  }
+
+  export type TimelineEventCountAggregateOutputType = {
+    id: number
+    orderId: number
+    status: number
+    note: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type TimelineEventMinAggregateInputType = {
+    id?: true
+    orderId?: true
+    status?: true
+    note?: true
+    createdAt?: true
+  }
+
+  export type TimelineEventMaxAggregateInputType = {
+    id?: true
+    orderId?: true
+    status?: true
+    note?: true
+    createdAt?: true
+  }
+
+  export type TimelineEventCountAggregateInputType = {
+    id?: true
+    orderId?: true
+    status?: true
+    note?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type TimelineEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TimelineEvent to aggregate.
+     */
+    where?: TimelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimelineEvents to fetch.
+     */
+    orderBy?: TimelineEventOrderByWithRelationInput | TimelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TimelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimelineEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TimelineEvents
+    **/
+    _count?: true | TimelineEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TimelineEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TimelineEventMaxAggregateInputType
+  }
+
+  export type GetTimelineEventAggregateType<T extends TimelineEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateTimelineEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTimelineEvent[P]>
+      : GetScalarType<T[P], AggregateTimelineEvent[P]>
+  }
+
+
+
+
+  export type TimelineEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimelineEventWhereInput
+    orderBy?: TimelineEventOrderByWithAggregationInput | TimelineEventOrderByWithAggregationInput[]
+    by: TimelineEventScalarFieldEnum[] | TimelineEventScalarFieldEnum
+    having?: TimelineEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TimelineEventCountAggregateInputType | true
+    _min?: TimelineEventMinAggregateInputType
+    _max?: TimelineEventMaxAggregateInputType
+  }
+
+  export type TimelineEventGroupByOutputType = {
+    id: string
+    orderId: string
+    status: string
+    note: string | null
+    createdAt: Date
+    _count: TimelineEventCountAggregateOutputType | null
+    _min: TimelineEventMinAggregateOutputType | null
+    _max: TimelineEventMaxAggregateOutputType | null
+  }
+
+  type GetTimelineEventGroupByPayload<T extends TimelineEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TimelineEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TimelineEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TimelineEventGroupByOutputType[P]>
+            : GetScalarType<T[P], TimelineEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TimelineEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    status?: boolean
+    note?: boolean
+    createdAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timelineEvent"]>
+
+  export type TimelineEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    status?: boolean
+    note?: boolean
+    createdAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timelineEvent"]>
+
+  export type TimelineEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    status?: boolean
+    note?: boolean
+    createdAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timelineEvent"]>
+
+  export type TimelineEventSelectScalar = {
+    id?: boolean
+    orderId?: boolean
+    status?: boolean
+    note?: boolean
+    createdAt?: boolean
+  }
+
+  export type TimelineEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "status" | "note" | "createdAt", ExtArgs["result"]["timelineEvent"]>
+  export type TimelineEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+  export type TimelineEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+  export type TimelineEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+
+  export type $TimelineEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TimelineEvent"
+    objects: {
+      order: Prisma.$OrderPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      orderId: string
+      status: string
+      note: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["timelineEvent"]>
+    composites: {}
+  }
+
+  type TimelineEventGetPayload<S extends boolean | null | undefined | TimelineEventDefaultArgs> = $Result.GetResult<Prisma.$TimelineEventPayload, S>
+
+  type TimelineEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TimelineEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TimelineEventCountAggregateInputType | true
+    }
+
+  export interface TimelineEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TimelineEvent'], meta: { name: 'TimelineEvent' } }
+    /**
+     * Find zero or one TimelineEvent that matches the filter.
+     * @param {TimelineEventFindUniqueArgs} args - Arguments to find a TimelineEvent
+     * @example
+     * // Get one TimelineEvent
+     * const timelineEvent = await prisma.timelineEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TimelineEventFindUniqueArgs>(args: SelectSubset<T, TimelineEventFindUniqueArgs<ExtArgs>>): Prisma__TimelineEventClient<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TimelineEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TimelineEventFindUniqueOrThrowArgs} args - Arguments to find a TimelineEvent
+     * @example
+     * // Get one TimelineEvent
+     * const timelineEvent = await prisma.timelineEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TimelineEventFindUniqueOrThrowArgs>(args: SelectSubset<T, TimelineEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TimelineEventClient<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TimelineEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimelineEventFindFirstArgs} args - Arguments to find a TimelineEvent
+     * @example
+     * // Get one TimelineEvent
+     * const timelineEvent = await prisma.timelineEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TimelineEventFindFirstArgs>(args?: SelectSubset<T, TimelineEventFindFirstArgs<ExtArgs>>): Prisma__TimelineEventClient<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TimelineEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimelineEventFindFirstOrThrowArgs} args - Arguments to find a TimelineEvent
+     * @example
+     * // Get one TimelineEvent
+     * const timelineEvent = await prisma.timelineEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TimelineEventFindFirstOrThrowArgs>(args?: SelectSubset<T, TimelineEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__TimelineEventClient<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TimelineEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimelineEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TimelineEvents
+     * const timelineEvents = await prisma.timelineEvent.findMany()
+     * 
+     * // Get first 10 TimelineEvents
+     * const timelineEvents = await prisma.timelineEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const timelineEventWithIdOnly = await prisma.timelineEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TimelineEventFindManyArgs>(args?: SelectSubset<T, TimelineEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TimelineEvent.
+     * @param {TimelineEventCreateArgs} args - Arguments to create a TimelineEvent.
+     * @example
+     * // Create one TimelineEvent
+     * const TimelineEvent = await prisma.timelineEvent.create({
+     *   data: {
+     *     // ... data to create a TimelineEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends TimelineEventCreateArgs>(args: SelectSubset<T, TimelineEventCreateArgs<ExtArgs>>): Prisma__TimelineEventClient<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TimelineEvents.
+     * @param {TimelineEventCreateManyArgs} args - Arguments to create many TimelineEvents.
+     * @example
+     * // Create many TimelineEvents
+     * const timelineEvent = await prisma.timelineEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TimelineEventCreateManyArgs>(args?: SelectSubset<T, TimelineEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TimelineEvents and returns the data saved in the database.
+     * @param {TimelineEventCreateManyAndReturnArgs} args - Arguments to create many TimelineEvents.
+     * @example
+     * // Create many TimelineEvents
+     * const timelineEvent = await prisma.timelineEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TimelineEvents and only return the `id`
+     * const timelineEventWithIdOnly = await prisma.timelineEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TimelineEventCreateManyAndReturnArgs>(args?: SelectSubset<T, TimelineEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TimelineEvent.
+     * @param {TimelineEventDeleteArgs} args - Arguments to delete one TimelineEvent.
+     * @example
+     * // Delete one TimelineEvent
+     * const TimelineEvent = await prisma.timelineEvent.delete({
+     *   where: {
+     *     // ... filter to delete one TimelineEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TimelineEventDeleteArgs>(args: SelectSubset<T, TimelineEventDeleteArgs<ExtArgs>>): Prisma__TimelineEventClient<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TimelineEvent.
+     * @param {TimelineEventUpdateArgs} args - Arguments to update one TimelineEvent.
+     * @example
+     * // Update one TimelineEvent
+     * const timelineEvent = await prisma.timelineEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TimelineEventUpdateArgs>(args: SelectSubset<T, TimelineEventUpdateArgs<ExtArgs>>): Prisma__TimelineEventClient<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TimelineEvents.
+     * @param {TimelineEventDeleteManyArgs} args - Arguments to filter TimelineEvents to delete.
+     * @example
+     * // Delete a few TimelineEvents
+     * const { count } = await prisma.timelineEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TimelineEventDeleteManyArgs>(args?: SelectSubset<T, TimelineEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TimelineEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimelineEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TimelineEvents
+     * const timelineEvent = await prisma.timelineEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TimelineEventUpdateManyArgs>(args: SelectSubset<T, TimelineEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TimelineEvents and returns the data updated in the database.
+     * @param {TimelineEventUpdateManyAndReturnArgs} args - Arguments to update many TimelineEvents.
+     * @example
+     * // Update many TimelineEvents
+     * const timelineEvent = await prisma.timelineEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TimelineEvents and only return the `id`
+     * const timelineEventWithIdOnly = await prisma.timelineEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TimelineEventUpdateManyAndReturnArgs>(args: SelectSubset<T, TimelineEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TimelineEvent.
+     * @param {TimelineEventUpsertArgs} args - Arguments to update or create a TimelineEvent.
+     * @example
+     * // Update or create a TimelineEvent
+     * const timelineEvent = await prisma.timelineEvent.upsert({
+     *   create: {
+     *     // ... data to create a TimelineEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TimelineEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TimelineEventUpsertArgs>(args: SelectSubset<T, TimelineEventUpsertArgs<ExtArgs>>): Prisma__TimelineEventClient<$Result.GetResult<Prisma.$TimelineEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TimelineEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimelineEventCountArgs} args - Arguments to filter TimelineEvents to count.
+     * @example
+     * // Count the number of TimelineEvents
+     * const count = await prisma.timelineEvent.count({
+     *   where: {
+     *     // ... the filter for the TimelineEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends TimelineEventCountArgs>(
+      args?: Subset<T, TimelineEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TimelineEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TimelineEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimelineEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TimelineEventAggregateArgs>(args: Subset<T, TimelineEventAggregateArgs>): Prisma.PrismaPromise<GetTimelineEventAggregateType<T>>
+
+    /**
+     * Group by TimelineEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimelineEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TimelineEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TimelineEventGroupByArgs['orderBy'] }
+        : { orderBy?: TimelineEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TimelineEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTimelineEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TimelineEvent model
+   */
+  readonly fields: TimelineEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TimelineEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TimelineEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TimelineEvent model
+   */
+  interface TimelineEventFieldRefs {
+    readonly id: FieldRef<"TimelineEvent", 'String'>
+    readonly orderId: FieldRef<"TimelineEvent", 'String'>
+    readonly status: FieldRef<"TimelineEvent", 'String'>
+    readonly note: FieldRef<"TimelineEvent", 'String'>
+    readonly createdAt: FieldRef<"TimelineEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TimelineEvent findUnique
+   */
+  export type TimelineEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which TimelineEvent to fetch.
+     */
+    where: TimelineEventWhereUniqueInput
+  }
+
+  /**
+   * TimelineEvent findUniqueOrThrow
+   */
+  export type TimelineEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which TimelineEvent to fetch.
+     */
+    where: TimelineEventWhereUniqueInput
+  }
+
+  /**
+   * TimelineEvent findFirst
+   */
+  export type TimelineEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which TimelineEvent to fetch.
+     */
+    where?: TimelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimelineEvents to fetch.
+     */
+    orderBy?: TimelineEventOrderByWithRelationInput | TimelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TimelineEvents.
+     */
+    cursor?: TimelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimelineEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimelineEvents.
+     */
+    distinct?: TimelineEventScalarFieldEnum | TimelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * TimelineEvent findFirstOrThrow
+   */
+  export type TimelineEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which TimelineEvent to fetch.
+     */
+    where?: TimelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimelineEvents to fetch.
+     */
+    orderBy?: TimelineEventOrderByWithRelationInput | TimelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TimelineEvents.
+     */
+    cursor?: TimelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimelineEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimelineEvents.
+     */
+    distinct?: TimelineEventScalarFieldEnum | TimelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * TimelineEvent findMany
+   */
+  export type TimelineEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which TimelineEvents to fetch.
+     */
+    where?: TimelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimelineEvents to fetch.
+     */
+    orderBy?: TimelineEventOrderByWithRelationInput | TimelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TimelineEvents.
+     */
+    cursor?: TimelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimelineEvents.
+     */
+    skip?: number
+    distinct?: TimelineEventScalarFieldEnum | TimelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * TimelineEvent create
+   */
+  export type TimelineEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TimelineEvent.
+     */
+    data: XOR<TimelineEventCreateInput, TimelineEventUncheckedCreateInput>
+  }
+
+  /**
+   * TimelineEvent createMany
+   */
+  export type TimelineEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TimelineEvents.
+     */
+    data: TimelineEventCreateManyInput | TimelineEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TimelineEvent createManyAndReturn
+   */
+  export type TimelineEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many TimelineEvents.
+     */
+    data: TimelineEventCreateManyInput | TimelineEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TimelineEvent update
+   */
+  export type TimelineEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TimelineEvent.
+     */
+    data: XOR<TimelineEventUpdateInput, TimelineEventUncheckedUpdateInput>
+    /**
+     * Choose, which TimelineEvent to update.
+     */
+    where: TimelineEventWhereUniqueInput
+  }
+
+  /**
+   * TimelineEvent updateMany
+   */
+  export type TimelineEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TimelineEvents.
+     */
+    data: XOR<TimelineEventUpdateManyMutationInput, TimelineEventUncheckedUpdateManyInput>
+    /**
+     * Filter which TimelineEvents to update
+     */
+    where?: TimelineEventWhereInput
+    /**
+     * Limit how many TimelineEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TimelineEvent updateManyAndReturn
+   */
+  export type TimelineEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * The data used to update TimelineEvents.
+     */
+    data: XOR<TimelineEventUpdateManyMutationInput, TimelineEventUncheckedUpdateManyInput>
+    /**
+     * Filter which TimelineEvents to update
+     */
+    where?: TimelineEventWhereInput
+    /**
+     * Limit how many TimelineEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TimelineEvent upsert
+   */
+  export type TimelineEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TimelineEvent to update in case it exists.
+     */
+    where: TimelineEventWhereUniqueInput
+    /**
+     * In case the TimelineEvent found by the `where` argument doesn't exist, create a new TimelineEvent with this data.
+     */
+    create: XOR<TimelineEventCreateInput, TimelineEventUncheckedCreateInput>
+    /**
+     * In case the TimelineEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TimelineEventUpdateInput, TimelineEventUncheckedUpdateInput>
+  }
+
+  /**
+   * TimelineEvent delete
+   */
+  export type TimelineEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter which TimelineEvent to delete.
+     */
+    where: TimelineEventWhereUniqueInput
+  }
+
+  /**
+   * TimelineEvent deleteMany
+   */
+  export type TimelineEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TimelineEvents to delete
+     */
+    where?: TimelineEventWhereInput
+    /**
+     * Limit how many TimelineEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TimelineEvent without action
+   */
+  export type TimelineEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimelineEvent
+     */
+    select?: TimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimelineEvent
+     */
+    omit?: TimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimelineEventInclude<ExtArgs> | null
   }
 
 
@@ -10694,6 +11893,7 @@ export namespace Prisma {
     images: 'images',
     category: 'category',
     stock: 'stock',
+    status: 'status',
     storeId: 'storeId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -10750,6 +11950,17 @@ export namespace Prisma {
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+  export const TimelineEventScalarFieldEnum: {
+    id: 'id',
+    orderId: 'orderId',
+    status: 'status',
+    note: 'note',
+    createdAt: 'createdAt'
+  };
+
+  export type TimelineEventScalarFieldEnum = (typeof TimelineEventScalarFieldEnum)[keyof typeof TimelineEventScalarFieldEnum]
 
 
   export const OrderItemScalarFieldEnum: {
@@ -11035,6 +12246,7 @@ export namespace Prisma {
     images?: StringNullableListFilter<"Product">
     category?: StringNullableFilter<"Product"> | string | null
     stock?: IntFilter<"Product"> | number
+    status?: StringFilter<"Product"> | string
     storeId?: StringFilter<"Product"> | string
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -11050,6 +12262,7 @@ export namespace Prisma {
     images?: SortOrder
     category?: SortOrderInput | SortOrder
     stock?: SortOrder
+    status?: SortOrder
     storeId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -11068,6 +12281,7 @@ export namespace Prisma {
     images?: StringNullableListFilter<"Product">
     category?: StringNullableFilter<"Product"> | string | null
     stock?: IntFilter<"Product"> | number
+    status?: StringFilter<"Product"> | string
     storeId?: StringFilter<"Product"> | string
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -11083,6 +12297,7 @@ export namespace Prisma {
     images?: SortOrder
     category?: SortOrderInput | SortOrder
     stock?: SortOrder
+    status?: SortOrder
     storeId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -11104,6 +12319,7 @@ export namespace Prisma {
     images?: StringNullableListFilter<"Product">
     category?: StringNullableWithAggregatesFilter<"Product"> | string | null
     stock?: IntWithAggregatesFilter<"Product"> | number
+    status?: StringWithAggregatesFilter<"Product"> | string
     storeId?: StringWithAggregatesFilter<"Product"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
@@ -11309,6 +12525,7 @@ export namespace Prisma {
     store?: XOR<StoreScalarRelationFilter, StoreWhereInput>
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     orderItems?: OrderItemListRelationFilter
+    timeline?: TimelineEventListRelationFilter
   }
 
   export type OrderOrderByWithRelationInput = {
@@ -11322,6 +12539,7 @@ export namespace Prisma {
     store?: StoreOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     orderItems?: OrderItemOrderByRelationAggregateInput
+    timeline?: TimelineEventOrderByRelationAggregateInput
   }
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
@@ -11338,6 +12556,7 @@ export namespace Prisma {
     store?: XOR<StoreScalarRelationFilter, StoreWhereInput>
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     orderItems?: OrderItemListRelationFilter
+    timeline?: TimelineEventListRelationFilter
   }, "id">
 
   export type OrderOrderByWithAggregationInput = {
@@ -11366,6 +12585,61 @@ export namespace Prisma {
     fulfillmentStatus?: StringWithAggregatesFilter<"Order"> | string
     userId?: StringNullableWithAggregatesFilter<"Order"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
+  }
+
+  export type TimelineEventWhereInput = {
+    AND?: TimelineEventWhereInput | TimelineEventWhereInput[]
+    OR?: TimelineEventWhereInput[]
+    NOT?: TimelineEventWhereInput | TimelineEventWhereInput[]
+    id?: StringFilter<"TimelineEvent"> | string
+    orderId?: StringFilter<"TimelineEvent"> | string
+    status?: StringFilter<"TimelineEvent"> | string
+    note?: StringNullableFilter<"TimelineEvent"> | string | null
+    createdAt?: DateTimeFilter<"TimelineEvent"> | Date | string
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+  }
+
+  export type TimelineEventOrderByWithRelationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    status?: SortOrder
+    note?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    order?: OrderOrderByWithRelationInput
+  }
+
+  export type TimelineEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TimelineEventWhereInput | TimelineEventWhereInput[]
+    OR?: TimelineEventWhereInput[]
+    NOT?: TimelineEventWhereInput | TimelineEventWhereInput[]
+    orderId?: StringFilter<"TimelineEvent"> | string
+    status?: StringFilter<"TimelineEvent"> | string
+    note?: StringNullableFilter<"TimelineEvent"> | string | null
+    createdAt?: DateTimeFilter<"TimelineEvent"> | Date | string
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+  }, "id">
+
+  export type TimelineEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    status?: SortOrder
+    note?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: TimelineEventCountOrderByAggregateInput
+    _max?: TimelineEventMaxOrderByAggregateInput
+    _min?: TimelineEventMinOrderByAggregateInput
+  }
+
+  export type TimelineEventScalarWhereWithAggregatesInput = {
+    AND?: TimelineEventScalarWhereWithAggregatesInput | TimelineEventScalarWhereWithAggregatesInput[]
+    OR?: TimelineEventScalarWhereWithAggregatesInput[]
+    NOT?: TimelineEventScalarWhereWithAggregatesInput | TimelineEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TimelineEvent"> | string
+    orderId?: StringWithAggregatesFilter<"TimelineEvent"> | string
+    status?: StringWithAggregatesFilter<"TimelineEvent"> | string
+    note?: StringNullableWithAggregatesFilter<"TimelineEvent"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"TimelineEvent"> | Date | string
   }
 
   export type OrderItemWhereInput = {
@@ -11599,6 +12873,7 @@ export namespace Prisma {
     images?: ProductCreateimagesInput | string[]
     category?: string | null
     stock?: number
+    status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     store: StoreCreateNestedOneWithoutProductsInput
@@ -11613,6 +12888,7 @@ export namespace Prisma {
     images?: ProductCreateimagesInput | string[]
     category?: string | null
     stock?: number
+    status?: string
     storeId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11627,6 +12903,7 @@ export namespace Prisma {
     images?: ProductUpdateimagesInput | string[]
     category?: NullableStringFieldUpdateOperationsInput | string | null
     stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     store?: StoreUpdateOneRequiredWithoutProductsNestedInput
@@ -11641,6 +12918,7 @@ export namespace Prisma {
     images?: ProductUpdateimagesInput | string[]
     category?: NullableStringFieldUpdateOperationsInput | string | null
     stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     storeId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11655,6 +12933,7 @@ export namespace Prisma {
     images?: ProductCreateimagesInput | string[]
     category?: string | null
     stock?: number
+    status?: string
     storeId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11668,6 +12947,7 @@ export namespace Prisma {
     images?: ProductUpdateimagesInput | string[]
     category?: NullableStringFieldUpdateOperationsInput | string | null
     stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11680,6 +12960,7 @@ export namespace Prisma {
     images?: ProductUpdateimagesInput | string[]
     category?: NullableStringFieldUpdateOperationsInput | string | null
     stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     storeId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11888,6 +13169,7 @@ export namespace Prisma {
     store: StoreCreateNestedOneWithoutOrdersInput
     user?: UserCreateNestedOneWithoutOrdersInput
     orderItems?: OrderItemCreateNestedManyWithoutOrderInput
+    timeline?: TimelineEventCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateInput = {
@@ -11899,6 +13181,7 @@ export namespace Prisma {
     userId?: string | null
     createdAt?: Date | string
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+    timeline?: TimelineEventUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUpdateInput = {
@@ -11910,6 +13193,7 @@ export namespace Prisma {
     store?: StoreUpdateOneRequiredWithoutOrdersNestedInput
     user?: UserUpdateOneWithoutOrdersNestedInput
     orderItems?: OrderItemUpdateManyWithoutOrderNestedInput
+    timeline?: TimelineEventUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateInput = {
@@ -11921,6 +13205,7 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+    timeline?: TimelineEventUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderCreateManyInput = {
@@ -11948,6 +13233,61 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     fulfillmentStatus?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimelineEventCreateInput = {
+    id?: string
+    status: string
+    note?: string | null
+    createdAt?: Date | string
+    order: OrderCreateNestedOneWithoutTimelineInput
+  }
+
+  export type TimelineEventUncheckedCreateInput = {
+    id?: string
+    orderId: string
+    status: string
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type TimelineEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutTimelineNestedInput
+  }
+
+  export type TimelineEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimelineEventCreateManyInput = {
+    id?: string
+    orderId: string
+    status: string
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type TimelineEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimelineEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12306,6 +13646,7 @@ export namespace Prisma {
     images?: SortOrder
     category?: SortOrder
     stock?: SortOrder
+    status?: SortOrder
     storeId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12323,6 +13664,7 @@ export namespace Prisma {
     price?: SortOrder
     category?: SortOrder
     stock?: SortOrder
+    status?: SortOrder
     storeId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12335,6 +13677,7 @@ export namespace Prisma {
     price?: SortOrder
     category?: SortOrder
     stock?: SortOrder
+    status?: SortOrder
     storeId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12511,6 +13854,16 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
+  export type TimelineEventListRelationFilter = {
+    every?: TimelineEventWhereInput
+    some?: TimelineEventWhereInput
+    none?: TimelineEventWhereInput
+  }
+
+  export type TimelineEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
     storeId?: SortOrder
@@ -12552,6 +13905,30 @@ export namespace Prisma {
   export type OrderScalarRelationFilter = {
     is?: OrderWhereInput
     isNot?: OrderWhereInput
+  }
+
+  export type TimelineEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    status?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TimelineEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    status?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TimelineEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    status?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type ProductScalarRelationFilter = {
@@ -13005,11 +14382,25 @@ export namespace Prisma {
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
   }
 
+  export type TimelineEventCreateNestedManyWithoutOrderInput = {
+    create?: XOR<TimelineEventCreateWithoutOrderInput, TimelineEventUncheckedCreateWithoutOrderInput> | TimelineEventCreateWithoutOrderInput[] | TimelineEventUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: TimelineEventCreateOrConnectWithoutOrderInput | TimelineEventCreateOrConnectWithoutOrderInput[]
+    createMany?: TimelineEventCreateManyOrderInputEnvelope
+    connect?: TimelineEventWhereUniqueInput | TimelineEventWhereUniqueInput[]
+  }
+
   export type OrderItemUncheckedCreateNestedManyWithoutOrderInput = {
     create?: XOR<OrderItemCreateWithoutOrderInput, OrderItemUncheckedCreateWithoutOrderInput> | OrderItemCreateWithoutOrderInput[] | OrderItemUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutOrderInput | OrderItemCreateOrConnectWithoutOrderInput[]
     createMany?: OrderItemCreateManyOrderInputEnvelope
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+  }
+
+  export type TimelineEventUncheckedCreateNestedManyWithoutOrderInput = {
+    create?: XOR<TimelineEventCreateWithoutOrderInput, TimelineEventUncheckedCreateWithoutOrderInput> | TimelineEventCreateWithoutOrderInput[] | TimelineEventUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: TimelineEventCreateOrConnectWithoutOrderInput | TimelineEventCreateOrConnectWithoutOrderInput[]
+    createMany?: TimelineEventCreateManyOrderInputEnvelope
+    connect?: TimelineEventWhereUniqueInput | TimelineEventWhereUniqueInput[]
   }
 
   export type StoreUpdateOneRequiredWithoutOrdersNestedInput = {
@@ -13044,6 +14435,20 @@ export namespace Prisma {
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
   }
 
+  export type TimelineEventUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<TimelineEventCreateWithoutOrderInput, TimelineEventUncheckedCreateWithoutOrderInput> | TimelineEventCreateWithoutOrderInput[] | TimelineEventUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: TimelineEventCreateOrConnectWithoutOrderInput | TimelineEventCreateOrConnectWithoutOrderInput[]
+    upsert?: TimelineEventUpsertWithWhereUniqueWithoutOrderInput | TimelineEventUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: TimelineEventCreateManyOrderInputEnvelope
+    set?: TimelineEventWhereUniqueInput | TimelineEventWhereUniqueInput[]
+    disconnect?: TimelineEventWhereUniqueInput | TimelineEventWhereUniqueInput[]
+    delete?: TimelineEventWhereUniqueInput | TimelineEventWhereUniqueInput[]
+    connect?: TimelineEventWhereUniqueInput | TimelineEventWhereUniqueInput[]
+    update?: TimelineEventUpdateWithWhereUniqueWithoutOrderInput | TimelineEventUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: TimelineEventUpdateManyWithWhereWithoutOrderInput | TimelineEventUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: TimelineEventScalarWhereInput | TimelineEventScalarWhereInput[]
+  }
+
   export type OrderItemUncheckedUpdateManyWithoutOrderNestedInput = {
     create?: XOR<OrderItemCreateWithoutOrderInput, OrderItemUncheckedCreateWithoutOrderInput> | OrderItemCreateWithoutOrderInput[] | OrderItemUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutOrderInput | OrderItemCreateOrConnectWithoutOrderInput[]
@@ -13056,6 +14461,34 @@ export namespace Prisma {
     update?: OrderItemUpdateWithWhereUniqueWithoutOrderInput | OrderItemUpdateWithWhereUniqueWithoutOrderInput[]
     updateMany?: OrderItemUpdateManyWithWhereWithoutOrderInput | OrderItemUpdateManyWithWhereWithoutOrderInput[]
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
+  }
+
+  export type TimelineEventUncheckedUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<TimelineEventCreateWithoutOrderInput, TimelineEventUncheckedCreateWithoutOrderInput> | TimelineEventCreateWithoutOrderInput[] | TimelineEventUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: TimelineEventCreateOrConnectWithoutOrderInput | TimelineEventCreateOrConnectWithoutOrderInput[]
+    upsert?: TimelineEventUpsertWithWhereUniqueWithoutOrderInput | TimelineEventUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: TimelineEventCreateManyOrderInputEnvelope
+    set?: TimelineEventWhereUniqueInput | TimelineEventWhereUniqueInput[]
+    disconnect?: TimelineEventWhereUniqueInput | TimelineEventWhereUniqueInput[]
+    delete?: TimelineEventWhereUniqueInput | TimelineEventWhereUniqueInput[]
+    connect?: TimelineEventWhereUniqueInput | TimelineEventWhereUniqueInput[]
+    update?: TimelineEventUpdateWithWhereUniqueWithoutOrderInput | TimelineEventUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: TimelineEventUpdateManyWithWhereWithoutOrderInput | TimelineEventUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: TimelineEventScalarWhereInput | TimelineEventScalarWhereInput[]
+  }
+
+  export type OrderCreateNestedOneWithoutTimelineInput = {
+    create?: XOR<OrderCreateWithoutTimelineInput, OrderUncheckedCreateWithoutTimelineInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutTimelineInput
+    connect?: OrderWhereUniqueInput
+  }
+
+  export type OrderUpdateOneRequiredWithoutTimelineNestedInput = {
+    create?: XOR<OrderCreateWithoutTimelineInput, OrderUncheckedCreateWithoutTimelineInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutTimelineInput
+    upsert?: OrderUpsertWithoutTimelineInput
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutTimelineInput, OrderUpdateWithoutTimelineInput>, OrderUncheckedUpdateWithoutTimelineInput>
   }
 
   export type OrderCreateNestedOneWithoutOrderItemsInput = {
@@ -13411,6 +14844,7 @@ export namespace Prisma {
     createdAt?: Date | string
     store: StoreCreateNestedOneWithoutOrdersInput
     orderItems?: OrderItemCreateNestedManyWithoutOrderInput
+    timeline?: TimelineEventCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutUserInput = {
@@ -13421,6 +14855,7 @@ export namespace Prisma {
     fulfillmentStatus?: string
     createdAt?: Date | string
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+    timeline?: TimelineEventUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutUserInput = {
@@ -13594,6 +15029,7 @@ export namespace Prisma {
     images?: ProductCreateimagesInput | string[]
     category?: string | null
     stock?: number
+    status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     orderItems?: OrderItemCreateNestedManyWithoutProductInput
@@ -13607,6 +15043,7 @@ export namespace Prisma {
     images?: ProductCreateimagesInput | string[]
     category?: string | null
     stock?: number
+    status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductInput
@@ -13630,6 +15067,7 @@ export namespace Prisma {
     createdAt?: Date | string
     user?: UserCreateNestedOneWithoutOrdersInput
     orderItems?: OrderItemCreateNestedManyWithoutOrderInput
+    timeline?: TimelineEventCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutStoreInput = {
@@ -13640,6 +15078,7 @@ export namespace Prisma {
     userId?: string | null
     createdAt?: Date | string
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+    timeline?: TimelineEventUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutStoreInput = {
@@ -13718,6 +15157,7 @@ export namespace Prisma {
     images?: StringNullableListFilter<"Product">
     category?: StringNullableFilter<"Product"> | string | null
     stock?: IntFilter<"Product"> | number
+    status?: StringFilter<"Product"> | string
     storeId?: StringFilter<"Product"> | string
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -14072,6 +15512,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TimelineEventCreateWithoutOrderInput = {
+    id?: string
+    status: string
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type TimelineEventUncheckedCreateWithoutOrderInput = {
+    id?: string
+    status: string
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type TimelineEventCreateOrConnectWithoutOrderInput = {
+    where: TimelineEventWhereUniqueInput
+    create: XOR<TimelineEventCreateWithoutOrderInput, TimelineEventUncheckedCreateWithoutOrderInput>
+  }
+
+  export type TimelineEventCreateManyOrderInputEnvelope = {
+    data: TimelineEventCreateManyOrderInput | TimelineEventCreateManyOrderInput[]
+    skipDuplicates?: boolean
+  }
+
   export type StoreUpsertWithoutOrdersInput = {
     update: XOR<StoreUpdateWithoutOrdersInput, StoreUncheckedUpdateWithoutOrdersInput>
     create: XOR<StoreCreateWithoutOrdersInput, StoreUncheckedCreateWithoutOrdersInput>
@@ -14158,6 +15622,93 @@ export namespace Prisma {
     data: XOR<OrderItemUpdateManyMutationInput, OrderItemUncheckedUpdateManyWithoutOrderInput>
   }
 
+  export type TimelineEventUpsertWithWhereUniqueWithoutOrderInput = {
+    where: TimelineEventWhereUniqueInput
+    update: XOR<TimelineEventUpdateWithoutOrderInput, TimelineEventUncheckedUpdateWithoutOrderInput>
+    create: XOR<TimelineEventCreateWithoutOrderInput, TimelineEventUncheckedCreateWithoutOrderInput>
+  }
+
+  export type TimelineEventUpdateWithWhereUniqueWithoutOrderInput = {
+    where: TimelineEventWhereUniqueInput
+    data: XOR<TimelineEventUpdateWithoutOrderInput, TimelineEventUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type TimelineEventUpdateManyWithWhereWithoutOrderInput = {
+    where: TimelineEventScalarWhereInput
+    data: XOR<TimelineEventUpdateManyMutationInput, TimelineEventUncheckedUpdateManyWithoutOrderInput>
+  }
+
+  export type TimelineEventScalarWhereInput = {
+    AND?: TimelineEventScalarWhereInput | TimelineEventScalarWhereInput[]
+    OR?: TimelineEventScalarWhereInput[]
+    NOT?: TimelineEventScalarWhereInput | TimelineEventScalarWhereInput[]
+    id?: StringFilter<"TimelineEvent"> | string
+    orderId?: StringFilter<"TimelineEvent"> | string
+    status?: StringFilter<"TimelineEvent"> | string
+    note?: StringNullableFilter<"TimelineEvent"> | string | null
+    createdAt?: DateTimeFilter<"TimelineEvent"> | Date | string
+  }
+
+  export type OrderCreateWithoutTimelineInput = {
+    id?: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    status?: string
+    fulfillmentStatus?: string
+    createdAt?: Date | string
+    store: StoreCreateNestedOneWithoutOrdersInput
+    user?: UserCreateNestedOneWithoutOrdersInput
+    orderItems?: OrderItemCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutTimelineInput = {
+    id?: string
+    storeId: string
+    totalAmount: Decimal | DecimalJsLike | number | string
+    status?: string
+    fulfillmentStatus?: string
+    userId?: string | null
+    createdAt?: Date | string
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutTimelineInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutTimelineInput, OrderUncheckedCreateWithoutTimelineInput>
+  }
+
+  export type OrderUpsertWithoutTimelineInput = {
+    update: XOR<OrderUpdateWithoutTimelineInput, OrderUncheckedUpdateWithoutTimelineInput>
+    create: XOR<OrderCreateWithoutTimelineInput, OrderUncheckedCreateWithoutTimelineInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutTimelineInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutTimelineInput, OrderUncheckedUpdateWithoutTimelineInput>
+  }
+
+  export type OrderUpdateWithoutTimelineInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    fulfillmentStatus?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    store?: StoreUpdateOneRequiredWithoutOrdersNestedInput
+    user?: UserUpdateOneWithoutOrdersNestedInput
+    orderItems?: OrderItemUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutTimelineInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    storeId?: StringFieldUpdateOperationsInput | string
+    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    fulfillmentStatus?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItems?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
   export type OrderCreateWithoutOrderItemsInput = {
     id?: string
     totalAmount: Decimal | DecimalJsLike | number | string
@@ -14166,6 +15717,7 @@ export namespace Prisma {
     createdAt?: Date | string
     store: StoreCreateNestedOneWithoutOrdersInput
     user?: UserCreateNestedOneWithoutOrdersInput
+    timeline?: TimelineEventCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutOrderItemsInput = {
@@ -14176,6 +15728,7 @@ export namespace Prisma {
     fulfillmentStatus?: string
     userId?: string | null
     createdAt?: Date | string
+    timeline?: TimelineEventUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutOrderItemsInput = {
@@ -14191,6 +15744,7 @@ export namespace Prisma {
     images?: ProductCreateimagesInput | string[]
     category?: string | null
     stock?: number
+    status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     store: StoreCreateNestedOneWithoutProductsInput
@@ -14204,6 +15758,7 @@ export namespace Prisma {
     images?: ProductCreateimagesInput | string[]
     category?: string | null
     stock?: number
+    status?: string
     storeId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14233,6 +15788,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     store?: StoreUpdateOneRequiredWithoutOrdersNestedInput
     user?: UserUpdateOneWithoutOrdersNestedInput
+    timeline?: TimelineEventUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutOrderItemsInput = {
@@ -14243,6 +15799,7 @@ export namespace Prisma {
     fulfillmentStatus?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeline?: TimelineEventUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type ProductUpsertWithoutOrderItemsInput = {
@@ -14264,6 +15821,7 @@ export namespace Prisma {
     images?: ProductUpdateimagesInput | string[]
     category?: NullableStringFieldUpdateOperationsInput | string | null
     stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     store?: StoreUpdateOneRequiredWithoutProductsNestedInput
@@ -14277,6 +15835,7 @@ export namespace Prisma {
     images?: ProductUpdateimagesInput | string[]
     category?: NullableStringFieldUpdateOperationsInput | string | null
     stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     storeId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14379,6 +15938,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     store?: StoreUpdateOneRequiredWithoutOrdersNestedInput
     orderItems?: OrderItemUpdateManyWithoutOrderNestedInput
+    timeline?: TimelineEventUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutUserInput = {
@@ -14389,6 +15949,7 @@ export namespace Prisma {
     fulfillmentStatus?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+    timeline?: TimelineEventUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutUserInput = {
@@ -14408,6 +15969,7 @@ export namespace Prisma {
     images?: ProductCreateimagesInput | string[]
     category?: string | null
     stock?: number
+    status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14429,6 +15991,7 @@ export namespace Prisma {
     images?: ProductUpdateimagesInput | string[]
     category?: NullableStringFieldUpdateOperationsInput | string | null
     stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUpdateManyWithoutProductNestedInput
@@ -14442,6 +16005,7 @@ export namespace Prisma {
     images?: ProductUpdateimagesInput | string[]
     category?: NullableStringFieldUpdateOperationsInput | string | null
     stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
@@ -14455,6 +16019,7 @@ export namespace Prisma {
     images?: ProductUpdateimagesInput | string[]
     category?: NullableStringFieldUpdateOperationsInput | string | null
     stock?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14467,6 +16032,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutOrdersNestedInput
     orderItems?: OrderItemUpdateManyWithoutOrderNestedInput
+    timeline?: TimelineEventUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutStoreInput = {
@@ -14477,6 +16043,7 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+    timeline?: TimelineEventUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutStoreInput = {
@@ -14523,6 +16090,13 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
   }
 
+  export type TimelineEventCreateManyOrderInput = {
+    id?: string
+    status: string
+    note?: string | null
+    createdAt?: Date | string
+  }
+
   export type OrderItemUpdateWithoutOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -14542,6 +16116,27 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type TimelineEventUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimelineEventUncheckedUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimelineEventUncheckedUpdateManyWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

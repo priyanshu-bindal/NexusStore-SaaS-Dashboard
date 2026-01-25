@@ -33,8 +33,9 @@ export default async function CustomersPage(props: {
     const limit = 6;
     const skip = (page - 1) * limit;
 
-    // Filter Logic
+    // Filter Logic - Only show CUSTOMER role users
     const whereClause: any = {
+        role: 'CUSTOMER',
         OR: [
             { name: { contains: searchTerm, mode: "insensitive" } },
             { email: { contains: searchTerm, mode: "insensitive" } },
@@ -64,6 +65,7 @@ export default async function CustomersPage(props: {
     try {
         users = await db.user.findMany({
             where: {
+                role: 'CUSTOMER',
                 OR: [
                     { name: { contains: searchTerm, mode: 'insensitive' } },
                     { email: { contains: searchTerm, mode: 'insensitive' } },
@@ -85,17 +87,17 @@ export default async function CustomersPage(props: {
         users = [];
     }
 
-    // Calculate Metrics
-    const allUsersCount = await db.user.count();
+    // Calculate Metrics - Only count CUSTOMER role users
+    const allUsersCount = await db.user.count({ where: { role: 'CUSTOMER' } });
     const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
     const newCustomersThisMonth = await db.user.count({
-        where: { createdAt: { gte: startOfMonth } }
+        where: { role: 'CUSTOMER', createdAt: { gte: startOfMonth } }
     });
 
     const lastMonthStart = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1);
     const lastMonthEnd = new Date(new Date().getFullYear(), new Date().getMonth(), 0);
     const newCustomersLastMonth = await db.user.count({
-        where: { createdAt: { gte: lastMonthStart, lte: lastMonthEnd } }
+        where: { role: 'CUSTOMER', createdAt: { gte: lastMonthStart, lte: lastMonthEnd } }
     });
 
     // Transform Data

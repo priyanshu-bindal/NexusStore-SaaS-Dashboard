@@ -32,6 +32,7 @@ export default async function OrdersPage(props: {
     if (searchParams?.q) {
         whereClause.OR = [
             { id: { contains: searchParams.q, mode: "insensitive" } },
+            { user: { name: { contains: searchParams.q, mode: "insensitive" } } }
         ];
     }
 
@@ -40,9 +41,18 @@ export default async function OrdersPage(props: {
     const limit = 6;
     const skip = (page - 1) * limit;
 
-    // Fetch raw orders
+    // Fetch raw orders with user relation
     const rawOrders = await db.order.findMany({
         where: whereClause,
+        include: {
+            user: {
+                select: {
+                    name: true,
+                    email: true,
+                    image: true
+                }
+            }
+        },
         orderBy: { createdAt: "desc" },
         take: limit,
         skip: skip
@@ -58,6 +68,7 @@ export default async function OrdersPage(props: {
     const orders = rawOrders.map(order => ({
         ...order,
         totalAmount: Number(order.totalAmount),
+        customerName: order.user?.name || "Guest Customer",
         createdAt: order.createdAt.toLocaleDateString("en-GB", {
             day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
         }), // Formatting as string "24 Oct 2023, 14:21"
