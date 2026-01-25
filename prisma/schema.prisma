@@ -23,6 +23,10 @@ model User {
   store         Store?
   accounts      Account[]
   sessions      Session[]
+  orders        Order[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Store {
@@ -97,6 +101,9 @@ model Order {
   store       Store       @relation(fields: [storeId], references: [id])
   totalAmount Decimal
   status      String      @default("PAID") // Mocked as paid for portfolio
+  fulfillmentStatus String      @default("Unfulfilled")
+  userId      String?
+  user        User?       @relation(fields: [userId], references: [id])
   orderItems  OrderItem[]
   createdAt   DateTime    @default(now())
 }

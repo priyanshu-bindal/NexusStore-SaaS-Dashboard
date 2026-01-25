@@ -1,11 +1,6 @@
 import Link from "next/link";
+import { DashboardNav } from "@/components/dashboard/DashboardNav";
 import {
-    LayoutDashboard,
-    ShoppingBag,
-    Package,
-    Users,
-    BarChart3,
-    Settings,
     Bell
 } from "lucide-react";
 
@@ -29,14 +24,7 @@ export default function DashboardLayout({
                             <span className="text-xl font-bold tracking-tight text-slate-900">NexusStore</span>
                         </div>
 
-                        <nav className="hidden lg:flex items-center h-full space-x-1">
-                            <NavLink href="/dashboard" icon={<LayoutDashboard size={18} />} label="Dashboard" active />
-                            <NavLink href="/orders" icon={<ShoppingBag size={18} />} label="Orders" />
-                            <NavLink href="/dashboard/products" icon={<Package size={18} />} label="Products" />
-                            <NavLink href="/customers" icon={<Users size={18} />} label="Customers" />
-                            <NavLink href="/analytics" icon={<BarChart3 size={18} />} label="Analytics" />
-                            <NavLink href="/settings" icon={<Settings size={18} />} label="Settings" />
-                        </nav>
+                        <DashboardNav />
                     </div>
 
                     <div className="flex items-center gap-4">
@@ -62,17 +50,4 @@ export default function DashboardLayout({
     );
 }
 
-function NavLink({ href, icon, label, active = false }: any) {
-    return (
-        <Link
-            href={href}
-            className={`flex items-center gap-2 px-3 h-full text-sm font-semibold transition-colors border-b-2 ${active
-                ? "text-[#10b981] border-[#10b981]"
-                : "text-slate-500 hover:text-slate-900 border-transparent"
-                }`}
-        >
-            {icon}
-            {label}
-        </Link>
-    );
-}
+

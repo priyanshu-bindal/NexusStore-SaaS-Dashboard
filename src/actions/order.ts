@@ -1,111 +1,87 @@
 "use server";
+// Force rebuild
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 
-type CartItemInput = {
-    productId: string;
-    quantity: number;
-};
-
-export async function createOrder(cartItems: CartItemInput[]) {
+export async function createOrder(items: { productId: string; quantity: number }[]) {
     try {
-        if (!cartItems || cartItems.length === 0) {
-            return { error: "Cart is empty" };
-        }
-
-        // 1. Fetch products to get prices, stock, and storeId
-        const productIds = cartItems.map((item) => item.productId);
+        const session = await auth();
+        // 1. Fetch products to get real prices (security)
+        const productIds = items.map(i => i.productId);
         const products = await db.product.findMany({
-            where: {
-                id: { in: productIds },
-            },
-            select: {
-                id: true,
-                price: true,
-                stock: true,
-                name: true,
-                storeId: true, // Fetch storeId
-            }
+            where: { id: { in: productIds } }
         });
 
-        if (products.length !== cartItems.length) {
-            return { error: "Some products not found. Please refresh your cart." };
-        }
+        // 2. Calculate Total & Prepare Order Items
+        let totalAmount = 0;
+        const orderItemsData = [];
 
-        // 2. Group items by storeId
-        const itemsByStore: Record<string, { productId: string; quantity: number; price: number }[]> = {};
-
-        // This map is needed to validate stock for all items first
-        for (const item of cartItems) {
-            const product = products.find((p) => p.id === item.productId);
+        for (const item of items) {
+            const product = products.find(p => p.id === item.productId);
             if (!product) continue;
 
-            if (product.stock < item.quantity) {
-                return { error: `Not enough stock for ${product.name}` };
-            }
+            const price = Number(product.price);
+            totalAmount += price * item.quantity;
 
-            if (!itemsByStore[product.storeId]) {
-                itemsByStore[product.storeId] = [];
-            }
-
-            itemsByStore[product.storeId].push({
+            orderItemsData.push({
                 productId: product.id,
                 quantity: item.quantity,
-                price: Number(product.price),
+                price: product.price // Store snapshot of price
             });
         }
 
-        const createdOrderIds: string[] = [];
+        if (orderItemsData.length === 0) {
+            return { error: "No valid products found" };
+        }
 
-        // 3. Transaction
-        await db.$transaction(async (tx) => {
-            // Iterate over each store to create an order
-            for (const [storeId, storeItems] of Object.entries(itemsByStore)) {
-
-                // Calculate total for this store's order
-                const storeTotal = storeItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-                // Create Order for this Store
-                const newOrder = await tx.order.create({
-                    data: {
-                        storeId: storeId,
-                        totalAmount: storeTotal,
-                        status: "PAID",
-                        orderItems: {
-                            create: storeItems.map(item => ({
-                                productId: item.productId,
-                                quantity: item.quantity,
-                                price: item.price
-                            })),
-                        },
-                    },
-                });
-
-                createdOrderIds.push(newOrder.id);
-            }
-
-            // Update Stock (outside the store loop, but inside transaction for efficiency? 
-            // Actually, we can just loop through original cartItems to be simple)
-            for (const item of cartItems) {
-                await tx.product.update({
-                    where: { id: item.productId },
-                    data: {
-                        stock: {
-                            decrement: item.quantity,
-                        },
-                    },
-                });
+        // 3. Create Order
+        const order = await db.order.create({
+            data: {
+                storeId: products[0].storeId, // Assuming single store for now
+                totalAmount: totalAmount,
+                status: "PAID", // Mocking payment success
+                userId: session?.user?.id, // Link to user if logged in
+                orderItems: {
+                    create: orderItemsData
+                }
             }
         });
 
-        revalidatePath("/dashboard/products");
-        revalidatePath("/shop");
+        revalidatePath("/orders");
+        revalidatePath("/dashboard");
 
-        // distinct IDs if multiple orders
-        return { success: true, orderId: createdOrderIds[0] };
+        return { success: true, orderId: order.id };
     } catch (error) {
-        console.error("Order creation failed:", error);
-        return { error: "Something went wrong while placing the order." };
+        console.error("Create Order Error:", error);
+        return { error: "Failed to create order" };
+    }
+}
+
+export async function updateOrderStatus(orderId: string, newStatus: string, fulfillmentStatus?: string) {
+    if (!orderId || !newStatus) return { error: "Missing fields" };
+
+    console.log("Updating Order:", { orderId, newStatus, fulfillmentStatus });
+
+    try {
+        const dataToUpdate: any = { status: newStatus };
+        if (fulfillmentStatus) {
+            dataToUpdate.fulfillmentStatus = fulfillmentStatus;
+        }
+
+        const result = await db.order.update({
+            where: { id: orderId },
+            data: dataToUpdate,
+        });
+
+        console.log("Update Success:", result);
+
+        revalidatePath(`/orders/${orderId}`);
+        revalidatePath("/orders"); // Update list view as well
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to update status:", error);
+        return { error: "Failed to update status" };
     }
 }
