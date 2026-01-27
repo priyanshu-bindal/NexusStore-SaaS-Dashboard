@@ -1,52 +1,31 @@
-"use client"
+"use client";
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
+import { useState, useEffect } from "react";
 
-const data = [
-    { name: "Jan", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Feb", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Mar", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Apr", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "May", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Jun", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Jul", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Aug", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Sep", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Oct", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Nov", total: Math.floor(Math.random() * 5000) + 1000 },
-    { name: "Dec", total: Math.floor(Math.random() * 5000) + 1000 },
-]
+// Simple Chart Placeholder with Data Props
+export default function SalesChartComponent({ data }: { data: { date: string, amount: number }[] }) {
+    const [isClient, setIsClient] = useState(false);
 
-export function SalesChart() {
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    if (!isClient) return <div className="h-[300px] w-full bg-gray-50 animate-pulse" />;
+
+    const maxAmount = Math.max(...data.map(d => d.amount), 1); // Avoid div by zero, min 1 if empty
+
     return (
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <div className="mb-4">
-                <h3 className="text-lg font-medium">Overview</h3>
-            </div>
-            <ResponsiveContainer width="100%" height={350}>
-                <BarChart data={data}>
-                    <XAxis
-                        dataKey="name"
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                    />
-                    <YAxis
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(value) => `$${value}`}
-                    />
-                    <Tooltip
-                        cursor={{ fill: 'transparent' }}
-                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                        formatter={(value) => [`$${value}`, 'Revenue']}
-                    />
-                    <Bar dataKey="total" fill="#10b981" radius={[4, 4, 0, 0]} />
-                </BarChart>
-            </ResponsiveContainer>
+        <div className="flex items-end gap-1 h-full w-full">
+            {data.map((item, i) => (
+                <div
+                    key={i}
+                    className="flex-1 bg-emerald-500/20 hover:bg-emerald-500 transition-colors rounded-t-sm group relative"
+                    style={{ height: `${Math.max((item.amount / maxAmount) * 100, 4)}%` }} // Min height 4% for visual
+                    title={`${item.date}: $${item.amount.toFixed(2)}`}
+                >
+                    {/* Optional: Simple CSS Tooltip can involve adding a spans inside group-hover:block */}
+                </div>
+            ))}
         </div>
-    )
+    );
 }

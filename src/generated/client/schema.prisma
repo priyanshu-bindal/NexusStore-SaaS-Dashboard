@@ -4,8 +4,9 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/client"
+  provider        = "prisma-client-js"
+  output          = "../src/generated/client"
+  previewFeatures = ["driverAdapters"]
 }
 
 enum Role {
@@ -128,4 +129,11 @@ model OrderItem {
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int
   price     Decimal
+}
+
+model Visit {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  ipHash    String?
+  storeId   String?
 }

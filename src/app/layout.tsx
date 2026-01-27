@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartSheet from "@/components/cart/CartSheet";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,10 +22,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} font-sans antialiased bg-background-light text-[#111318] transition-colors duration-200`}
-      >
+    <html lang="en" className={inter.variable}>
+      <body>
+        <NextTopLoader
+          color="#ff0000"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #ff0000,0 0 5px #ff0000"
+        />
         <CartProvider>
           {children}
           <CartSheet />

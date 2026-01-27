@@ -4,8 +4,9 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/client"
+  provider        = "prisma-client-js"
+  output          = "../src/generated/client"
+  previewFeatures = ["driverAdapters"]
 }
 
 enum Role {
@@ -24,7 +25,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   orders        Order[]
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -97,25 +98,25 @@ model VerificationToken {
 }
 
 model Order {
-  id          String      @id @default(cuid())
-  storeId     String
-  store       Store       @relation(fields: [storeId], references: [id])
-  totalAmount Decimal
-  status      String      @default("PAID") // Mocked as paid for portfolio
+  id                String      @id @default(cuid())
+  storeId           String
+  store             Store       @relation(fields: [storeId], references: [id])
+  totalAmount       Decimal
+  status            String      @default("PAID") // Mocked as paid for portfolio
   fulfillmentStatus String      @default("Unfulfilled")
-  userId      String?
-  user        User?       @relation(fields: [userId], references: [id])
-  orderItems  OrderItem[]
-  createdAt   DateTime    @default(now())
-  
-  timeline    TimelineEvent[]
+  userId            String?
+  user              User?       @relation(fields: [userId], references: [id])
+  orderItems        OrderItem[]
+  createdAt         DateTime    @default(now())
+
+  timeline TimelineEvent[]
 }
 
 model TimelineEvent {
   id        String   @id @default(cuid())
   orderId   String
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  status    String   // e.g., "PAID", "SHIPPED", "CANCELLED"
+  status    String // e.g., "PAID", "SHIPPED", "CANCELLED"
   note      String?
   createdAt DateTime @default(now())
 }
@@ -128,4 +129,11 @@ model OrderItem {
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int
   price     Decimal
+}
+
+model Visit {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  ipHash    String?
+  storeId   String?
 }

@@ -12,8 +12,12 @@ import {
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
-import { formatCurrency } from "../../../lib/utils"; // Assuming you have this or will create it. If not I'll define a local helper.
+import { formatCurrency } from "../../../lib/utils";
+import SalesChartComponent from "@/components/dashboard/SalesChart";
+
 // I'll define a local currency formatter to be safe.
+
+export const revalidate = 0;
 
 export default async function DashboardOverview() {
     const session = await auth();
@@ -28,24 +32,80 @@ export default async function DashboardOverview() {
 
     if (!store) return redirect("/onboarding");
 
-    // 1. Metric Aggregates
-    const revenueData = await db.order.aggregate({
-        where: { storeId: store.id, status: "PAID" },
-        _sum: { totalAmount: true },
-        _count: { id: true }
-    });
+    // 1. Time Periods for Growth Logic
+    const now = new Date();
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
 
-    const totalRevenue = Number(revenueData._sum.totalAmount || 0);
-    const totalOrders = revenueData._count.id;
+    // 2. Aggregate Data Parallelization
+    const [
+        totalRevenueData,
+        browsingCount, // active products
+        totalOrders,
+        currentPeriodRevenue,
+        previousPeriodRevenue,
+        currentVisitsCount,
+        previousVisitsCount
+    ] = await Promise.all([
+        // Total Stats
+        db.order.aggregate({
+            where: { storeId: store.id, status: "PAID" },
+            _sum: { totalAmount: true }
+        }),
+        db.product.count({
+            where: { storeId: store.id }
+        }),
+        db.order.count({
+            where: { storeId: store.id }
+        }),
+        // Growth Stats: Revenue
+        db.order.aggregate({
+            where: {
+                storeId: store.id,
+                status: "PAID",
+                createdAt: { gte: thirtyDaysAgo }
+            },
+            _sum: { totalAmount: true }
+        }),
+        db.order.aggregate({
+            where: {
+                storeId: store.id,
+                status: "PAID",
+                createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo }
+            },
+            _sum: { totalAmount: true }
+        }),
+        // Store Visits Stats
+        db.visit.count({
+            where: { createdAt: { gte: thirtyDaysAgo } }
+        }),
+        db.visit.count({
+            where: { createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo } }
+        })
+    ]);
 
-    // Mocking Visits and Conversion for now as they aren't in schema
-    const storeVisits = 42901;
-    const conversionRate = 3.82;
+    // 3. Process Data & Handle Decimals
+    const totalRevenue = Number(totalRevenueData._sum.totalAmount || 0);
+    const activeProducts = browsingCount;
+    const storeVisits = currentVisitsCount;
 
-    // 2. Sales Trends (Last 30 Days)
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    // Calculate Revenue Growth
+    const currentRev = Number(currentPeriodRevenue._sum.totalAmount || 0);
+    const prevRev = Number(previousPeriodRevenue._sum.totalAmount || 0);
+    const revenueGrowth = prevRev === 0
+        ? (currentRev > 0 ? 100 : 0)
+        : ((currentRev - prevRev) / prevRev) * 100;
 
+    // Calculate Visit Growth
+    const prevVisits = previousVisitsCount;
+    const visitGrowth = prevVisits === 0
+        ? (storeVisits > 0 ? 100 : 0)
+        : ((storeVisits - prevVisits) / prevVisits) * 100;
+    // Mocking Conversion (still no data source for this yet)
+    // const conversionRate = 3.82; 
+
+
+    // 4. Sales Trends (Last 30 Days for Chart)
     const last30DaysOrders = await db.order.findMany({
         where: {
             storeId: store.id,
@@ -54,27 +114,27 @@ export default async function DashboardOverview() {
         select: { createdAt: true, totalAmount: true }
     });
 
-    // Bucket into 30 days
-    const chartDataMap = new Map<string, number>();
-    for (let i = 0; i < 30; i++) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        const key = d.toISOString().split('T')[0]; // YYYY-MM-DD
-        chartDataMap.set(key, 0);
+    // Optimize with Map for O(1) lookup
+    const salesMap = new Map<string, number>();
+    const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit' });
+
+    // Aggregate orders by day
+    for (const order of last30DaysOrders) {
+        const dateKey = dateFormatter.format(order.createdAt);
+        salesMap.set(dateKey, (salesMap.get(dateKey) || 0) + Number(order.totalAmount));
     }
 
-    last30DaysOrders.forEach(order => {
-        const key = order.createdAt.toISOString().split('T')[0];
-        if (chartDataMap.has(key)) {
-            chartDataMap.set(key, (chartDataMap.get(key) || 0) + Number(order.totalAmount));
-        }
-    });
-
-    // Convert to array of percentages for the placeholder chart (normalizing to max value)
-    const dailyTotals = Array.from(chartDataMap.values()).reverse();
-    const maxDaily = Math.max(...dailyTotals, 100); // Avoid divide by zero
-    const chartPercentages = dailyTotals.map(val => (val / maxDaily) * 100);
-
+    // Generate strict 30-day timeline (filling gaps)
+    const chartData = [];
+    for (let i = 29; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateKey = dateFormatter.format(d);
+        chartData.push({
+            date: dateKey,
+            amount: salesMap.get(dateKey) || 0
+        });
+    }
 
     // 3. Recent Orders
     const recentOrders = await db.order.findMany({
@@ -91,20 +151,12 @@ export default async function DashboardOverview() {
     });
 
     // 4. Top Selling Products
-    // Prisma doesn't support deep relations in groupBy easily, so we:
-    // a. Group OrderItems by productId
-    // b. Fetch Products details
     const topSellerStats = await db.orderItem.groupBy({
         by: ['productId'],
         where: {
             order: { storeId: store.id, status: "PAID" }
         },
-        _sum: { quantity: true, price: true }, // price sum isn't revenue if quantities differ, typically revenue = sum(qty * price). 
-        // But price in OrderItem is usually per unit. Total revenue for item = qty * price. 
-        // Prisma _sum on computed fields isn't directly possible in one go.
-        // We'll approximate revenue by (sum of quantity * avg price) later or just sum price if it represents line item total?
-        // Usually OrderItem has 'price' (unit) and 'quantity'. 
-        // Let's rely on calculating it.
+        _sum: { quantity: true, price: true },
         orderBy: { _sum: { quantity: 'desc' } },
         take: 4
     });
@@ -119,12 +171,6 @@ export default async function DashboardOverview() {
     const topProducts = topSellerStats.map(stat => {
         const product = products.find(p => p.id === stat.productId);
         const qty = stat._sum.quantity || 0;
-        // Approximation: We don't have exact line item revenue summed easily without raw query, 
-        // using current price * qty as fallback or if orderItem.price was recorded at sale.
-        // Let's assume OrderItem.price is unit price at sale. 
-        // We can't sum (qty*price) in groupBy. 
-        // For accurate revenue, we'd need to fetch OrderItems and reduce in JS or use raw query.
-        // For now, let's use the product's current price * qty sold as a "Revenue estimate" to keep it fast/simple as requested.
         const estimatedRevenue = Number(product?.price || 0) * qty;
 
         return {
@@ -137,11 +183,10 @@ export default async function DashboardOverview() {
         };
     });
 
-
-    // Helper for formatting
+    // Helpers
     const fmt = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
     const fmtNum = (n: number) => new Intl.NumberFormat('en-US').format(n);
-
+    const fmtPercent = (n: number) => (n > 0 ? "+" : "") + n.toFixed(1) + "%";
     return (
         <div className="flex-1 w-full">
             {/* Page Header section */}
@@ -171,8 +216,8 @@ export default async function DashboardOverview() {
                     <MetricCard
                         title="Total Revenue"
                         value={fmt(totalRevenue)}
-                        trend="+12.5%"
-                        trendUp={true}
+                        trend={fmtPercent(revenueGrowth)}
+                        trendUp={revenueGrowth >= 0}
                         icon={<CreditCard className="text-emerald-600" />}
                         bgColor="bg-emerald-50"
                     />
@@ -180,26 +225,27 @@ export default async function DashboardOverview() {
                     <MetricCard
                         title="Total Orders"
                         value={fmtNum(totalOrders)}
-                        trend="+8.2%"
+                        trend="Lifetime"
                         trendUp={true}
                         icon={<ShoppingCart className="text-blue-600" />}
                         bgColor="bg-blue-50"
                     />
-                    {/* Conversion Rate */}
+                    {/* Active Products */}
                     <MetricCard
-                        title="Conversion Rate"
-                        value={conversionRate + "%"}
-                        trend="-2.4%"
-                        trendUp={false}
+                        title="Active Products"
+                        value={fmtNum(activeProducts)}
+                        trend="Inventory"
+                        trendUp={true}
                         icon={<MousePointerClick className="text-purple-600" />}
                         bgColor="bg-purple-50"
                     />
-                    {/* Store Visits */}
+                    {/* Store Visits (Still Mocked) */}
+                    {/* Store Visits (Real Data) */}
                     <MetricCard
                         title="Store Visits"
                         value={fmtNum(storeVisits)}
-                        trend="+18.9%"
-                        trendUp={true}
+                        trend={fmtPercent(visitGrowth)}
+                        trendUp={visitGrowth >= 0}
                         icon={<Eye className="text-orange-600" />}
                         bgColor="bg-orange-50"
                     />
@@ -220,7 +266,7 @@ export default async function DashboardOverview() {
 
                         {/* Visual placeholder for the chart to ensure no "Illegal Token" errors */}
                         <div className="h-64 w-full">
-                            <SalesChartComponent data={chartPercentages} />
+                            <SalesChartComponent data={chartData} />
                         </div>
                     </div>
 
@@ -318,34 +364,16 @@ function RecentOrderRow({ id, name, time, price, status, statusColor }: any) {
             <div className="flex items-center gap-3">
                 <div className="size-10 bg-slate-100 rounded-lg flex-shrink-0" /> {/* Image Placeholder */}
                 <div>
-                    <p className="text-sm font-bold text-slate-900">#{id}</p>
-                    <p className="text-xs text-slate-500">{name} • {time}</p>
+                    <div className="text-sm font-bold text-slate-900">#{id}</div>
+                    <div className="text-xs text-slate-500">{name} • {time}</div>
                 </div>
             </div>
             <div className="text-right">
-                <p className="text-sm font-bold text-slate-900">{price}</p>
+                <div className="text-sm font-bold text-slate-900">{price}</div>
                 <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${statusColor}`}>
                     {status}
                 </span>
             </div>
-        </div>
-    );
-}
-
-// Simple Chart Placeholder with Data Props
-function SalesChartComponent({ data }: { data?: number[] }) {
-    // Default to the previous static look if no data, or render data if provided
-    const chartData = data || [40, 55, 70, 85, 95, 80, 70, 85, 100, 90];
-
-    return (
-        <div className="flex items-end gap-1 h-full w-full">
-            {chartData.map((height, i) => (
-                <div
-                    key={i}
-                    className="flex-1 bg-emerald-500/20 hover:bg-emerald-500 transition-colors rounded-t-sm"
-                    style={{ height: `${Math.max(height, 5)}%` }} // Min height 5% for visibility
-                />
-            ))}
         </div>
     );
 }
@@ -358,8 +386,8 @@ function ProductRow({ name, sku, stock, sold, price, revenue }: any) {
                 <div className="flex items-center gap-3">
                     <div className="size-10 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0" /> {/* Image Placeholder */}
                     <div>
-                        <p className="text-sm font-bold text-slate-900">{name}</p>
-                        <p className="text-xs text-slate-500">SKU: {sku}</p>
+                        <div className="text-sm font-bold text-slate-900">{name}</div>
+                        <div className="text-xs text-slate-500">SKU: {sku}</div>
                     </div>
                 </div>
             </td>
