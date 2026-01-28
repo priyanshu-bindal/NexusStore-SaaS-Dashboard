@@ -6,7 +6,9 @@ import {
     MousePointerClick,
     Eye,
     Calendar as CalendarIcon,
-    Download
+    Download,
+    Percent, // Importing Percent icon
+    Target // Importing Target icon for variety if needed
 } from "lucide-react";
 
 import { auth } from "@/auth";
@@ -14,12 +16,16 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { formatCurrency } from "../../../lib/utils";
 import SalesChartComponent from "@/components/dashboard/SalesChart";
+import DateRangeFilter from "@/components/dashboard/DateRangeFilter";
+import { Prisma } from "@prisma/client";
 
 // I'll define a local currency formatter to be safe.
 
 export const revalidate = 0;
 
-export default async function DashboardOverview() {
+export default async function DashboardOverview(props: { searchParams: Promise<{ range?: string }> }) {
+    const searchParams = await props.searchParams;
+    const range = searchParams?.range || "30d";
     const session = await auth();
 
     if (!session?.user?.id) return redirect("/sign-in");
@@ -42,10 +48,10 @@ export default async function DashboardOverview() {
         totalRevenueData,
         browsingCount, // active products
         totalOrders,
-        currentPeriodRevenue,
-        previousPeriodRevenue,
-        currentVisitsCount,
-        previousVisitsCount
+        currentPeriodStats,
+        previousPeriodStats,
+        currentVisitsResult,
+        previousVisitsResult
     ] = await Promise.all([
         // Total Stats
         db.order.aggregate({
@@ -58,14 +64,15 @@ export default async function DashboardOverview() {
         db.order.count({
             where: { storeId: store.id }
         }),
-        // Growth Stats: Revenue
+        // Growth Stats: Revenue & Orders (for Conversion Rate)
         db.order.aggregate({
             where: {
                 storeId: store.id,
                 status: "PAID",
                 createdAt: { gte: thirtyDaysAgo }
             },
-            _sum: { totalAmount: true }
+            _sum: { totalAmount: true },
+            _count: true
         }),
         db.order.aggregate({
             where: {
@@ -73,13 +80,16 @@ export default async function DashboardOverview() {
                 status: "PAID",
                 createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo }
             },
-            _sum: { totalAmount: true }
+            _sum: { totalAmount: true },
+            _count: true
         }),
-        // Store Visits Stats
-        db.visit.count({
+        // Store Visits Stats (Unique Visitors via ipHash)
+        db.visit.groupBy({
+            by: ['ipHash'],
             where: { createdAt: { gte: thirtyDaysAgo } }
         }),
-        db.visit.count({
+        db.visit.groupBy({
+            by: ['ipHash'],
             where: { createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo } }
         })
     ]);
@@ -87,53 +97,135 @@ export default async function DashboardOverview() {
     // 3. Process Data & Handle Decimals
     const totalRevenue = Number(totalRevenueData._sum.totalAmount || 0);
     const activeProducts = browsingCount;
-    const storeVisits = currentVisitsCount;
 
     // Calculate Revenue Growth
-    const currentRev = Number(currentPeriodRevenue._sum.totalAmount || 0);
-    const prevRev = Number(previousPeriodRevenue._sum.totalAmount || 0);
+    const currentRev = Number(currentPeriodStats._sum.totalAmount || 0);
+    const prevRev = Number(previousPeriodStats._sum.totalAmount || 0);
     const revenueGrowth = prevRev === 0
         ? (currentRev > 0 ? 100 : 0)
         : ((currentRev - prevRev) / prevRev) * 100;
 
-    // Calculate Visit Growth
-    const prevVisits = previousVisitsCount;
-    const visitGrowth = prevVisits === 0
-        ? (storeVisits > 0 ? 100 : 0)
-        : ((storeVisits - prevVisits) / prevVisits) * 100;
-    // Mocking Conversion (still no data source for this yet)
-    // const conversionRate = 3.82; 
+    // --- Conversion Rate Logic ---
+    const currentUniqueVisits = currentVisitsResult.length;
+    const previousUniqueVisits = previousVisitsResult.length;
+
+    const currentOrdersCount = currentPeriodStats._count;
+    const previousOrdersCount = previousPeriodStats._count;
+
+    // Rate Calculation: (Orders / UniqueVisits) * 100
+    const currentConversionRate = currentUniqueVisits > 0
+        ? (currentOrdersCount / currentUniqueVisits) * 100
+        : 0;
+
+    const previousConversionRate = previousUniqueVisits > 0
+        ? (previousOrdersCount / previousUniqueVisits) * 100
+        : 0;
+
+    // Growth of the RATE itself
+    const conversionGrowth = previousConversionRate === 0
+        ? (currentConversionRate > 0 ? 100 : 0)
+        : ((currentConversionRate - previousConversionRate) / previousConversionRate) * 100;
 
 
-    // 4. Sales Trends (Last 30 Days for Chart)
-    const last30DaysOrders = await db.order.findMany({
-        where: {
-            storeId: store.id,
-            createdAt: { gte: thirtyDaysAgo }
-        },
-        select: { createdAt: true, totalAmount: true }
-    });
+    // 4. Sales Trends (Dynamic Timeframe)
+    let chartData: { label: string, amount: number }[] = [];
 
-    // Optimize with Map for O(1) lookup
-    const salesMap = new Map<string, number>();
-    const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit' });
+    // Aggregation Logic using Prisma Raw Query for Date Truncation
+    try {
+        let groupByUnit: 'day' | 'week' | 'month' | 'year' = 'day';
+        let startDate = thirtyDaysAgo;
+        let dateFormat: Intl.DateTimeFormatOptions = { month: 'short', day: '2-digit' };
 
-    // Aggregate orders by day
-    for (const order of last30DaysOrders) {
-        const dateKey = dateFormatter.format(order.createdAt);
-        salesMap.set(dateKey, (salesMap.get(dateKey) || 0) + Number(order.totalAmount));
-    }
+        switch (range) {
+            case '12w':
+                groupByUnit = 'week';
+                startDate = new Date(now.getTime() - 12 * 7 * 24 * 60 * 60 * 1000); // 12 Weeks
+                dateFormat = { month: 'short', day: '2-digit' }; // e.g. "Jan 22" (Start of week)
+                break;
+            case '12m':
+                groupByUnit = 'month';
+                startDate = new Date(now.getFullYear(), now.getMonth() - 11, 1); // 12 Months
+                dateFormat = { month: 'short', year: '2-digit' }; // e.g. "Jan 24"
+                break;
+            case '5y':
+                groupByUnit = 'year';
+                startDate = new Date(now.getFullYear() - 4, 0, 1); // 5 Years
+                dateFormat = { year: 'numeric' }; // e.g. "2024"
+                break;
+            case '30d':
+            default:
+                groupByUnit = 'day';
+                startDate = thirtyDaysAgo;
+        }
 
-    // Generate strict 30-day timeline (filling gaps)
-    const chartData = [];
-    for (let i = 29; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        const dateKey = dateFormatter.format(d);
-        chartData.push({
-            date: dateKey,
-            amount: salesMap.get(dateKey) || 0
-        });
+        // Prisma Raw Query for Postgres
+        // We use string interpolation for the interval because parameters don't work for identifiers/units in SQL
+        // BUT we must be careful. Here 'unit' is controlled by our switch above (safe).
+        const rawStats = await db.$queryRaw<Array<{ date: Date, amount: number }>>`
+            SELECT 
+                DATE_TRUNC(${groupByUnit}, "createdAt") as date, 
+                SUM("totalAmount") as amount 
+            FROM "Order" 
+            WHERE "storeId" = ${store.id} 
+              AND "status" = 'PAID'
+              AND "createdAt" >= ${startDate}
+            GROUP BY date 
+            ORDER BY date ASC
+        `;
+
+        // Normalize Data into Map for Filling Gaps
+        const salesMap = new Map<string, number>();
+        const formatter = new Intl.DateTimeFormat('en-US', dateFormat);
+
+        for (const stat of rawStats) {
+            // rawStats date is a Date object from Prisma
+            const key = formatter.format(stat.date);
+            salesMap.set(key, Number(stat.amount));
+        }
+
+        // Fill Gaps Logic
+        // We iterate backwards from NOW to START
+        const currentPtr = new Date();
+        const endPtr = startDate;
+
+        // Safety: Prevent infinite loops if dates are weird
+        let loops = 0;
+        const maxLoops = 400; // max days in year + buffer
+
+        // We build the array in reverse order (Newest -> Oldest) then reverse it, 
+        // OR build standard and push. Let's do standard push but we need to generate keys correctly.
+        // Actually, easiest is to generate the list of keys we Expect, then map.
+
+        const expectedKeys: string[] = [];
+
+        // Clone start date for iteration
+        let iterDate = new Date(startDate);
+        // Align iterDate to the start of the unit to match DATE_TRUNC
+        if (range === '12m') iterDate.setDate(1);
+        if (range === '5y') { iterDate.setMonth(0); iterDate.setDate(1); }
+
+        while (iterDate <= now && loops < maxLoops) {
+            expectedKeys.push(formatter.format(iterDate));
+
+            // Advance Date
+            if (groupByUnit === 'day') iterDate.setDate(iterDate.getDate() + 1);
+            else if (groupByUnit === 'week') iterDate.setDate(iterDate.getDate() + 7);
+            else if (groupByUnit === 'month') iterDate.setMonth(iterDate.getMonth() + 1);
+            else if (groupByUnit === 'year') iterDate.setFullYear(iterDate.getFullYear() + 1);
+
+            loops++;
+        }
+
+        // Build Final Data
+        chartData = expectedKeys.map(label => ({
+            label,
+            amount: salesMap.get(label) || 0
+        }));
+
+    } catch (error) {
+        console.error("Aggregation Error", error);
+        // Fallback to empty to prevent crash
+        chartData = [];
     }
 
     // 3. Recent Orders
@@ -240,13 +332,13 @@ export default async function DashboardOverview() {
                         bgColor="bg-purple-50"
                     />
                     {/* Store Visits (Still Mocked) */}
-                    {/* Store Visits (Real Data) */}
+                    {/* Conversion Rate */}
                     <MetricCard
-                        title="Store Visits"
-                        value={fmtNum(storeVisits)}
-                        trend={fmtPercent(visitGrowth)}
-                        trendUp={visitGrowth >= 0}
-                        icon={<Eye className="text-orange-600" />}
+                        title="Conversion Rate"
+                        value={fmtPercent(currentConversionRate)}
+                        trend={fmtPercent(conversionGrowth)}
+                        trendUp={conversionGrowth >= 0}
+                        icon={<Percent className="text-orange-600" />}
                         bgColor="bg-orange-50"
                     />
                 </div>
@@ -257,11 +349,9 @@ export default async function DashboardOverview() {
                         <div className="flex items-center justify-between mb-8">
                             <div>
                                 <h3 className="text-lg font-bold text-slate-900">Sales Trends</h3>
-                                <p className="text-sm text-slate-500">Revenue overview for the last 30 days</p>
+                                <p className="text-sm text-slate-500">Revenue overview over time</p>
                             </div>
-                            <select className="text-sm border-slate-200 rounded-lg focus:ring-emerald-500 outline-none">
-                                <option>Daily</option>
-                            </select>
+                            <DateRangeFilter />
                         </div>
 
                         {/* Visual placeholder for the chart to ensure no "Illegal Token" errors */}

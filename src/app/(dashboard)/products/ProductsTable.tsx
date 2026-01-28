@@ -13,7 +13,8 @@ import {
     Trash2,
     ChevronLeft,
     ChevronRight,
-    Package
+    Package,
+    Loader2
 } from "lucide-react";
 
 interface Product {
@@ -28,10 +29,44 @@ interface Product {
     images: string[];
 }
 
+import { deleteProduct } from "@/actions/product-actions";
+import { useOptimistic, useTransition } from "react";
+import { EditProductModal } from "./EditProductModal";
+import { DeleteProductModal } from "./DeleteProductModal";
+
 export default function ProductsTable({ products, totalPages, currentPage }: { products: Product[], totalPages: number, currentPage: number }) {
     const router = useRouter();
+    const [isPending, startTransition] = useTransition();
+
+    // Delete Modal State
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [productToDelete, setProductToDelete] = useState<{ id: string; name: string } | null>(null);
+
+    // Optimistic UI State
+    const [optimisticProducts, addOptimisticProduct] = useOptimistic(
+        products,
+        (state, productId: string) => state.filter((product) => product.id !== productId)
+    );
+
     const searchParams = useSearchParams();
     const searchTerm = searchParams.get("q") || "";
+
+    const openDeleteModal = (product: Product) => {
+        setProductToDelete({ id: product.id, name: product.name });
+        setDeleteModalOpen(true);
+    };
+
+    const handleConfirmDelete = () => {
+        // Optimistic update logic
+        if (productToDelete) {
+            startTransition(() => {
+                addOptimisticProduct(productToDelete.id);
+                router.refresh();
+            });
+        }
+    };
+
+    // handleDelete removed in favor of openDeleteModal
 
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams);
@@ -93,8 +128,8 @@ export default function ProductsTable({ products, totalPages, currentPage }: { p
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                            {products.length > 0 ? (
-                                products.map((product) => (
+                            {optimisticProducts.length > 0 ? (
+                                optimisticProducts.map((product) => (
                                     <tr key={product.id} className="hover:bg-slate-50/50 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
@@ -125,10 +160,12 @@ export default function ProductsTable({ products, totalPages, currentPage }: { p
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <div className="flex items-center justify-end gap-2">
-                                                <button className="p-1.5 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-600 transition-colors">
-                                                    <Edit size={16} />
-                                                </button>
-                                                <button className="p-1.5 hover:bg-red-50 rounded text-red-300 hover:text-red-500 transition-colors">
+                                                <EditProductModal product={product} />
+                                                <button
+                                                    onClick={() => openDeleteModal(product)}
+                                                    className="p-1.5 hover:bg-red-50 rounded text-red-300 hover:text-red-500 transition-colors"
+                                                    title="Delete Product"
+                                                >
                                                     <Trash2 size={16} />
                                                 </button>
                                             </div>
@@ -146,6 +183,16 @@ export default function ProductsTable({ products, totalPages, currentPage }: { p
                     </table>
                 </div>
             </div>
+
+            {/* Delete Confirmation Modal */}
+            {productToDelete && (
+                <DeleteProductModal
+                    isOpen={deleteModalOpen}
+                    onClose={() => setDeleteModalOpen(false)}
+                    onConfirm={handleConfirmDelete}
+                    product={productToDelete}
+                />
+            )}
             {/* Pagination Footer */}
             <div className="flex items-center justify-between mt-4">
                 <button
