@@ -44,6 +44,7 @@ export function Header() {
                     </Link>
                 </nav>
                 <div className="flex items-center gap-3">
+                   
                     <Link
                         href="/sign-in"
                         className="hidden sm:flex text-sm font-bold px-4 py-2 rounded-lg bg-[#f0f2f4] hover:bg-[#e2e4e7] transition-colors cursor-pointer"

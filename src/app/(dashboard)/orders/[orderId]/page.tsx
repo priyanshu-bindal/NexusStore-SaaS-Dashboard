@@ -167,7 +167,7 @@ export default async function OrderDetailsPage(props: {
                                 <div key={idx} className={cn("relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group", step.active && "is-active")}>
                                     <div className={cn(
                                         "flex items-center justify-center w-10 h-10 rounded-full border border-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10",
-                                        step.active ? "bg-[#10b981] text-white" : "bg-slate-200 text-slate-500"
+                                        step.active ? "bg-[#135bec] text-white" : "bg-slate-200 text-slate-500"
                                     )}>
                                         <step.icon size={16} />
                                     </div>
@@ -177,7 +177,7 @@ export default async function OrderDetailsPage(props: {
                                     )}>
                                         <div className="flex items-center justify-between space-x-2 mb-1">
                                             <div className="font-bold text-slate-900">{step.title}</div>
-                                            {step.date && <time className={cn("text-xs font-medium", step.active ? "text-[#10b981]" : "text-slate-400")}>{step.date}</time>}
+                                            {step.date && <time className={cn("text-xs font-medium", step.active ? "text-[#135bec]" : "text-slate-400")}>{step.date}</time>}
                                         </div>
                                         <div className="text-slate-500 text-sm">{step.description}</div>
                                     </div>
@@ -193,7 +193,7 @@ export default async function OrderDetailsPage(props: {
                     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="font-bold text-slate-900">Customer Information</h3>
-                            <button className="text-[#10b981] hover:text-emerald-600 transition-colors">
+                            <button className="text-[#135bec] hover:text-blue-600 transition-colors">
                                 <Edit size={18} />
                             </button>
                         </div>
@@ -224,7 +224,7 @@ export default async function OrderDetailsPage(props: {
                     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="font-bold text-slate-900">Shipping Address</h3>
-                            <button className="text-[#10b981] hover:text-emerald-600 transition-colors">
+                            <button className="text-[#135bec] hover:text-blue-600 transition-colors">
                                 <Truck size={18} />
                             </button>
                         </div>
@@ -250,7 +250,7 @@ export default async function OrderDetailsPage(props: {
                             </div>
                             <div className="flex justify-between text-sm text-slate-600">
                                 <span>Shipping</span>
-                                <span className="text-[#10b981] font-medium">Free</span>
+                                <span className="text-[#135bec] font-medium">Free</span>
                             </div>
                             <div className="pt-3 border-t border-slate-100 flex justify-between items-center">
                                 <span className="font-bold text-slate-900">Total</span>

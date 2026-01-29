@@ -58,7 +58,7 @@ export default function CustomersTable({ users, totalPages, currentPage, totalCu
                 <div className="relative flex-1 max-w-md">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                     <input
-                        className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl text-sm focus:ring-[#10b981] focus:border-[#10b981] transition-all outline-none"
+                        className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl text-sm focus:ring-[#135bec] focus:border-[#135bec] transition-all outline-none"
                         placeholder="Search by name, email or ID..."
                         type="text"
                         defaultValue={searchTerm}
@@ -103,7 +103,7 @@ export default function CustomersTable({ users, totalPages, currentPage, totalCu
                                                     </div>
                                                 )}
                                             </div>
-                                            <span className="font-bold text-slate-900 group-hover:text-[#10b981] transition-colors">
+                                            <span className="font-bold text-slate-900 group-hover:text-[#135bec] transition-colors">
                                                 {user.name || "Guest"}
                                             </span>
                                         </div>
@@ -114,7 +114,7 @@ export default function CustomersTable({ users, totalPages, currentPage, totalCu
                                     <td className="px-6 py-4">
                                         <span className={cn(
                                             "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold",
-                                            user.lastSeen === "Just now" ? "bg-emerald-50 text-emerald-700" : "text-slate-500"
+                                            user.lastSeen === "Just now" ? "bg-blue-50 text-blue-700" : "text-slate-500"
                                         )}>
                                             {user.lastSeen}
                                         </span>
@@ -160,7 +160,7 @@ export default function CustomersTable({ users, totalPages, currentPage, totalCu
                                     className={cn(
                                         "size-8 rounded text-xs font-bold transition-colors",
                                         currentPage === p
-                                            ? "bg-[#10b981] text-white"
+                                            ? "bg-[#135bec] text-white"
                                             : "border border-slate-200 text-slate-600 hover:bg-slate-50"
                                     )}
                                 >

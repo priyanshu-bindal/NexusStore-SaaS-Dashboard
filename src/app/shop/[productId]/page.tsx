@@ -95,7 +95,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                         <p className="text-4xl font-black text-slate-900">${serializedProduct.price.toFixed(2)}</p>
                                     </div>
                                     {serializedProduct.stock > 0 ? (
-                                        <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full text-sm font-bold">
+                                        <div className="flex items-center gap-2 text-blue-600 bg-blue-50 px-3 py-1 rounded-full text-sm font-bold">
                                             <Check className="size-4" />
                                             In Stock ({serializedProduct.stock})
                                         </div>

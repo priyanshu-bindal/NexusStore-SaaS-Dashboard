@@ -16,7 +16,7 @@ export function formatCurrency(amount: number | string | null | undefined) {
 export function getStatusStyles(status: string) {
     switch (status.toUpperCase()) {
         case 'PAID':
-            return 'bg-emerald-50 text-emerald-500 border border-emerald-100';
+            return 'bg-blue-50 text-blue-600 border border-blue-100';
         case 'PROCESSING':
             return 'bg-orange-50 text-orange-500 border border-orange-100';
         case 'SHIPPED':

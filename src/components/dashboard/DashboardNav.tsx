@@ -35,19 +35,25 @@ export function DashboardNav() {
                         key={link.href}
                         href={link.href}
                         className={cn(
-                            "relative flex items-center gap-2 px-3 h-full text-sm font-semibold transition-colors z-10",
-                            isActive ? "text-[#10b981]" : "text-slate-500 hover:text-slate-900"
+                            "relative flex items-center gap-2 px-4 py-2 text-sm font-semibold transition-colors duration-200 rounded-lg",
+                            isActive ? "text-white" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                         )}
                     >
-                        <link.icon size={18} />
-                        {link.label}
                         {isActive && (
                             <motion.div
-                                layoutId="navbar-indicator"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#10b981]"
-                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                layoutId="activeNavbarPill"
+                                className="absolute inset-0 bg-blue-600 rounded-lg shadow-md shadow-blue-200"
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 300,
+                                    damping: 30
+                                }}
                             />
                         )}
+                        <span className="relative z-10 flex items-center gap-2">
+                            <link.icon size={20} />
+                            {link.label}
+                        </span>
                     </Link>
                 );
             })}

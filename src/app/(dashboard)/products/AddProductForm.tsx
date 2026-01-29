@@ -63,7 +63,7 @@ export function AddProductForm({ onSuccess, onCancel }: { onSuccess: () => void;
                     <input
                         {...form.register("name")}
                         id="product-name"
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent outline-none transition-all text-sm text-slate-900 placeholder:text-slate-400"
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all text-sm text-slate-900 placeholder:text-slate-400"
                         placeholder="e.g. Premium Wireless Headphones"
                     />
                     {form.formState.errors.name && (
@@ -82,7 +82,7 @@ export function AddProductForm({ onSuccess, onCancel }: { onSuccess: () => void;
                                 id="price"
                                 type="number"
                                 step="0.01"
-                                className="w-full pl-6 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent outline-none transition-all text-sm text-slate-900"
+                                className="w-full pl-6 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all text-sm text-slate-900"
                                 placeholder="0.00"
                             />
                         </div>
@@ -96,7 +96,7 @@ export function AddProductForm({ onSuccess, onCancel }: { onSuccess: () => void;
                             {...form.register("stock")}
                             id="stock"
                             type="number"
-                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent outline-none transition-all text-sm text-slate-900"
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all text-sm text-slate-900"
                             placeholder="0"
                         />
                         {form.formState.errors.stock && (
@@ -115,7 +115,7 @@ export function AddProductForm({ onSuccess, onCancel }: { onSuccess: () => void;
                         <input
                             {...form.register("imageUrl")}
                             id="product-image-url"
-                            className="w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent outline-none transition-all text-sm text-slate-900 placeholder:text-slate-400"
+                            className="w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all text-sm text-slate-900 placeholder:text-slate-400"
                             placeholder="https://example.com/image.jpg"
                         />
                     </div>
@@ -158,7 +158,7 @@ export function AddProductForm({ onSuccess, onCancel }: { onSuccess: () => void;
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="bg-[#10b981] hover:bg-emerald-600 text-white px-5 py-2 rounded-lg font-semibold shadow-lg shadow-emerald-500/20 flex items-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none text-sm"
+                    className="bg-[#135bec] hover:bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold shadow-lg shadow-blue-500/20 flex items-center gap-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none text-sm"
                 >
                     {isLoading ? <Loader2 className="animate-spin" size={16} /> : <Plus size={16} />}
                     Create Product

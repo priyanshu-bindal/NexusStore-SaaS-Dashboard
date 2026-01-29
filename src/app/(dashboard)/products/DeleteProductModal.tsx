@@ -14,22 +14,24 @@ interface DeleteProductModalProps {
 
 export function DeleteProductModal({ isOpen, onClose, onConfirm, product }: DeleteProductModalProps) {
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
 
     if (!isOpen) return null;
 
     const handleDelete = async () => {
         setIsLoading(true);
+        setError(""); // Clear previous errors
         try {
             const result = await deleteProduct(product.id);
             if (result.success) {
                 onConfirm(); // Trigger parent cleanup / toast
                 onClose();
             } else {
-                alert("Failed to delete product: " + result.message);
+                setError(result.message || "Failed to delete product");
             }
         } catch (error) {
             console.error(error);
-            alert("An error occurred while deleting.");
+            setError("An error occurred while deleting.");
         } finally {
             setIsLoading(false);
         }

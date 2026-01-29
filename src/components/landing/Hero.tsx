@@ -54,13 +54,13 @@ export function Hero() {
                                 <code>
                                     <span className="text-primary">import</span>{" "}
                                     {"{ NexusProvider }"} <span className="text-primary">from</span>{" "}
-                                    <span className="text-green-400">'@nexus/react'</span>;
+                                    <span className="text-blue-400">'@nexus/react'</span>;
                                     {"\n\n"}
                                     <span className="text-primary">const</span> App = () =&gt; (
                                     {"\n"}  &lt;
                                     <span className="text-blue-300">NexusProvider</span>{" "}
                                     <span className="text-yellow-200">apiKey</span>=
-                                    <span className="text-green-400">"nx_live_..."</span>&gt;
+                                    <span className="text-blue-400">"nx_live_..."</span>&gt;
                                     {"\n"}    &lt;<span className="text-blue-300">Storefront</span>
                                     &gt;
                                     {"\n"}      &lt;

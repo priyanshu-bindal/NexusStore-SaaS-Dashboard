@@ -233,7 +233,7 @@ export default function OrderSuccess() {
                                 </Link>
                             </div>
                         </div>
-                        <div className="bg-gradient-to-br from-[#2563eb]/10 to-emerald-50 border border-[#2563eb]/20 rounded-2xl p-6">
+                        <div className="bg-gradient-to-br from-[#2563eb]/10 to-blue-50 border border-[#2563eb]/20 rounded-2xl p-6">
                             <div className="flex items-start gap-3">
                                 <Mail className="text-[#2563eb] size-6" />
                                 <div>

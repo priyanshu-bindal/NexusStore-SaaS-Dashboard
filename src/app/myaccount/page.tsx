@@ -256,7 +256,7 @@ export default function Shop() {
                                     </div>
                                     <div className="space-y-3">
                                         <div className="flex justify-between items-end">
-                                            <span className="text-xs font-bold uppercase tracking-wider text-green-500">
+                                            <span className="text-xs font-bold uppercase tracking-wider text-blue-500">
                                                 Processing
                                             </span>
                                             <span className="text-[10px] text-slate-500">
@@ -264,7 +264,7 @@ export default function Shop() {
                                             </span>
                                         </div>
                                         <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
-                                            <div className="h-full bg-green-500 w-1/3 rounded-full"></div>
+                                            <div className="h-full bg-blue-500 w-1/3 rounded-full"></div>
                                         </div>
                                         <div className="flex justify-between text-[10px] text-slate-500 font-medium">
                                             <span>Ordered</span>

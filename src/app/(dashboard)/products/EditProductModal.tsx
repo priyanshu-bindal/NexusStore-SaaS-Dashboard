@@ -102,7 +102,7 @@ export function EditProductModal({ product }: EditProductModalProps) {
                         <label className="text-xs font-bold text-slate-500 uppercase">Product Name</label>
                         <input
                             {...register("name")}
-                            className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                            className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#135bec] focus:border-[#135bec] outline-none transition-all"
                             placeholder="e.g. Premium T-Shirt"
                         />
                         {errors.name && <p className="text-xs text-red-500 font-medium">{errors.name.message}</p>}
@@ -115,7 +115,7 @@ export function EditProductModal({ product }: EditProductModalProps) {
                                 {...register("price")}
                                 type="number"
                                 step="0.01"
-                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#135bec] outline-none transition-all"
                             />
                             {errors.price && <p className="text-xs text-red-500 font-medium">{errors.price.message}</p>}
                         </div>
@@ -124,7 +124,7 @@ export function EditProductModal({ product }: EditProductModalProps) {
                             <input
                                 {...register("stock")}
                                 type="number"
-                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#135bec] outline-none transition-all"
                             />
                             {errors.stock && <p className="text-xs text-red-500 font-medium">{errors.stock.message}</p>}
                         </div>
@@ -135,7 +135,7 @@ export function EditProductModal({ product }: EditProductModalProps) {
                         <textarea
                             {...register("description")}
                             rows={3}
-                            className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all resize-none"
+                            className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-[#135bec] outline-none transition-all resize-none"
                             placeholder="Product description..."
                         />
                     </div>
@@ -151,7 +151,7 @@ export function EditProductModal({ product }: EditProductModalProps) {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="px-4 py-2 bg-[#10b981] hover:bg-emerald-600 text-white text-sm font-bold rounded-lg shadow-sm flex items-center gap-2 disabled:opacity-70 transition-all"
+                            className="px-4 py-2 bg-[#135bec] hover:bg-blue-600 text-white text-sm font-bold rounded-lg shadow-sm flex items-center gap-2 disabled:opacity-70 transition-all"
                         >
                             {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
                             Save Changes

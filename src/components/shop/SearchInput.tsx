@@ -7,7 +7,7 @@ import { useDebouncedCallback } from "use-debounce";
 export function SearchInput() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
-    const { replace } = useRouter();
+    const router = useRouter();
 
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams);
@@ -16,7 +16,13 @@ export function SearchInput() {
         } else {
             params.delete("q");
         }
-        replace(`${pathname}?${params.toString()}`, { scroll: false });
+        params.set("page", "1");
+
+        if (pathname === "/shop") {
+            router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+        } else {
+            router.push(`/shop?${params.toString()}`);
+        }
     }, 300);
 
     return (
@@ -31,7 +37,11 @@ export function SearchInput() {
                 />
                 {searchParams.get("q") && (
                     <button
-                        onClick={() => handleSearch("")}
+                        onClick={() => {
+                            const input = document.querySelector('input[placeholder="Search products, brands and more..."]') as HTMLInputElement;
+                            if (input) input.value = "";
+                            handleSearch("");
+                        }}
                         className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-slate-200 rounded-full text-slate-400 transition-colors"
                     >
                         <X className="h-3 w-3" />

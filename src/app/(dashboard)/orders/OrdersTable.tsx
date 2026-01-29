@@ -132,7 +132,7 @@ export default function OrdersTable({ orders, totalPages, currentPage }: { order
                     <div className="relative flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                         <input
-                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-[#10b981] focus:border-[#10b981] outline-none transition-all"
+                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-[#135bec] focus:border-[#135bec] outline-none transition-all"
                             placeholder="Search by Order ID, Customer..."
                             type="text"
                             defaultValue={searchTerm}
@@ -141,7 +141,7 @@ export default function OrdersTable({ orders, totalPages, currentPage }: { order
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
                         <select
-                            className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#10b981] focus:border-[#10b981] outline-none min-w-[140px] px-3 py-2.5"
+                            className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#135bec] focus:border-[#135bec] outline-none min-w-[140px] px-3 py-2.5"
                             defaultValue={statusFilter}
                             onChange={(e) => handleStatusChange(e.target.value)}
                         >
@@ -150,7 +150,7 @@ export default function OrdersTable({ orders, totalPages, currentPage }: { order
                             <option value="PENDING">Pending</option>
                             <option value="REFUNDED">Refunded</option>
                         </select>
-                        <select className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#10b981] focus:border-[#10b981] outline-none min-w-[160px] px-3 py-2.5">
+                        <select className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#135bec] focus:border-[#135bec] outline-none min-w-[160px] px-3 py-2.5">
                             <option>Fulfillment: All</option>
                             <option>Unfulfilled</option>
                             <option>Partially Fulfilled</option>
@@ -158,7 +158,7 @@ export default function OrdersTable({ orders, totalPages, currentPage }: { order
                         </select>
                         <div className="relative">
                             <input
-                                className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#10b981] focus:border-[#10b981] px-3 py-2.5 outline-none"
+                                className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#135bec] focus:border-[#135bec] px-3 py-2.5 outline-none"
                                 type="date"
                                 defaultValue={new Date().toISOString().split('T')[0]}
                             />
@@ -179,7 +179,7 @@ export default function OrdersTable({ orders, totalPages, currentPage }: { order
                             <tr className="bg-slate-50 border-b border-slate-200">
                                 <th className="px-6 py-4 w-12">
                                     <input
-                                        className="rounded border-slate-300 text-[#10b981] focus:ring-[#10b981] size-4"
+                                        className="rounded border-slate-300 text-[#135bec] focus:ring-[#135bec] size-4"
                                         type="checkbox"
                                         checked={allSelected}
                                         onChange={toggleSelectAll}
@@ -237,7 +237,7 @@ export default function OrdersTable({ orders, totalPages, currentPage }: { order
                                         className={cn(
                                             "size-8 flex items-center justify-center rounded-lg text-sm font-medium transition-all",
                                             currentPage === p
-                                                ? "bg-[#10b981] text-white font-bold"
+                                                ? "bg-[#135bec] text-white font-bold"
                                                 : "hover:bg-slate-50 text-slate-600"
                                         )}
                                     >
@@ -295,14 +295,14 @@ function OrderRow({ order, selected, onSelect, fulfillmentStatus }: { order: Ord
         <tr className={`transition-colors ${selected ? 'bg-slate-50' : 'hover:bg-slate-50/50'}`}>
             <td className="px-6 py-4">
                 <input
-                    className="rounded border-slate-300 text-[#10b981] focus:ring-[#10b981] size-4"
+                    className="rounded border-slate-300 text-[#135bec] focus:ring-[#135bec] size-4"
                     type="checkbox"
                     checked={selected}
                     onChange={onSelect}
                 />
             </td>
             <td className="px-6 py-4 font-mono font-bold text-sm text-slate-900">
-                <Link href={`/orders/${order.id}`} className="hover:text-[#10b981] hover:underline transition-colors">
+                <Link href={`/orders/${order.id}`} className="hover:text-[#135bec] hover:underline transition-colors">
                     #NX-{order.id.slice(-4).toUpperCase()}
                 </Link>
             </td>

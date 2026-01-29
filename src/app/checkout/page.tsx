@@ -22,11 +22,11 @@ export default function Checkout() {
         try {
             const result = await createOrder(items.map(item => ({ productId: item.id, quantity: item.quantity })));
 
-            if (result.success) {
+            if ("success" in result && result.success) {
                 clearCart();
                 router.push("/shop?success=true");
             } else {
-                alert(result.error || "Failed to place order");
+                alert((result as { error: string }).error || "Failed to place order");
             }
         } catch (error) {
             console.error("Checkout error:", error);
@@ -387,7 +387,7 @@ export default function Checkout() {
                             <button
                                 onClick={handlePlaceOrder}
                                 disabled={isProcessing || items.length === 0}
-                                className="w-full bg-[#2563eb] hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-[#2563eb]/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-[#2563eb] hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-[#2563eb]/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isProcessing ? (
                                     <>

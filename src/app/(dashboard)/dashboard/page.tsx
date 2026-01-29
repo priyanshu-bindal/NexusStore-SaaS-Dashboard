@@ -293,7 +293,7 @@ export default async function DashboardOverview(props: { searchParams: Promise<{
                             <CalendarIcon size={18} />
                             <span className="font-medium">Last 30 Days</span>
                         </div>
-                        <button className="bg-[#10b981] hover:bg-emerald-600 text-white text-sm font-bold py-2.5 px-6 rounded-full flex items-center gap-2 shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] hover:shadow-[0_6px_20px_rgba(16,185,129,0.23)] transition-all whitespace-nowrap">
+                        <button className="bg-[#135bec] hover:bg-blue-600 text-white text-sm font-bold py-2.5 px-6 rounded-full flex items-center gap-2 shadow-[0_4px_14px_0_rgba(19,91,236,0.39)] hover:shadow-[0_6px_20px_rgba(19,91,236,0.23)] transition-all whitespace-nowrap">
                             <Download size={18} />
                             Download Report
                         </button>
@@ -310,8 +310,8 @@ export default async function DashboardOverview(props: { searchParams: Promise<{
                         value={fmt(totalRevenue)}
                         trend={fmtPercent(revenueGrowth)}
                         trendUp={revenueGrowth >= 0}
-                        icon={<CreditCard className="text-emerald-600" />}
-                        bgColor="bg-emerald-50"
+                        icon={<CreditCard className="text-blue-600" />}
+                        bgColor="bg-blue-50"
                     />
                     {/* Total Orders */}
                     <MetricCard
@@ -364,7 +364,7 @@ export default async function DashboardOverview(props: { searchParams: Promise<{
                     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)]">
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                             <h3 className="font-bold text-slate-900">Recent Orders</h3>
-                            <button className="text-xs font-bold text-[#10b981] hover:underline">View All</button>
+                            <button className="text-xs font-bold text-[#135bec] hover:underline">View All</button>
                         </div>
                         <div className="divide-y divide-slate-100">
                             {recentOrders.map(order => (
@@ -375,7 +375,7 @@ export default async function DashboardOverview(props: { searchParams: Promise<{
                                     time={new Date(order.createdAt).toLocaleDateString()}
                                     price={fmt(Number(order.totalAmount))}
                                     status={order.status}
-                                    statusColor={order.status === 'PAID' ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-700"}
+                                    statusColor={order.status === 'PAID' ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-700"}
                                 />
                             ))}
                             {recentOrders.length === 0 && (
@@ -435,7 +435,7 @@ function MetricCard({ title, value, trend, trendUp, icon, bgColor }: any) {
                 <div className={`size-12 ${bgColor} rounded-xl flex items-center justify-center`}>
                     {icon}
                 </div>
-                <span className={`flex items-center gap-1 text-xs font-bold ${trendUp ? 'text-emerald-600' : 'text-red-500'}`}>
+                <span className={`flex items-center gap-1 text-xs font-bold ${trendUp ? 'text-blue-600' : 'text-red-500'}`}>
                     {trendUp ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
                     {trend}
                 </span>

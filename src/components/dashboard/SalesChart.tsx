@@ -53,7 +53,7 @@ export default function SalesChartComponent({ data }: { data: { label: string, a
                                         delay: i * 0.03 // Stagger effect
                                     }}
                                     className={`
-                                        bg-emerald-500/80 hover:bg-emerald-500 transition-colors 
+                                        bg-blue-500/80 hover:bg-blue-500 transition-colors 
                                         rounded-t-md cursor-pointer relative w-full
                                         ${!isDense ? "max-w-[48px]" : ""} 
                                     `}
@@ -65,7 +65,7 @@ export default function SalesChartComponent({ data }: { data: { label: string, a
                                             <div className="flex items-center gap-3">
                                                 <span className="font-bold text-lg">${item.amount.toLocaleString()}</span>
                                                 {i > 0 && (
-                                                    <div className={`flex items-center text-xs font-bold px-1.5 py-0.5 rounded ${growth >= 0 ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400"}`}>
+                                                    <div className={`flex items-center text-xs font-bold px-1.5 py-0.5 rounded ${growth >= 0 ? "bg-blue-500/20 text-blue-400" : "bg-rose-500/20 text-rose-400"}`}>
                                                         {growth >= 0 ? "↑" : "↓"} {Math.abs(growth).toFixed(0)}%
                                                     </div>
                                                 )}

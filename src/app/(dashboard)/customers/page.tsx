@@ -129,7 +129,7 @@ export default async function CustomersPage(props: {
                         <span className="text-lg leading-none">↓</span>
                         Export CSV
                     </button>
-                    <button className="flex items-center gap-2 bg-[#10b981] hover:bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-emerald-500/20 transition-all">
+                    <button className="flex items-center gap-2 bg-[#135bec] hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/20 transition-all">
                         <span className="text-lg leading-none">+</span>
                         Add Customer
                     </button>
@@ -142,13 +142,13 @@ export default async function CustomersPage(props: {
                 <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)]">
                     <div className="flex items-center justify-between mb-2">
                         <span className="text-slate-500 text-sm font-medium">Total Customers</span>
-                        <div className="size-10 bg-emerald-50 rounded-xl flex items-center justify-center text-[#10b981]">
+                        <div className="size-10 bg-blue-50 rounded-xl flex items-center justify-center text-[#135bec]">
                             👥
                         </div>
                     </div>
                     <div className="flex items-baseline gap-2">
                         <h3 className="text-3xl font-black text-slate-900">{allUsersCount.toLocaleString()}</h3>
-                        <span className="text-xs font-bold text-[#10b981] flex items-center gap-1">
+                        <span className="text-xs font-bold text-[#135bec] flex items-center gap-1">
                             ↑ 12%
                         </span>
                     </div>
@@ -174,7 +174,7 @@ export default async function CustomersPage(props: {
                         <p className="text-slate-300 text-xs font-bold uppercase tracking-widest mb-1">Retention Rate</p>
                         <h3 className="text-3xl font-black mb-2">78.4%</h3>
                         <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                            <div className="bg-[#10b981] h-full w-[78%]"></div>
+                            <div className="bg-[#135bec] h-full w-[78%]"></div>
                         </div>
                     </div>
                     {/* Decorative Icon */}
