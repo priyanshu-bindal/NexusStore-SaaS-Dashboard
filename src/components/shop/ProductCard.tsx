@@ -32,7 +32,7 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
         : false;
 
     // Use placeholder if no images
-    const mainImage = product.images[0] || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop";
+    const mainImage = product.images?.[0] || "/placeholder.jpg"; // Updated: Use first image from array
 
     return (
         <div className="group flex flex-col cursor-pointer">

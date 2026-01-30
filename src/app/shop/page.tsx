@@ -23,7 +23,7 @@ export default async function ShopPage({
 
     // Pagination Logic
     const currentPage = Number(page) || 1;
-    const pageSize = 12;
+    const pageSize = 10;
     const skip = (currentPage - 1) * pageSize;
 
     // Filters Construction

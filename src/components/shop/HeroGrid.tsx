@@ -90,7 +90,7 @@ export default function HeroGrid() {
     };
 
     return (
-        <section className="w-full max-w-[1440px] mx-auto px-4 md:px-6 pt-6 pb-8">
+        <section className="w-full max-w-[1440px] mx-auto px-4 md:px-6 pt-0 pb-8">
             <div className="grid grid-cols-1 lg:grid-cols-10 gap-4 h-[600px] md:h-[500px]">
 
                 {/* 60% Image Carousel */}
@@ -113,7 +113,7 @@ export default function HeroGrid() {
                             />
                             <div className="absolute inset-0 bg-black/30" />
 
-                            <div className="absolute inset-0 flex flex-col justify-center px-12 text-white">
+                            <div className="absolute inset-0 flex flex-col justify-center px-6 md:px-12 text-white">
                                 <motion.div
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}

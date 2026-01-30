@@ -1,21 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, ShoppingBag, Menu, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, ShoppingBag, Menu, User, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+// import { useInView } from "react-intersection-observer"; // Removed to check if native observer is enough or if package is missing
+import { getProductsAction } from "@/actions/shop";
+import { motion } from "framer-motion";
 
 // Components
 import HeroGrid from "./HeroGrid";
-
 import FilterDrawer from "./FilterDrawer";
 import DiscountBanner from "./DiscountBanner";
 import TrendBanner from "./TrendBanner";
 import MiniBannerGrid from "./MiniBannerGrid";
+import CategoryBanner from "./CategoryBanner";
+import SplitFeatureBanner from "./SplitFeatureBanner";
+import FeaturedProductsSection from "./FeaturedProductsSection";
+import StyleGridBanner from "./StyleGridBanner";
 import NewsletterSection from "./NewsletterSection";
+import ComingSoonBanner from "./ComingSoonBanner";
 import { ProductCard } from "./ProductCard";
-import { SearchInput } from "./SearchInput"; // Keeping purely for header usage if needed, but ShopNav has its own.
+import { SearchInput } from "./SearchInput";
 
 type Product = {
     id: string;
@@ -31,7 +38,7 @@ type Product = {
     createdAt?: Date | string;
 };
 
-export default function ShopClient({ products, totalPages = 1, currentPage = 1 }: { products: Product[], totalPages?: number, currentPage?: number }) {
+export default function ShopClient({ products: initialProducts, totalPages = 1, currentPage = 1 }: { products: Product[], totalPages?: number, currentPage?: number }) {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const { count, setIsOpen } = useCart();
     const searchParams = useSearchParams();
@@ -42,13 +49,67 @@ export default function ShopClient({ products, totalPages = 1, currentPage = 1 }
     const category = searchParams.get("category");
     const isFiltered = query || category;
 
-    const handlePageChange = (page: number) => {
-        const params = new URLSearchParams(searchParams);
-        params.set("page", page.toString());
-        const grid = document.getElementById('product-grid');
-        grid?.scrollIntoView({ behavior: 'smooth' });
-        router.push(`?${params.toString()}`, { scroll: false });
+    // Infinite Scroll State
+    const [products, setProducts] = useState<Product[]>(initialProducts);
+    const [page, setPage] = useState(1); // Start at 1 (initial load)
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
+
+    // Reset state when filters change
+    useEffect(() => {
+        setProducts(initialProducts);
+        setPage(1);
+        setHasMore(initialProducts.length === 10); // If initial load is full page, assume more
+        setLoading(false);
+    }, [searchParams, initialProducts]);
+
+    // Load More Function
+    const loadMoreProducts = async () => {
+        if (loading || !hasMore) return;
+        setLoading(true);
+
+        const nextPage = page + 1;
+
+        // Construct params from URL
+        const params = {
+            page: nextPage,
+            q: query || undefined,
+            category: category || undefined,
+            // Add other filters here from searchParams...
+            minPrice: searchParams.get("minPrice") || undefined,
+            maxPrice: searchParams.get("maxPrice") || undefined,
+            brand: searchParams.get("brand") || undefined,
+            color: searchParams.get("color") || undefined,
+            sort: searchParams.get("sort") || undefined,
+        };
+
+        const { products: newProducts } = await getProductsAction(params);
+
+        if (newProducts.length === 0) {
+            setHasMore(false);
+        } else {
+            setProducts((prev) => [...prev, ...newProducts]);
+            setPage(nextPage);
+            if (newProducts.length < 10) setHasMore(false); // Less than pageSize means end
+        }
+        setLoading(false);
     };
+
+    // Intersection Observer
+    useEffect(() => {
+        if (!isFiltered) return; // Only for filtered view? No, maybe all views if products > limit?
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && hasMore && !loading) {
+                loadMoreProducts();
+            }
+        }, { threshold: 0.5, rootMargin: "100px" });
+
+        const sentinel = document.getElementById("scroll-sentinel");
+        if (sentinel) observer.observe(sentinel);
+
+        return () => observer.disconnect();
+    }, [page, hasMore, loading, isFiltered, query, category, searchParams]); // Dependencies
 
     return (
         <div className="bg-white text-slate-900 font-sans antialiased min-h-screen">
@@ -105,24 +166,18 @@ export default function ShopClient({ products, totalPages = 1, currentPage = 1 }
 
             {/* Main Content */}
             <main className="pt-16">
-                {/* 1. Hero Grid (Carousel + Side Banners) */}
-                {/* 3. Sticky Navigation (Visible only when NOT searching) */}
-
-
                 {/* CONDITIONAL CONTENT */}
-
-                {/* CASE: Default/Landing View (No Filter/Search) */}
                 {!isFiltered && (
                     <div className="animate-in fade-in duration-700">
-                        {/* 1. Hero Grid (Carousel + Side Banners) - Moved here */}
                         <HeroGrid />
-
-                        {/* Mini Banners */}
                         <div className="mt-8">
                             <MiniBannerGrid />
+                            <CategoryBanner />
+                            <SplitFeatureBanner />
+                            <FeaturedProductsSection />
+                            <StyleGridBanner />
+                            <ComingSoonBanner />
                         </div>
-
-                        {/* Mid-Page Promo Banners */}
                         <div className="px-4 md:px-8 mt-12 mb-12 space-y-8">
                             <DiscountBanner />
                             <TrendBanner />
@@ -130,14 +185,14 @@ export default function ShopClient({ products, totalPages = 1, currentPage = 1 }
                     </div>
                 )}
 
-                {/* CASE: Filtered View (Show Products) */}
+                {/* CASE: Filtered/Search View */}
                 {isFiltered && (
                     <div id="product-grid" className="max-w-[1440px] mx-auto px-4 md:px-8 py-12 animate-in slide-in-from-bottom-4 duration-500">
                         <h2 className="text-2xl font-bold mb-6">
                             {query ? `Search Results: "${query}"` : "Products"}
                         </h2>
 
-                        {products.length === 0 ? (
+                        {products.length === 0 && !loading ? (
                             <div className="text-center py-20 bg-slate-50 rounded-2xl">
                                 <h3 className="text-lg font-bold">No products found</h3>
                                 <p className="text-slate-500 mb-6">Try adjusting your filters.</p>
@@ -150,42 +205,40 @@ export default function ShopClient({ products, totalPages = 1, currentPage = 1 }
                             </div>
                         ) : (
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8">
-                                {products.map((product) => (
-                                    <ProductCard key={product.id} product={product} />
+                                {products.map((product, index) => (
+                                    <motion.div
+                                        key={product.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.4, delay: (index % 10) * 0.1 }}
+                                    >
+                                        <ProductCard product={product} />
+                                    </motion.div>
                                 ))}
                             </div>
                         )}
 
-                        {/* Pagination */}
-                        {totalPages > 1 && (
-                            <div className="mt-12 flex justify-center gap-2">
-                                <button
-                                    disabled={currentPage <= 1}
-                                    onClick={() => handlePageChange(currentPage - 1)}
-                                    className="p-3 border rounded-full hover:bg-slate-50 disabled:opacity-50"
-                                >
-                                    <ChevronLeft size={20} />
-                                </button>
-                                <span className="flex items-center px-6 font-bold text-sm">
-                                    Page {currentPage} of {totalPages}
-                                </span>
-                                <button
-                                    disabled={currentPage >= totalPages}
-                                    onClick={() => handlePageChange(currentPage + 1)}
-                                    className="p-3 border rounded-full hover:bg-slate-50 disabled:opacity-50"
-                                >
-                                    <ChevronRight size={20} />
-                                </button>
+                        {/* Loading / Sentinel */}
+                        {hasMore && (
+                            <div id="scroll-sentinel" className="py-12 flex justify-center w-full">
+                                {loading ? (
+                                    <Loader2 className="animate-spin text-slate-400" size={32} />
+                                ) : (
+                                    <div className="h-4 w-full" /> /* Invisible trigger */
+                                )}
+                            </div>
+                        )}
+
+                        {!hasMore && products.length > 0 && (
+                            <div className="py-12 text-center text-slate-400 text-sm">
+                                You've reached the end
                             </div>
                         )}
                     </div>
                 )}
             </main>
 
-            {/* Newsletter (Always Visible) */}
             <NewsletterSection />
-
-            {/* Filter Drawer */}
             <FilterDrawer isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
 
             {/* Footer */}

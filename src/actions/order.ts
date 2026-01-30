@@ -16,6 +16,17 @@ export async function createOrder(items: { productId: string; quantity: number }
                 where: { id: { in: productIds } }
             });
 
+            // Check for missing products
+            const foundIds = products.map(p => p.id);
+            const missingIds = productIds.filter(id => !foundIds.includes(id));
+
+            if (missingIds.length > 0) {
+                return {
+                    error: "Some items in your cart are no longer available. We have updated your cart.",
+                    missingIds
+                };
+            }
+
             // 2. Validate Stock & Calculate Total
             let totalAmount = 0;
             const orderItemsData = [];

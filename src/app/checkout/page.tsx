@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Checkout() {
-    const { items, total, clearCart } = useCart();
+    const { items, total, clearCart, removeFromCart } = useCart();
     const [paymentMethod, setPaymentMethod] = useState("credit_card");
     const [isProcessing, setIsProcessing] = useState(false);
     const router = useRouter();
@@ -26,7 +26,14 @@ export default function Checkout() {
                 clearCart();
                 router.push("/shop?success=true");
             } else {
-                alert((result as { error: string }).error || "Failed to place order");
+                const errorData = result as { error: string; missingIds?: string[] };
+
+                if (errorData.missingIds && errorData.missingIds.length > 0) {
+                    errorData.missingIds.forEach((id) => removeFromCart(id));
+                    alert(errorData.error);
+                } else {
+                    alert(errorData.error || "Failed to place order");
+                }
             }
         } catch (error) {
             console.error("Checkout error:", error);
