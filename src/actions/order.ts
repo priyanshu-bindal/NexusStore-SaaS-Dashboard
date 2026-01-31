@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 
-export async function createOrder(items: { productId: string; quantity: number }[]) {
+export async function createOrder(items: { productId: string; quantity: number; size?: string }[]) {
     try {
         const session = await auth();
 
@@ -53,7 +53,8 @@ export async function createOrder(items: { productId: string; quantity: number }
                 orderItemsData.push({
                     productId: product.id,
                     quantity: item.quantity,
-                    price: product.price
+                    price: product.price,
+                    size: item.size // Add size here
                 });
 
                 // Decrement Stock

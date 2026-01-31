@@ -149,7 +149,12 @@ export default async function OrderDetailsPage(props: {
                                     </div>
                                     <div className="flex-1">
                                         <h4 className="font-semibold text-slate-900">{item.product.name}</h4>
-                                        <p className="text-sm text-slate-500">{item.product.category || "General Item"}</p>
+                                        <div className="flex flex-wrap gap-2 items-center mt-1">
+                                            <p className="text-sm text-slate-500">{item.product.category || "General Item"}</p>
+                                            {item.size && (
+                                                <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">Size: {item.size}</span>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="text-right">
                                         <p className="font-semibold text-slate-900">{formatCurrency(Number(item.price))}</p>

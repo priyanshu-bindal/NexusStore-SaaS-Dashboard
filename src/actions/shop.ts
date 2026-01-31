@@ -25,37 +25,37 @@ export async function getProductsAction(params: GetProductsParams) {
             // Search Query
             q ? {
                 OR: [
-                    { name: { contains: q, mode: "insensitive" } },
-                    { description: { contains: q, mode: "insensitive" } },
+                    { name: { contains: q, mode: "insensitive" as Prisma.QueryMode } },
+                    { description: { contains: q, mode: "insensitive" as Prisma.QueryMode } },
                 ],
             } : {},
             // Category (Mapped)
             category ? {
                 OR: [
-                    { category: { equals: category, mode: "insensitive" } },
+                    { category: { equals: category, mode: "insensitive" as Prisma.QueryMode } },
                     // Smart Mapping for Collections
                     ...(category.toLowerCase() === "clothing" ? [
-                        { category: { contains: "shirt", mode: "insensitive" } },
-                        { category: { contains: "jeans", mode: "insensitive" } },
-                        { category: { contains: "dress", mode: "insensitive" } },
-                        { category: { contains: "top", mode: "insensitive" } },
-                        { category: { contains: "pants", mode: "insensitive" } },
-                        { category: { contains: "jacket", mode: "insensitive" } },
+                        { category: { contains: "shirt", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "jeans", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "dress", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "top", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "pants", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "jacket", mode: "insensitive" as Prisma.QueryMode } },
                     ] : []),
                     ...(category.toLowerCase() === "shoes" ? [
-                        { category: { contains: "sneaker", mode: "insensitive" } },
-                        { category: { contains: "boot", mode: "insensitive" } },
-                        { category: { contains: "sandal", mode: "insensitive" } },
-                        { category: { contains: "heel", mode: "insensitive" } },
+                        { category: { contains: "sneaker", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "boot", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "sandal", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "heel", mode: "insensitive" as Prisma.QueryMode } },
                     ] : []),
                     ...(category.toLowerCase() === "accessories" ? [
-                        { category: { contains: "bag", mode: "insensitive" } },
-                        { category: { contains: "hat", mode: "insensitive" } },
-                        { category: { contains: "scarf", mode: "insensitive" } },
-                        { category: { contains: "jewelry", mode: "insensitive" } },
+                        { category: { contains: "bag", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "hat", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "scarf", mode: "insensitive" as Prisma.QueryMode } },
+                        { category: { contains: "jewelry", mode: "insensitive" as Prisma.QueryMode } },
                     ] : []),
                     // Also check description for broader match
-                    { description: { contains: category, mode: "insensitive" } }
+                    { description: { contains: category, mode: "insensitive" as Prisma.QueryMode } }
                 ]
             } : {},
             // Price Range
@@ -66,7 +66,7 @@ export async function getProductsAction(params: GetProductsParams) {
                 }
             },
             // Brand
-            brand ? { brand: { equals: brand, mode: "insensitive" } } : {},
+            brand ? { brand: { equals: brand, mode: "insensitive" as Prisma.QueryMode } } : {},
             // Colors (Array contains)
             color ? { colors: { has: color } } : {},
         ]
@@ -78,10 +78,16 @@ export async function getProductsAction(params: GetProductsParams) {
     if (sort === "price_desc") orderBy = { price: "desc" };
     if (sort === "newest") orderBy = { createdAt: "desc" };
 
+    // Add secondary sort for stability
+    const finalOrderBy: Prisma.ProductOrderByWithRelationInput[] = [
+        orderBy,
+        { id: "asc" }
+    ];
+
     try {
         const products = await db.product.findMany({
             where,
-            orderBy,
+            orderBy: finalOrderBy,
             take: pageSize,
             skip,
             include: { store: true }

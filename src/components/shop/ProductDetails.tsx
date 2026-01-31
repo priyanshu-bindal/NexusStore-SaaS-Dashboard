@@ -16,6 +16,7 @@ interface Product {
     description: string;
     price: number;
     images: string[];
+    sizes?: string[];
     category: string;
     createdAt: string;
     updatedAt: string;
@@ -68,28 +69,33 @@ const StarRating = ({ rating, count }: { rating: number, count: number }) => (
 export default function ProductDetails({ product, relatedProducts }: ProductDetailsProps) {
     // State
     const [mainImage, setMainImage] = useState(product.images?.[0] || "");
-    const [selectedSize, setSelectedSize] = useState('M'); // Default
+    const [selectedSize, setSelectedSize] = useState<string | null>(null);
+    const [showSizeError, setShowSizeError] = useState(false); // New state for error
     const [activeAccordion, setActiveAccordion] = useState<string | null>('description');
 
-    // Cart context for navbar
-    const { count, setIsOpen } = useCart();
+    // Context
+    const { isOpen, setIsOpen, count } = useCart();
 
-    // Safe fallback if images empty
-    const allImages = product.images && product.images.length > 0 ? product.images : ["/placeholder.png"];
+    // Derived State
+    const allImages = product.images || [];
+    const hasSizes = product.sizes && product.sizes.length > 0;
+    const sizes = product.sizes || [];
+    const hasStock = product.stock > 0;
 
-    // Handler
-    const toggleAccordion = (id: string) => {
-        setActiveAccordion(activeAccordion === id ? null : id);
+    // Handlers
+    const toggleAccordion = (accordionName: string) => {
+        setActiveAccordion(activeAccordion === accordionName ? null : accordionName);
     };
 
-    // Derived Data
-    const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
-    const hasStock = product.stock > 0;
+    // Update size selection to clear error
+    const handleSizeSelect = (size: string) => {
+        setSelectedSize(size);
+        setShowSizeError(false);
+    };
 
     return (
         <div className="bg-white min-h-screen text-slate-900 font-sans">
-
-            {/* Shop Navbar */}
+            {/* Same Navbar */}
             <nav className="fixed top-0 inset-x-0 z-[60] h-16 bg-white/90 backdrop-blur-md border-b border-gray-200 transition-all duration-300">
                 <div className="max-w-[1440px] mx-auto px-6 h-full flex items-center justify-between">
                     {/* Left: Menu & Logo */}
@@ -233,39 +239,49 @@ export default function ProductDetails({ product, relatedProducts }: ProductDeta
                             </div>
 
                             {/* Selectors */}
-                            <div>
-                                <div className="flex justify-between items-center mb-4">
-                                    <span className="text-xs font-bold uppercase tracking-widest text-slate-900">
-                                        Select Size
-                                    </span>
-                                    <button className="text-xs text-gray-500 underline hover:text-black transition-colors">
-                                        Size Guide
-                                    </button>
-                                </div>
-                                <div className="grid grid-cols-5 gap-3">
-                                    {SIZES.map((size) => (
-                                        <button
-                                            key={size}
-                                            onClick={() => setSelectedSize(size)}
-                                            className={`h-12 flex items-center justify-center rounded-md text-sm font-bold border transition-all duration-200 ${selectedSize === size
-                                                ? 'bg-black text-white border-black shadow-lg transform scale-105'
-                                                : 'bg-white text-slate-700 border-gray-200 hover:border-gray-900'
-                                                }`}
-                                        >
-                                            {size}
+                            {hasSizes && (
+                                <div>
+                                    <div className="flex justify-between items-center mb-4">
+                                        <span className={`text-xs font-bold uppercase tracking-widest ${showSizeError ? 'text-red-600' : 'text-slate-900'}`}>
+                                            Select Size {showSizeError && "*"}
+                                        </span>
+                                        <button className="text-xs text-gray-500 underline hover:text-black transition-colors">
+                                            Size Guide
                                         </button>
-                                    ))}
+                                    </div>
+                                    <div className="grid grid-cols-5 gap-3">
+                                        {sizes.map((size) => (
+                                            <button
+                                                key={size}
+                                                onClick={() => handleSizeSelect(size)}
+                                                className={`h-12 flex items-center justify-center rounded-md text-sm font-bold border transition-all duration-200 ${selectedSize === size
+                                                    ? 'bg-black text-white border-black shadow-lg transform scale-105'
+                                                    : showSizeError
+                                                        ? 'bg-red-50 text-red-600 border-red-200 hover:border-red-400'
+                                                        : 'bg-white text-slate-700 border-gray-200 hover:border-gray-900'
+                                                    }`}
+                                            >
+                                                {size}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    {showSizeError && (
+                                        <p className="text-red-600 text-[10px] font-bold mt-2 uppercase tracking-wide animate-pulse">
+                                            Please select a size to continue
+                                        </p>
+                                    )}
                                 </div>
-                            </div>
+                            )}
 
                             {/* Actions */}
                             <div className="space-y-4 pt-2">
-                                {/* Using existing AddToCartButton wrapper if compatible, or recreating styling here */}
-                                {/* We will wrap the logic component with our styling or pass a custom class */}
                                 <div className="w-full">
                                     {hasStock ? (
                                         <AddToCartButton
-                                            product={{ ...product, price: Number(product.price) }} // cast for strict types locally
+                                            product={{ ...product, price: Number(product.price) }}
+                                            selectedSize={selectedSize}
+                                            hasSizes={hasSizes}
+                                            onMissingSize={() => setShowSizeError(true)}
                                             className="w-full bg-slate-900 text-white h-14 rounded-full font-bold text-sm tracking-[0.15em] hover:bg-black transition-all transform active:scale-[0.98] uppercase shadow-xl shadow-slate-900/10 flex items-center justify-center gap-2"
                                         />
                                     ) : (

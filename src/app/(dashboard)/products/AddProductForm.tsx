@@ -1,23 +1,40 @@
+"use client";
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Loader2, Plus, Link as LinkIcon, Bold, Italic, List, Code } from "lucide-react";
+import { Loader2, Plus, X, Bold, Italic, List, Code } from "lucide-react";
 import { createProduct } from "@/actions/create-product";
-import { useRouter } from "next/navigation";
+import { ImageUpload } from "@/components/dashboard/image-upload";
+import { toast } from "sonner";
 
 // Form Schema
 const formSchema = z.object({
     name: z.string().min(1, "Name is required"),
     description: z.string().optional(),
-    price: z.string().min(1, "Price is required").refine((val) => !isNaN(Number(val)) && Number(val) >= 0, "Price must be a positive number"),
-    stock: z.string().min(1, "Stock is required").refine((val) => !isNaN(Number(val)) && Number(val) >= 0, "Stock must be a positive integer"),
-    category: z.string().optional(),
-    imageUrl: z.string().url("Please enter a valid URL").optional().or(z.literal(""))
+    price: z.string().min(1, "Price is required"),
+    stock: z.string().min(1, "Stock is required"),
+    category: z.string().min(1, "Category is required"),
+    images: z.array(z.string()).min(1, "At least one image is required"),
+    sizes: z.array(z.string()).optional()
 });
+
+const CATEGORIES = [
+    "Clothing",
+    "Shoes",
+    "Accessories",
+    "Electronics",
+    "Home",
+    "Beauty",
+    "Sports",
+    "Other"
+];
 
 export function AddProductForm({ onSuccess, onCancel }: { onSuccess: () => void; onCancel: () => void }) {
     const [isLoading, setIsLoading] = useState(false);
+    const [sizeInput, setSizeInput] = useState("");
+    const [showSizes, setShowSizes] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -27,7 +44,8 @@ export function AddProductForm({ onSuccess, onCancel }: { onSuccess: () => void;
             price: "",
             stock: "",
             category: "",
-            imageUrl: ""
+            images: [],
+            sizes: []
         }
     });
 
@@ -38,24 +56,55 @@ export function AddProductForm({ onSuccess, onCancel }: { onSuccess: () => void;
         formData.append("description", values.description || "");
         formData.append("price", values.price);
         formData.append("stock", values.stock);
-        if (values.category) formData.append("category", values.category);
-        if (values.imageUrl) formData.append("imageUrl", values.imageUrl);
+        formData.append("category", values.category);
+
+        // Serialize arrays
+        formData.append("images", JSON.stringify(values.images));
+        formData.append("sizes", JSON.stringify(values.sizes || []));
 
         const result = await createProduct(formData);
         setIsLoading(false);
 
         if (result?.error) {
-            alert(result.error);
+            toast.error(result.error);
         } else {
+            toast.success("Product created successfully");
             form.reset();
             onSuccess();
         }
     };
 
+    const addSize = () => {
+        if (!sizeInput.trim()) return;
+        const currentSizes = form.getValues("sizes") || [];
+        if (!currentSizes.includes(sizeInput.trim())) {
+            form.setValue("sizes", [...currentSizes, sizeInput.trim()]);
+        }
+        setSizeInput("");
+    };
+
+    const removeSize = (sizeToRemove: string) => {
+        const currentSizes = form.getValues("sizes") || [];
+        form.setValue("sizes", currentSizes.filter(s => s !== sizeToRemove));
+    };
+
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col flex-1 min-h-0 bg-white">
             {/* Scrollable Body */}
-            <div className="px-6 py-2 overflow-y-auto flex-1 space-y-3 custom-scrollbar">
+            <div className="px-6 py-2 overflow-y-auto flex-1 space-y-6 custom-scrollbar">
+
+                {/* Images */}
+                <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-slate-700">Product Images</label>
+                    <ImageUpload
+                        value={form.watch("images")}
+                        onChange={(urls) => form.setValue("images", urls)}
+                        onRemove={(url) => form.setValue("images", form.watch("images").filter((current) => current !== url))}
+                    />
+                    {form.formState.errors.images && (
+                        <p className="text-xs text-red-500">{form.formState.errors.images.message}</p>
+                    )}
+                </div>
 
                 {/* Product Title */}
                 <div className="space-y-1">
@@ -105,22 +154,76 @@ export function AddProductForm({ onSuccess, onCancel }: { onSuccess: () => void;
                     </div>
                 </div>
 
-                {/* Image URL */}
+                {/* Category Select */}
                 <div className="space-y-1">
-                    <label className="block text-xs font-semibold text-slate-700" htmlFor="product-image-url">Image URL</label>
-                    <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                            <LinkIcon size={14} />
-                        </span>
+                    <label className="block text-xs font-semibold text-slate-700" htmlFor="category">Category</label>
+                    <select
+                        {...form.register("category")}
+                        id="category"
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all text-sm text-slate-900"
+                    >
+                        <option value="">Select a category</option>
+                        {CATEGORIES.map((cat) => (
+                            <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                    </select>
+                    {form.formState.errors.category && (
+                        <p className="text-xs text-red-500">{form.formState.errors.category.message}</p>
+                    )}
+                </div>
+
+                {/* Sizes Section */}
+                <div className="space-y-2">
+                    <div className="flex items-center gap-2">
                         <input
-                            {...form.register("imageUrl")}
-                            id="product-image-url"
-                            className="w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#135bec] focus:border-transparent outline-none transition-all text-sm text-slate-900 placeholder:text-slate-400"
-                            placeholder="https://example.com/image.jpg"
+                            type="checkbox"
+                            checked={showSizes}
+                            onChange={(e) => setShowSizes(e.target.checked)}
+                            id="has-sizes"
+                            className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                         />
+                        <label htmlFor="has-sizes" className="text-sm font-medium text-slate-700">This product has sizes (e.g. S, M, L)</label>
                     </div>
-                    {form.formState.errors.imageUrl && (
-                        <p className="text-xs text-red-500">{form.formState.errors.imageUrl.message}</p>
+
+                    {showSizes && (
+                        <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-3">
+                            <div className="flex gap-2">
+                                <input
+                                    value={sizeInput}
+                                    onChange={(e) => setSizeInput(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter" || e.key === ",") {
+                                            e.preventDefault();
+                                            addSize();
+                                        }
+                                    }}
+                                    placeholder="Type size and press Enter (e.g. XL)"
+                                    className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#135bec] outline-none text-sm"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={addSize}
+                                    className="px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-medium transition-colors"
+                                >
+                                    Add
+                                </button>
+                            </div>
+
+                            {/* Size Tags */}
+                            <div className="flex flex-wrap gap-2">
+                                {form.watch("sizes")?.map((size) => (
+                                    <span key={size} className="bg-white border border-slate-200 text-slate-700 px-3 py-1 rounded-full text-sm flex items-center gap-2">
+                                        {size}
+                                        <button type="button" onClick={() => removeSize(size)} className="text-slate-400 hover:text-red-500">
+                                            <X size={14} />
+                                        </button>
+                                    </span>
+                                ))}
+                                {(!form.watch("sizes") || form.watch("sizes")?.length === 0) && (
+                                    <span className="text-xs text-slate-400 italic">No sizes added yet</span>
+                                )}
+                            </div>
+                        </div>
                     )}
                 </div>
 
@@ -138,7 +241,7 @@ export function AddProductForm({ onSuccess, onCancel }: { onSuccess: () => void;
                         <textarea
                             {...form.register("description")}
                             id="description"
-                            rows={2}
+                            rows={3}
                             className="w-full px-3 py-2 bg-white border-none focus:ring-0 outline-none transition-all text-sm text-slate-900 resize-none"
                             placeholder="Tell us more about the product..."
                         />

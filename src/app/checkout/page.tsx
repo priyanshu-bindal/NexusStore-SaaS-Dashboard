@@ -21,7 +21,7 @@ export default function Checkout() {
 
         setIsProcessing(true);
         try {
-            const result = await createOrder(items.map(item => ({ productId: item.id, quantity: item.quantity })));
+            const result = await createOrder(items.map(item => ({ productId: item.id, quantity: item.quantity, size: item.size })));
 
             if ("success" in result && result.success) {
                 setIsSuccess(true);
@@ -81,7 +81,7 @@ export default function Checkout() {
         <div className="bg-[#f8fafc] text-slate-900 font-sans antialiased min-h-screen">
             <nav className="bg-white border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-20">
+                    <div className="flex items-center justify-between h-15">
                         <div className="flex items-center gap-2">
                             <Link href="/shop" className="flex items-center gap-2">
                                 <div className="text-[#2563eb] size-8">
@@ -355,7 +355,7 @@ export default function Checkout() {
                             <h3 className="font-bold text-lg mb-6">Order Summary</h3>
                             <div className="space-y-4 mb-6 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
                                 {items.map((item) => (
-                                    <div key={item.id} className="flex gap-4">
+                                    <div key={`${item.id}-${item.size || 'default'}`} className="flex gap-4">
                                         <div className="size-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
                                             {item.image && (
                                                 <img
@@ -369,7 +369,10 @@ export default function Checkout() {
                                             <h4 className="text-sm font-bold text-slate-900 truncate">
                                                 {item.name}
                                             </h4>
-                                            <p className="text-xs text-slate-500">Quantity: {item.quantity}</p>
+                                            {item.size && (
+                                                <p className="text-xs font-semibold text-slate-700 mt-1 bg-slate-100 w-fit px-2 py-0.5 rounded">Size: {item.size}</p>
+                                            )}
+                                            <p className="text-xs text-slate-500 mt-1">Quantity: {item.quantity}</p>
                                             <p className="text-sm font-black mt-1">${item.price.toFixed(2)}</p>
                                         </div>
                                     </div>

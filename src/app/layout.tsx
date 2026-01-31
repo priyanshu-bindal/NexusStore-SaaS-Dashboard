@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 import { Providers } from "@/components/Providers";
 import CartSheet from "@/components/cart/CartSheet";
 import AuthModal from "@/components/auth/AuthModal";

@@ -23,7 +23,7 @@ export async function registerUser(data: {
 
         if (!validated.success) {
             console.error("Validation Error:", validated.error);
-            return { success: false, error: validated.error.errors[0].message };
+            return { success: false, error: validated.error.issues[0].message };
         }
 
         const { name, email, password } = validated.data;

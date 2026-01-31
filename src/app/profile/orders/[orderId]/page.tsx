@@ -247,7 +247,10 @@ export default async function OrderDetailsPage({
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-sm font-medium text-slate-900 truncate">{item.product.name}</p>
-                                        <p className="text-xs text-slate-500 mb-1">Qty: {item.quantity}</p>
+                                        <div className="flex items-center gap-2 mb-1">
+                                            {item.size && <span className="text-[10px] font-bold bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">Size: {item.size}</span>}
+                                            <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
+                                        </div>
                                         <p className="text-sm font-bold text-slate-900">{fmt(Number(item.price))}</p>
                                     </div>
                                 </div>

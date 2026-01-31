@@ -152,6 +152,7 @@ exports.Prisma.ProductScalarFieldEnum = {
   status: 'status',
   brand: 'brand',
   colors: 'colors',
+  sizes: 'sizes',
   storeId: 'storeId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -209,7 +210,8 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   orderId: 'orderId',
   productId: 'productId',
   quantity: 'quantity',
-  price: 'price'
+  price: 'price',
+  size: 'size'
 };
 
 exports.Prisma.VisitScalarFieldEnum = {

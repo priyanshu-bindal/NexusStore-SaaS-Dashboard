@@ -13,14 +13,24 @@ type Product = {
     stock: number;
 };
 
-export default function AddToCartButton({ product, className }: { product: Product, className?: string }) {
+export default function AddToCartButton({ product, className, selectedSize, hasSizes, onMissingSize }: { product: Product, className?: string, selectedSize?: string | null, hasSizes?: boolean, onMissingSize?: () => void }) {
     const { addToCart } = useCart();
     const [isAdding, setIsAdding] = useState(false);
 
     const handleAdd = () => {
+        // Validation: If product has sizes but none selected
+        if (hasSizes && !selectedSize) {
+            if (onMissingSize) {
+                onMissingSize();
+            } else {
+                alert("Please select a size before adding to cart.");
+            }
+            return;
+        }
+
         setIsAdding(true);
-        addToCart(product);
-        // Reset state after animation (optional)
+        addToCart(product, selectedSize);
+        // Reset state after animation
         setTimeout(() => setIsAdding(false), 500);
     };
 

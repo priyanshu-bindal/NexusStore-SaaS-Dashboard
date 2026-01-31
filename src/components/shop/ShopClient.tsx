@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, ShoppingBag, Menu, User, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "../../context/CartContext";
 // import { useInView } from "react-intersection-observer"; // Removed to check if native observer is enough or if package is missing
 import { getProductsAction } from "@/actions/shop";
 import { motion } from "framer-motion";
@@ -89,7 +89,11 @@ export default function ShopClient({ products: initialProducts, totalPages = 1, 
         if (newProducts.length === 0) {
             setHasMore(false);
         } else {
-            setProducts((prev) => [...prev, ...newProducts]);
+            setProducts((prev) => {
+                const existingIds = new Set(prev.map((p) => p.id));
+                const uniqueNewProducts = newProducts.filter((p) => !existingIds.has(p.id));
+                return [...prev, ...uniqueNewProducts];
+            });
             setPage(nextPage);
             if (newProducts.length < 10) setHasMore(false); // Less than pageSize means end
         }

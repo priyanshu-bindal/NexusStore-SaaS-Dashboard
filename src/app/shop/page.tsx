@@ -32,12 +32,12 @@ export default async function ShopPage({
             // Search Query
             q ? {
                 OR: [
-                    { name: { contains: q, mode: "insensitive" } },
-                    { description: { contains: q, mode: "insensitive" } },
+                    { name: { contains: q, mode: "insensitive" as Prisma.QueryMode } },
+                    { description: { contains: q, mode: "insensitive" as Prisma.QueryMode } },
                 ],
             } : {},
             // Category
-            category ? { category: { equals: category, mode: "insensitive" } } : {},
+            category ? { category: { equals: category, mode: "insensitive" as Prisma.QueryMode } } : {},
             // Price Range
             {
                 price: {
@@ -46,7 +46,7 @@ export default async function ShopPage({
                 }
             },
             // Brand
-            brand ? { brand: { equals: brand, mode: "insensitive" } } : {},
+            brand ? { brand: { equals: brand, mode: "insensitive" as Prisma.QueryMode } } : {},
             // Colors (Array contains)
             color ? { colors: { has: color } } : {},
         ]
@@ -61,11 +61,16 @@ export default async function ShopPage({
     // For simple Prisma, we default to newest or maybe sort by match? 
     // Prisma fulltext is experimental. Defaulting to created desc for relevance fallback.
 
+    const finalOrderBy: Prisma.ProductOrderByWithRelationInput[] = [
+        orderBy,
+        { id: "asc" }
+    ];
+
     // Execute Query
     const [products, totalCount] = await Promise.all([
         db.product.findMany({
             where,
-            orderBy,
+            orderBy: finalOrderBy,
             take: pageSize,
             skip,
             include: { store: true } // Optional: include store info if needed

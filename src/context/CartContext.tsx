@@ -9,13 +9,14 @@ export type CartItem = {
     image?: string;
     quantity: number;
     storeName?: string;
+    size?: string;
 };
 
 type CartContextType = {
     items: CartItem[];
-    addToCart: (product: any) => void;
-    removeFromCart: (id: string) => void;
-    updateQuantity: (id: string, quantity: number) => void;
+    addToCart: (product: any, size?: string | null) => void;
+    removeFromCart: (id: string, size?: string) => void;
+    updateQuantity: (id: string, quantity: number, size?: string) => void;
     clearCart: () => void;
     total: number;
     count: number;
@@ -50,12 +51,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }
     }, [items, isMounted]);
 
-    const addToCart = (product: any) => {
+    const addToCart = (product: any, size?: string | null) => {
         setItems((prev) => {
-            const existing = prev.find((item) => item.id === product.id);
+            // Check if item with same ID AND same size already exists
+            const existing = prev.find((item) => item.id === product.id && item.size === size);
+
             if (existing) {
                 return prev.map((item) =>
-                    item.id === product.id
+                    (item.id === product.id && item.size === size)
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
@@ -69,20 +72,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                     image: product.images?.[0],
                     quantity: 1,
                     storeName: product.store?.name,
+                    size: size || undefined,
                 },
             ];
         });
         setIsOpen(true);
     };
 
-    const removeFromCart = (id: string) => {
-        setItems((prev) => prev.filter((item) => item.id !== id));
+    const removeFromCart = (id: string, size?: string) => {
+        setItems((prev) => prev.filter((item) => !(item.id === id && item.size === size)));
     };
 
-    const updateQuantity = (id: string, quantity: number) => {
-        if (quantity < 1) return removeFromCart(id);
+    const updateQuantity = (id: string, quantity: number, size?: string) => {
+        if (quantity < 1) return removeFromCart(id, size);
         setItems((prev) =>
-            prev.map((item) => (item.id === id ? { ...item, quantity } : item))
+            prev.map((item) => ((item.id === id && item.size === size) ? { ...item, quantity } : item))
         );
     };
 

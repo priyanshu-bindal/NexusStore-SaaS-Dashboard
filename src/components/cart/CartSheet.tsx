@@ -2,7 +2,7 @@
 
 import { useCart } from "@/context/CartContext";
 import { X, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { useRouter } from "next/navigation";
@@ -14,12 +14,36 @@ export default function CartSheet() {
     const { openModal } = useAuthModal();
     const router = useRouter();
 
-    // Handle animation
+    const pushedRef = useRef(false);
+
+    // Handle animation & History
     useEffect(() => {
         if (isOpen) {
             setIsVisible(true);
             document.body.style.overflow = "hidden";
+
+            // Push history state so back button closes cart
+            window.history.pushState(null, "", window.location.href);
+            pushedRef.current = true;
+
+            const onPopState = () => {
+                // User pressed back, consuming the state we pushed
+                pushedRef.current = false;
+                setIsOpen(false);
+            };
+
+            window.addEventListener("popstate", onPopState);
+
+            return () => {
+                window.removeEventListener("popstate", onPopState);
+            };
         } else {
+            // Closing: If we pushed state (and it wasn't consumed by back button), revert it
+            if (pushedRef.current) {
+                pushedRef.current = false;
+                window.history.back();
+            }
+
             const timer = setTimeout(() => setIsVisible(false), 300); // match transition
             document.body.style.overflow = "";
             return () => clearTimeout(timer);
@@ -27,16 +51,21 @@ export default function CartSheet() {
     }, [isOpen]);
 
     const handleCheckout = () => {
-        // 1. Check if user is logged in
-        if (!session) {
-            // 2. If GUEST: Stop navigation, Open Modal, pass destination
-            setIsOpen(false); // Close cart sheet so modal is visible
-            openModal("/checkout");
-        } else {
-            // 3. If USER: Manually navigate to checkout
-            setIsOpen(false);
-            router.push("/checkout");
+        // Manually handle history cleanup to avoid race conditions
+        if (pushedRef.current) {
+            pushedRef.current = false; // Prevent effect from double-invoking back
+            window.history.back();
         }
+        setIsOpen(false);
+
+        // Small delay to ensure history state settles before navigation
+        setTimeout(() => {
+            if (!session) {
+                openModal("/checkout");
+            } else {
+                router.push("/checkout");
+            }
+        }, 50);
     };
 
     if (!isVisible) return null;
@@ -85,7 +114,7 @@ export default function CartSheet() {
                         </div>
                     ) : (
                         items.map((item) => (
-                            <div key={item.id} className="flex gap-4">
+                            <div key={`${item.id}-${item.size || 'def'}`} className="flex gap-4">
                                 <div className="size-20 bg-slate-50 rounded-lg flex items-center justify-center p-2 flex-shrink-0 border border-slate-100">
                                     {item.image ? (
                                         <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
@@ -98,7 +127,7 @@ export default function CartSheet() {
                                         <div className="flex justify-between items-start gap-2">
                                             <h3 className="font-bold text-slate-900 line-clamp-2 text-sm">{item.name}</h3>
                                             <button
-                                                onClick={() => removeFromCart(item.id)}
+                                                onClick={() => removeFromCart(item.id, item.size)}
                                                 className="text-slate-400 hover:text-red-500 transition-colors"
                                             >
                                                 <Trash2 className="size-4" />
@@ -107,11 +136,14 @@ export default function CartSheet() {
                                         {item.storeName && (
                                             <p className="text-xs text-slate-500 mt-1">Sold by {item.storeName}</p>
                                         )}
+                                        {item.size && (
+                                            <p className="text-xs font-semibold text-slate-700 mt-1 bg-slate-100 w-fit px-2 py-0.5 rounded">Size: {item.size}</p>
+                                        )}
                                     </div>
                                     <div className="flex items-center justify-between mt-2">
                                         <div className="flex items-center border border-slate-200 rounded-lg">
                                             <button
-                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                onClick={() => updateQuantity(item.id, item.quantity - 1, item.size)}
                                                 className="p-1.5 hover:bg-slate-50 text-slate-600 disabled:opacity-50"
                                                 disabled={item.quantity <= 1}
                                             >
@@ -119,7 +151,7 @@ export default function CartSheet() {
                                             </button>
                                             <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
                                             <button
-                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                onClick={() => updateQuantity(item.id, item.quantity + 1, item.size)}
                                                 className="p-1.5 hover:bg-slate-50 text-slate-600"
                                                 type="button"
                                             >

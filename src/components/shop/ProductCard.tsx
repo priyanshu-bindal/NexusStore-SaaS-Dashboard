@@ -73,15 +73,24 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
 
                 {/* Quick Add - Slide Up */}
                 <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full transition-transform duration-300 group-hover:translate-y-0 bg-gradient-to-t from-black/50 to-transparent">
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            addToCart(product as any);
-                        }}
-                        className="w-full bg-white text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
-                    >
-                        Add to Cart
-                    </button>
+                    {(product as any).sizes && (product as any).sizes.length > 0 ? (
+                        <Link
+                            href={`/shop/${product.id}`}
+                            className="block w-full text-center bg-white text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+                        >
+                            Select Options
+                        </Link>
+                    ) : (
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                addToCart(product as any);
+                            }}
+                            className="w-full bg-white text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+                        >
+                            Add to Cart
+                        </button>
+                    )}
                 </div>
             </div>
 

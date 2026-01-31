@@ -2,6 +2,7 @@
 
 import { Plus } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 
 type Product = {
@@ -35,15 +36,26 @@ export default function GlassProductCard({ product }: { product: Product }) {
                         ${Number(product.price).toFixed(2)}
                     </span>
 
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            addToCart(product);
-                        }}
-                        className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-blue-600 transition-colors shadow-lg shadow-slate-900/20"
-                    >
-                        <Plus size={20} />
-                    </button>
+                    <div className="flex gap-2">
+                        {(product as any).sizes && (product as any).sizes.length > 0 ? (
+                            <Link
+                                href={`/shop/${product.id}`}
+                                className="w-auto px-4 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-slate-900/20"
+                            >
+                                Options
+                            </Link>
+                        ) : (
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    addToCart(product as any);
+                                }}
+                                className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-blue-600 transition-colors shadow-lg shadow-slate-900/20"
+                            >
+                                <Plus size={20} />
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

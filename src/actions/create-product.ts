@@ -25,9 +25,16 @@ export async function createProduct(formData: FormData) {
         const price = formData.get("price") as string;
         const stock = formData.get("stock") as string;
         const category = formData.get("category") as string;
-        const imageUrl = formData.get("imageUrl") as string;
 
-        if (!name || !price || !stock) {
+        // Parse arrays
+        const imagesRaw = formData.get("images") as string;
+        const sizesRaw = formData.get("sizes") as string;
+
+        const images = imagesRaw ? JSON.parse(imagesRaw) : [];
+        const sizes = sizesRaw ? JSON.parse(sizesRaw) : [];
+
+        if (!name || !price || !stock || !category) {
+            console.log("Missing fields:", { name, price, stock, category });
             return { error: "Missing required fields" };
         }
 
@@ -35,15 +42,20 @@ export async function createProduct(formData: FormData) {
         const priceDecimal = new Prisma.Decimal(price);
         const stockInt = parseInt(stock);
 
+        console.log("Creating product with data:", {
+            name, description, price: priceDecimal, stock: stockInt, category, storeId: store.id, images: images.length, sizes: sizes.length
+        });
+
         await db.product.create({
             data: {
                 name,
                 description: description || "",
                 price: priceDecimal,
                 stock: stockInt,
-                category: category || null,
+                category, // Ensure category is passed directly if required
                 storeId: store.id,
-                images: imageUrl ? [imageUrl] : []
+                images: images,
+                sizes: sizes,
             }
         });
 
@@ -51,7 +63,7 @@ export async function createProduct(formData: FormData) {
         revalidatePath("/dashboard");
         return { success: true };
     } catch (error) {
-        console.error("Create Product Error:", error);
-        return { error: "Failed to create product" };
+        console.error("Create Product Error Full:", error);
+        return { error: `Failed to create product: ${(error as Error).message}` };
     }
 }

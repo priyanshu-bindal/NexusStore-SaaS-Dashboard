@@ -137,6 +137,12 @@ export default async function OrdersPage({
                                                     x{item.quantity}
                                                 </div>
                                             )}
+                                            {/* Size Badge */}
+                                            {item.size && (
+                                                <div className="absolute top-0 right-0 bg-white/90 text-slate-900 text-[9px] px-1 font-bold border-l border-b border-slate-200 rounded-bl-md">
+                                                    {item.size}
+                                                </div>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
