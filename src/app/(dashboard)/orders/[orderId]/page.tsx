@@ -33,6 +33,7 @@ export default async function OrderDetailsPage(props: {
     const order = await db.order.findUnique({
         where: { id: orderId },
         include: {
+            user: true, // Fetch customer details
             orderItems: {
                 include: {
                     product: true
@@ -203,14 +204,14 @@ export default async function OrderDetailsPage(props: {
                                     <User size={20} />
                                 </div>
                                 <div>
-                                    <p className="text-sm font-semibold text-slate-900">Alex Johnson</p>
+                                    <p className="text-sm font-semibold text-slate-900">{order.user?.name || "Guest User"}</p>
                                     <p className="text-xs text-slate-500">Member since 2021</p>
                                 </div>
                             </div>
                             <div className="space-y-3 pt-2">
                                 <div className="flex items-center gap-3 text-sm text-slate-600">
                                     <Mail size={16} />
-                                    <span>alex.j@example.com</span>
+                                    <span>{order.user?.email || "No email"}</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-sm text-slate-600">
                                     <Phone size={16} />

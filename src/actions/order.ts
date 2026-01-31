@@ -9,6 +9,10 @@ export async function createOrder(items: { productId: string; quantity: number }
     try {
         const session = await auth();
 
+        if (!session || !session.user) {
+            throw new Error("Unauthorized: You must be logged in to place an order.");
+        }
+
         return await db.$transaction(async (tx) => {
             // 1. Fetch products to get real prices and check stock
             const productIds = items.map(i => i.productId);

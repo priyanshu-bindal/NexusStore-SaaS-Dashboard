@@ -2,13 +2,13 @@ import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { db } from "@/lib/db"
 import { authConfig } from "./auth.config"
-
 import Credentials from "next-auth/providers/credentials"
+import bcrypt from "bcryptjs"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+    ...authConfig,
     session: { strategy: "jwt" },
     adapter: PrismaAdapter(db as any),
-    ...authConfig,
     providers: [
         Credentials({
             name: "Credentials",
@@ -17,32 +17,40 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                // 1. Mock Validation Logic (Password check would go here)
-                const merchantUser = { id: "merchant-123", name: "Merchant User", email: "merchant@example.com", role: "MERCHANT" };
-                const customerUser = { id: "customer-123", name: "Customer User", email: "customer@example.com", role: "CUSTOMER" };
+                if (!credentials?.email || !credentials?.password) {
+                    return null;
+                }
 
-                let user = null;
-
-                if (credentials?.email === merchantUser.email) user = merchantUser;
-                else if (credentials?.email === customerUser.email) user = customerUser;
-
-                if (!user) return null;
-
-                // 2. Database Sync: Ensure this user exists in Supabase
                 try {
-                    const dbUser = await db.user.upsert({
-                        where: { email: user.email },
-                        update: {}, // Do nothing if they exist
-                        create: {
-                            id: user.id,
-                            name: user.name,
-                            email: user.email,
-                            role: user.role as any, // Cast role for consistency
-                        },
+                    // Find user by email
+                    const user = await db.user.findUnique({
+                        where: { email: credentials.email as string },
                     });
-                    return dbUser;
+
+                    if (!user || !user.password) {
+                        return null;
+                    }
+
+                    // Verify password
+                    const isValidPassword = await bcrypt.compare(
+                        credentials.password as string,
+                        user.password
+                    );
+
+                    if (!isValidPassword) {
+                        return null;
+                    }
+
+                    // Return user object (password excluded)
+                    return {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                        image: user.image,
+                    };
                 } catch (error) {
-                    console.error("Auth DB Sync Error:", error);
+                    console.error("Auth error:", error);
                     return null;
                 }
             },

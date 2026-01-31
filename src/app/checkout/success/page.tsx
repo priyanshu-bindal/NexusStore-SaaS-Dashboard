@@ -38,6 +38,12 @@ export default function OrderSuccessPage() {
 
             try {
                 const response = await fetch(`/api/orders/${orderId}`);
+
+                if (!response.ok) {
+                    setOrderData(null);
+                    return;
+                }
+
                 const data = await response.json();
 
                 // Check if response contains an error
@@ -192,7 +198,7 @@ export default function OrderSuccessPage() {
 
                             {/* Track Order Button */}
                             <Link
-                                href="#"
+                                href={`/profile/orders/${orderData.id}`}
                                 className="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 px-6 rounded-lg shadow-md transition-all duration-200 flex items-center justify-center gap-2 group"
                             >
                                 Track Order

@@ -12,6 +12,7 @@ export default function Checkout() {
     const { items, total, clearCart, removeFromCart } = useCart();
     const [paymentMethod, setPaymentMethod] = useState("credit_card");
     const [isProcessing, setIsProcessing] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
     const router = useRouter();
 
 
@@ -23,6 +24,7 @@ export default function Checkout() {
             const result = await createOrder(items.map(item => ({ productId: item.id, quantity: item.quantity })));
 
             if ("success" in result && result.success) {
+                setIsSuccess(true);
                 clearCart();
                 // Redirect to success page with order ID
                 router.push(`/checkout/success?orderId=${result.orderId}`);
@@ -35,11 +37,11 @@ export default function Checkout() {
                 } else {
                     alert(errorData.error || "Failed to place order");
                 }
+                setIsProcessing(false);
             }
         } catch (error) {
             console.error("Checkout error:", error);
             alert("An unexpected error occurred.");
-        } finally {
             setIsProcessing(false);
         }
     };
@@ -49,6 +51,17 @@ export default function Checkout() {
     const shipping = 0; // Free for now
     const tax = subtotal * 0.08; // Mock 8% tax
     const finalTotal = subtotal + shipping + tax;
+
+    if (isSuccess) {
+        return (
+            <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="size-12 animate-spin text-[#2563eb]" />
+                    <p className="text-slate-500 font-medium">Processing your order...</p>
+                </div>
+            </div>
+        );
+    }
 
     if (items.length === 0) {
         return (

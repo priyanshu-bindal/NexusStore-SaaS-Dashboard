@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { CartProvider } from "@/context/CartContext";
+import { Providers } from "@/components/Providers";
 import CartSheet from "@/components/cart/CartSheet";
+import AuthModal from "@/components/auth/AuthModal";
 import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({
@@ -35,10 +36,11 @@ export default function RootLayout({
           speed={200}
           shadow="0 0 10px #ff0000,0 0 5px #ff0000"
         />
-        <CartProvider>
+        <Providers>
           {children}
           <CartSheet />
-        </CartProvider>
+          <AuthModal />
+        </Providers>
       </body>
     </html>
   );

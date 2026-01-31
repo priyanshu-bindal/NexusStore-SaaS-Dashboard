@@ -126,6 +126,7 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
+  password: 'password',
   role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -191,7 +192,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   status: 'status',
   fulfillmentStatus: 'fulfillmentStatus',
   userId: 'userId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.TimelineEventScalarFieldEnum = {

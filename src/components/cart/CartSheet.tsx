@@ -2,12 +2,17 @@
 
 import { useCart } from "@/context/CartContext";
 import { X, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useAuthModal } from "@/context/AuthModalContext";
+import { useRouter } from "next/navigation";
 
 export default function CartSheet() {
     const { items, removeFromCart, updateQuantity, total, isOpen, setIsOpen } = useCart();
     const [isVisible, setIsVisible] = useState(false);
+    const { data: session } = useSession();
+    const { openModal } = useAuthModal();
+    const router = useRouter();
 
     // Handle animation
     useEffect(() => {
@@ -20,6 +25,19 @@ export default function CartSheet() {
             return () => clearTimeout(timer);
         }
     }, [isOpen]);
+
+    const handleCheckout = () => {
+        // 1. Check if user is logged in
+        if (!session) {
+            // 2. If GUEST: Stop navigation, Open Modal, pass destination
+            setIsOpen(false); // Close cart sheet so modal is visible
+            openModal("/checkout");
+        } else {
+            // 3. If USER: Manually navigate to checkout
+            setIsOpen(false);
+            router.push("/checkout");
+        }
+    };
 
     if (!isVisible) return null;
 
@@ -103,6 +121,7 @@ export default function CartSheet() {
                                             <button
                                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                                 className="p-1.5 hover:bg-slate-50 text-slate-600"
+                                                type="button"
                                             >
                                                 <Plus className="size-3" />
                                             </button>
@@ -123,13 +142,13 @@ export default function CartSheet() {
                             <span className="text-2xl font-black text-slate-900">${total.toFixed(2)}</span>
                         </div>
                         <p className="text-xs text-slate-400 text-center">Shipping and taxes calculated at checkout.</p>
-                        <Link
-                            href="/checkout"
-                            onClick={() => setIsOpen(false)}
-                            className="block w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-4 text-center rounded-xl shadow-lg shadow-blue-500/20 transition-all"
+                        <button
+                            type="button"
+                            onClick={handleCheckout}
+                            className="block w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-4 text-center rounded-xl shadow-lg shadow-blue-500/20 transition-all cursor-pointer"
                         >
                             Proceed to Checkout
-                        </Link>
+                        </button>
                     </div>
                 )}
             </div>
