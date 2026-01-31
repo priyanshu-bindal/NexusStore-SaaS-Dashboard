@@ -13,7 +13,7 @@ type Product = {
     stock: number;
 };
 
-export default function AddToCartButton({ product }: { product: Product }) {
+export default function AddToCartButton({ product, className }: { product: Product, className?: string }) {
     const { addToCart } = useCart();
     const [isAdding, setIsAdding] = useState(false);
 
@@ -28,7 +28,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
         <button
             onClick={handleAdd}
             disabled={product.stock === 0}
-            className={`flex-1 font-bold py-4 px-8 rounded-xl transition-all shadow-xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed ${isAdding
+            className={className || `flex-1 font-bold py-4 px-8 rounded-xl transition-all shadow-xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed ${isAdding
                 ? "bg-blue-600 text-white shadow-blue-900/10 scale-95"
                 : "bg-slate-900 hover:bg-[#2563eb] text-white shadow-blue-900/10"
                 }`}

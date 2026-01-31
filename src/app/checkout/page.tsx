@@ -24,7 +24,8 @@ export default function Checkout() {
 
             if ("success" in result && result.success) {
                 clearCart();
-                router.push("/shop?success=true");
+                // Redirect to success page with order ID
+                router.push(`/checkout/success?orderId=${result.orderId}`);
             } else {
                 const errorData = result as { error: string; missingIds?: string[] };
 
