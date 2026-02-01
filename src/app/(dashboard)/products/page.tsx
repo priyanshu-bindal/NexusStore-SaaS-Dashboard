@@ -6,7 +6,11 @@ import { Package, Eye, AlertTriangle, Download, Plus } from "lucide-react";
 import { AddProductModal } from "./AddProductModal";
 
 
-export default async function ProductsPage(props: {
+import { Suspense } from "react";
+
+export const dynamic = "force-dynamic";
+
+async function ProductsContent(props: {
     searchParams: Promise<{ q?: string; page?: string }>;
 }) {
     const searchParams = await props.searchParams;
@@ -137,5 +141,13 @@ export default async function ProductsPage(props: {
 
             <ProductsTable products={products} totalPages={totalPages} currentPage={page} />
         </div>
+    );
+}
+
+export default function ProductsPage(props: any) {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ProductsContent {...props} />
+        </Suspense>
     );
 }

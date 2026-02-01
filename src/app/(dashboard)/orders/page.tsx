@@ -3,7 +3,11 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import OrdersTable from "./OrdersTable";
 
-export default async function OrdersPage(props: {
+import { Suspense } from "react";
+
+export const dynamic = "force-dynamic";
+
+async function OrdersContent(props: {
     searchParams: Promise<{ q?: string; status?: string; page?: string }>;
 }) {
     const searchParams = await props.searchParams;
@@ -88,5 +92,13 @@ export default async function OrdersPage(props: {
 
             <OrdersTable orders={orders} totalPages={totalPages} currentPage={page} />
         </div>
+    );
+}
+
+export default function OrdersPage(props: any) {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <OrdersContent {...props} />
+        </Suspense>
     );
 }

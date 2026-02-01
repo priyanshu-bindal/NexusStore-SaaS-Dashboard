@@ -2,8 +2,11 @@ import { getAddresses, deleteAddress } from "@/actions/addresses";
 import { Plus, MapPin, Trash2, Phone, Check } from "lucide-react";
 import { AddAddressModal } from "@/components/profile/AddAddressModal";
 import { ClientAddressWrapper } from "./ClientAddressWrapper";
+import { Suspense } from "react";
 
-export default async function AddressesPage() {
+export const dynamic = "force-dynamic";
+
+async function AddressesContent() {
     const addresses = await getAddresses();
 
     const formattedAddresses = addresses.map((address) => ({
@@ -22,5 +25,13 @@ export default async function AddressesPage() {
         <div className="max-w-full">
             <ClientAddressWrapper initialAddresses={formattedAddresses} />
         </div>
+    );
+}
+
+export default function AddressesPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <AddressesContent />
+        </Suspense>
     );
 }
