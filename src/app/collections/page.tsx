@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { SearchInput } from "@/components/shop/SearchInput";
 
+export const dynamic = "force-dynamic";
+
 export default function CollectionsPage() {
     const { count, setIsOpen } = useCart();
 
@@ -17,22 +19,22 @@ export default function CollectionsPage() {
             <nav className="fixed top-0 inset-x-0 z-[60] h-16 bg-white/90 backdrop-blur-md border-b border-white/10 transition-all duration-300">
                 <div className="max-w-[1440px] mx-auto px-6 h-full flex items-center justify-between">
                     {/* Left: Menu & Logo */}
-                   <div className="flex items-center gap-4">
-                    <button
-                        
-                        className="lg:hidden p-2 -ml-2 hover:bg-slate-100 rounded-full"
-                    >
-                        <Menu size={24} />
-                    </button>
-                    <Link href="/shop" className="flex items-center gap-3">
-                        <div className="bg-blue-600 p-2 rounded-xl shadow-lg">
-                            <svg className="size-6 text-white" fill="currentColor" viewBox="0 0 48 48">
-                                <path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
-                            </svg>
-                        </div>
-                        <span className="text-xl font-sans font-bold tracking-tight text-slate-900">Nexus<span className="text-blue-600">Store</span></span>
-                    </Link>
-                </div>
+                    <div className="flex items-center gap-4">
+                        <button
+
+                            className="lg:hidden p-2 -ml-2 hover:bg-slate-100 rounded-full"
+                        >
+                            <Menu size={24} />
+                        </button>
+                        <Link href="/shop" className="flex items-center gap-3">
+                            <div className="bg-blue-600 p-2 rounded-xl shadow-lg">
+                                <svg className="size-6 text-white" fill="currentColor" viewBox="0 0 48 48">
+                                    <path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
+                                </svg>
+                            </div>
+                            <span className="text-xl font-sans font-bold tracking-tight text-slate-900">Nexus<span className="text-blue-600">Store</span></span>
+                        </Link>
+                    </div>
 
                     {/* Center: Desktop Menu */}
                     <div className="hidden lg:flex items-center gap-8">
