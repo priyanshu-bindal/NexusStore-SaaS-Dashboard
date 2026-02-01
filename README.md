@@ -1,4 +1,4 @@
-# NexusStore
+    # NexusStore
 > A production-ready, multi-vendor e-commerce platform engineered with Next.js 16, Prisma 7, and PostgreSQL.
 
 NexusStore is a modern, high-performance e-commerce solution designed to handle complex business requirements, from multi-vendor product management to transactional email automation and real-time analytics.
@@ -74,7 +74,7 @@ Designed for conversion and usability.
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/yourusername/nexus-store.git
+    git clone https://github.com/priyanshu-bindal/NexusStore-SaaS-Dashboard.git
     cd nexus-store
     ```
 
