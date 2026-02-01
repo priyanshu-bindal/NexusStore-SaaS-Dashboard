@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { Prisma } from "@/generated/client";
+import { Prisma } from "@prisma/client";
 
 type GetProductsParams = {
     page?: number;

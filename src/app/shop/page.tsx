@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import ShopClient from "@/components/shop/ShopClient";
-import { Prisma } from "@/generated/client";
+import { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 

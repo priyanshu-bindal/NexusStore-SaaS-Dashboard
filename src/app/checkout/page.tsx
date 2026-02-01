@@ -260,7 +260,7 @@ export default function Checkout() {
                                     {items.map((item) => (
                                         <div key={`${item.id}-${item.size}`} className="flex gap-4">
                                             <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200">
-                                                <Image src={item.image} alt={item.name} fill className="object-cover" />
+                                                <Image src={item.image ?? "/placeholder.jpg"} alt={item.name} fill className="object-cover" />
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <h3 className="font-medium text-slate-900 text-sm truncate">{item.name}</h3>

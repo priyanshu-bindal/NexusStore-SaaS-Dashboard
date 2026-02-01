@@ -1,5 +1,5 @@
 
-import { PrismaClient } from '../src/generated/client';
+import { PrismaClient } from '@prisma/client';
 import "dotenv/config";
 
 const prisma = new PrismaClient();
@@ -22,7 +22,7 @@ async function main() {
     console.log(`Found ${products.length} products with broken image.`);
 
     for (const product of products) {
-        const newImages = product.images.map(img =>
+        const newImages = product.images.map((img: string) =>
             img.includes(BROKEN_URL) ? REPLACEMENT_URL : img
         );
 
