@@ -132,6 +132,21 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AddressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  street: 'street',
+  city: 'city',
+  state: 'state',
+  zip: 'zip',
+  country: 'country',
+  phone: 'phone',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.StoreScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -193,6 +208,7 @@ exports.Prisma.OrderScalarFieldEnum = {
   status: 'status',
   fulfillmentStatus: 'fulfillmentStatus',
   userId: 'userId',
+  shippingAddress: 'shippingAddress',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -221,9 +237,23 @@ exports.Prisma.VisitScalarFieldEnum = {
   storeId: 'storeId'
 };
 
+exports.Prisma.ReviewScalarFieldEnum = {
+  id: 'id',
+  rating: 'rating',
+  comment: 'comment',
+  userId: 'userId',
+  productId: 'productId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -235,6 +265,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
 exports.Role = exports.$Enums.Role = {
   CUSTOMER: 'CUSTOMER',
   MERCHANT: 'MERCHANT'
@@ -242,6 +278,7 @@ exports.Role = exports.$Enums.Role = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Address: 'Address',
   Store: 'Store',
   Product: 'Product',
   Account: 'Account',
@@ -250,7 +287,8 @@ exports.Prisma.ModelName = {
   Order: 'Order',
   TimelineEvent: 'TimelineEvent',
   OrderItem: 'OrderItem',
-  Visit: 'Visit'
+  Visit: 'Visit',
+  Review: 'Review'
 };
 
 /**

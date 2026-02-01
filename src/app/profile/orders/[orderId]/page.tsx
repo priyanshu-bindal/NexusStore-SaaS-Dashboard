@@ -38,14 +38,26 @@ export default async function OrderDetailsPage({
 
     // Mock Address (Schema doesn't seem to have address relation yet based on previous context, using static or user data)
     // If address exists on Order model, use it. Otherwise placeholder.
-    const address = {
-        name: session.user.name || "Alex Morgan",
-        line1: "123 Luxury Avenue, Apt 4B",
-        city: "New York",
-        state: "NY",
-        zip: "10001",
-        country: "United States",
-        phone: "+1 (555) 123-4567"
+    // Parse Address from JSON
+    const shippingAddress = order.shippingAddress as any;
+
+    // Default fallback if no address saved (backwards compatibility)
+    const addressData = shippingAddress ? {
+        name: shippingAddress.name,
+        street: shippingAddress.street,
+        city: shippingAddress.city,
+        state: shippingAddress.state,
+        zip: shippingAddress.zip,
+        country: shippingAddress.country,
+        phone: shippingAddress.phone
+    } : {
+        name: session.user.name || "N/A",
+        street: "No address recorded",
+        city: "",
+        state: "",
+        zip: "",
+        country: "",
+        phone: ""
     };
 
     // Determine layout based on status
@@ -283,13 +295,13 @@ export default async function OrderDetailsPage({
                             <h3 className="text-base font-bold text-slate-900">Shipping Address</h3>
                         </div>
                         <div className="p-6">
-                            <p className="text-sm font-bold text-slate-900 mb-1">{address.name}</p>
+                            <p className="text-sm font-bold text-slate-900 mb-1">{addressData.name}</p>
                             <p className="text-sm text-slate-500 leading-relaxed">
-                                {address.line1}<br />
-                                {address.city}, {address.state} {address.zip}<br />
-                                {address.country}
+                                {addressData.street}<br />
+                                {addressData.city}, {addressData.state} {addressData.zip}<br />
+                                {addressData.country}
                             </p>
-                            <p className="text-sm text-slate-500 mt-2">{address.phone}</p>
+                            <p className="text-sm text-slate-500 mt-2">{addressData.phone}</p>
                         </div>
                     </div>
                 </div>

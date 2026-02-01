@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { User, Package2, Settings, LogOut } from "lucide-react";
+import { User, Package2, Settings, LogOut, MapPin } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
@@ -59,6 +59,19 @@ export function ProfileSidebar() {
                     >
                         <Package2 size={20} className={cn("transition-colors", isActive("/profile/orders") ? "text-blue-600" : "text-slate-400 group-hover:text-slate-900")} />
                         <span className="text-sm font-medium">Orders</span>
+                    </Link>
+
+                    <Link
+                        href="/profile/addresses"
+                        className={cn(
+                            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group",
+                            isActive("/profile/addresses")
+                                ? "bg-blue-50 text-blue-600"
+                                : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                        )}
+                    >
+                        <MapPin size={20} className={cn("transition-colors", isActive("/profile/addresses") ? "text-blue-600" : "text-slate-400 group-hover:text-slate-900")} />
+                        <span className="text-sm font-medium">Addresses</span>
                     </Link>
 
                     <Link

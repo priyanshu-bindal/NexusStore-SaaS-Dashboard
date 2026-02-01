@@ -29,12 +29,14 @@ interface Product {
     isBestSeller?: boolean;
 }
 
+import { StarRating } from "@/components/reviews/StarRating";
+
 interface ProductDetailsProps {
     product: Product;
     relatedProducts: Product[];
+    avgRating: number;
+    totalReviews: number;
 }
-
-// -- Components --
 
 const AccordionItem = ({ title, children, isOpen, onClick }: { title: string, children: React.ReactNode, isOpen: boolean, onClick: () => void }) => (
     <div className="border-b border-gray-200">
@@ -55,18 +57,7 @@ const AccordionItem = ({ title, children, isOpen, onClick }: { title: string, ch
     </div>
 );
 
-const StarRating = ({ rating, count }: { rating: number, count: number }) => (
-    <div className="flex items-center gap-2">
-        <div className="flex text-yellow-400">
-            {[...Array(5)].map((_, i) => (
-                <Star key={i} className={`size-4 ${i < Math.floor(rating) ? 'fill-current' : 'text-gray-300 fill-gray-100'}`} strokeWidth={0} />
-            ))}
-        </div>
-        {count && <span className="text-sm text-gray-500 font-medium">({count} reviews)</span>}
-    </div>
-);
-
-export default function ProductDetails({ product, relatedProducts }: ProductDetailsProps) {
+export default function ProductDetails({ product, relatedProducts, avgRating, totalReviews }: ProductDetailsProps) {
     // State
     const [mainImage, setMainImage] = useState(product.images?.[0] || "");
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -99,19 +90,21 @@ export default function ProductDetails({ product, relatedProducts }: ProductDeta
             <nav className="fixed top-0 inset-x-0 z-[60] h-16 bg-white/90 backdrop-blur-md border-b border-gray-200 transition-all duration-300">
                 <div className="max-w-[1440px] mx-auto px-6 h-full flex items-center justify-between">
                     {/* Left: Menu & Logo */}
-                    <div className="flex items-center gap-4">
-                        <button className="lg:hidden p-2 -ml-2 hover:bg-slate-100 rounded-full">
-                            <Menu size={24} />
-                        </button>
-                        <Link href="/" className="flex items-center gap-2 text-[#2563eb]">
-                            <div className="size-8">
-                                <svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
-                                </svg>
-                            </div>
-                            <span className="font-bold text-xl tracking-tight hidden sm:block text-slate-900">NexusStore</span>
-                        </Link>
-                    </div>
+                   <div className="flex items-center gap-4">
+                    <button
+                        className="lg:hidden p-2 -ml-2 hover:bg-slate-100 rounded-full"
+                    >
+                        <Menu size={24} />
+                    </button>
+                    <Link href="/shop" className="flex items-center gap-3">
+                        <div className="bg-blue-600 p-2 rounded-xl shadow-lg">
+                            <svg className="size-6 text-white" fill="currentColor" viewBox="0 0 48 48">
+                                <path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
+                            </svg>
+                        </div>
+                        <span className="text-xl font-sans font-bold tracking-tight text-slate-900">Nexus<span className="text-blue-600">Store</span></span>
+                    </Link>
+                </div>
 
                     {/* Center: Desktop Menu */}
                     <div className="hidden lg:flex items-center gap-8">
@@ -234,7 +227,10 @@ export default function ProductDetails({ product, relatedProducts }: ProductDeta
                                         ${product.price ? product.price.toFixed(2) : "0.00"}
                                     </span>
                                     <div className="h-6 w-px bg-gray-200 mx-2"></div>
-                                    <StarRating rating={4.8} count={124} /> {/* Hardcoded reviews for demo */}
+                                    <div className="flex items-center gap-2">
+                                        <StarRating rating={avgRating} size={18} />
+                                        <span className="text-sm text-gray-500 font-medium">({totalReviews} reviews)</span>
+                                    </div>
                                 </div>
                             </div>
 

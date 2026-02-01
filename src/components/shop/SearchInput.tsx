@@ -11,12 +11,17 @@ export function SearchInput() {
 
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams);
+
+        // Reset page on new search
+        params.delete("page");
+
         if (term) {
             params.set("q", term);
+            // Remove category when searching to search the whole store
+            params.delete("category");
         } else {
             params.delete("q");
         }
-        params.set("page", "1");
 
         if (pathname === "/shop") {
             router.replace(`${pathname}?${params.toString()}`, { scroll: false });

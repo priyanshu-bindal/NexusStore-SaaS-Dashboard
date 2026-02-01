@@ -226,6 +226,7 @@ export default async function OrderDetailsPage(props: {
                         </div>
                     </div>
 
+
                     {/* Shipping Address */}
                     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
                         <div className="flex items-center justify-between mb-4">
@@ -234,12 +235,19 @@ export default async function OrderDetailsPage(props: {
                                 <Truck size={18} />
                             </button>
                         </div>
-                        <div className="text-sm text-slate-600 leading-relaxed">
-                            <p className="font-medium text-slate-900">Alex Johnson</p>
-                            <p>123 Innovation Drive, Suite 400</p>
-                            <p>San Francisco, CA 94103</p>
-                            <p>United States</p>
-                        </div>
+                        {order.shippingAddress ? (
+                            <div className="text-sm text-slate-600 leading-relaxed">
+                                <p className="font-medium text-slate-900">{(order.shippingAddress as any).name}</p>
+                                <p>{(order.shippingAddress as any).street}</p>
+                                <p>{(order.shippingAddress as any).city}, {(order.shippingAddress as any).state} {(order.shippingAddress as any).zip}</p>
+                                <p>{(order.shippingAddress as any).country}</p>
+                                {(order.shippingAddress as any).phone && <p className="mt-2">{(order.shippingAddress as any).phone}</p>}
+                            </div>
+                        ) : (
+                            <div className="text-sm text-slate-500 italic">
+                                No shipping address recorded for this order.
+                            </div>
+                        )}
                     </div>
 
                     {/* Payment Summary */}

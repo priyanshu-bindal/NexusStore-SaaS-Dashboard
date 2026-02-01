@@ -4,8 +4,14 @@
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
+import { Resend } from "resend";
+import { OrderConfirmation } from "@/emails/OrderConfirmation";
+import { OrderStatusEmail } from "@/emails/OrderStatusEmail";
 
-export async function createOrder(items: { productId: string; quantity: number; size?: string }[]) {
+export async function createOrder(
+    items: { productId: string; quantity: number; size?: string }[],
+    shippingAddress: any
+) {
     try {
         const session = await auth();
 
@@ -85,9 +91,51 @@ export async function createOrder(items: { productId: string; quantity: number; 
                     userId: session?.user?.id,
                     orderItems: {
                         create: orderItemsData
-                    }
+                    },
+                    shippingAddress: shippingAddress
                 }
             });
+
+            // 4. Send Confirmation Email
+            try {
+                // Fetch full order details with product names
+                const fullOrder = await tx.order.findUnique({
+                    where: { id: order.id },
+                    include: {
+                        orderItems: {
+                            include: {
+                                product: true
+                            }
+                        }
+                    }
+                });
+
+                if (fullOrder && process.env.RESEND_API_KEY) {
+                    const resend = new Resend(process.env.RESEND_API_KEY);
+
+                    await resend.emails.send({
+                        from: "NexusStore <onboarding@resend.dev>",
+                        to: "delivered@resend.dev", // Replace with session?.user?.email in production
+                        subject: `Order Confirmed: #${order.id}`,
+                        react: OrderConfirmation({
+                            orderId: order.id,
+                            totalAmount: Number(order.totalAmount),
+                            shippingAddress: typeof order.shippingAddress === 'string'
+                                ? JSON.parse(order.shippingAddress)
+                                : order.shippingAddress as any,
+                            items: fullOrder.orderItems.map(item => ({
+                                productName: item.product.name,
+                                quantity: item.quantity,
+                                price: Number(item.price),
+                                size: item.size || undefined
+                            }))
+                        })
+                    });
+                }
+            } catch (emailError) {
+                console.error("Failed to send email:", emailError);
+                // Don't fail the order if email fails
+            }
 
             return { success: true, orderId: order.id };
         });
@@ -144,9 +192,10 @@ export async function updateOrderStatus(orderId: string, newStatus: string, fulf
                 dataToUpdate.fulfillmentStatus = fulfillmentStatus;
             }
 
-            await tx.order.update({
+            const updatedOrder = await tx.order.update({
                 where: { id: orderId },
                 data: dataToUpdate,
+                include: { user: true } // Include user to get email
             });
 
             // Create Timeline Event
@@ -157,6 +206,30 @@ export async function updateOrderStatus(orderId: string, newStatus: string, fulf
                     note: `Status updated to ${newStatus}`
                 }
             });
+
+            // 4. Send Status Email (SHIPPED or DELIVERED)
+            if ((newStatus === "SHIPPED" || newStatus === "DELIVERED") && updatedOrder.user?.email && process.env.RESEND_API_KEY) {
+                try {
+                    const resend = new Resend(process.env.RESEND_API_KEY);
+
+                    await resend.emails.send({
+                        from: "NexusStore <onboarding@resend.dev>",
+                        to: "delivered@resend.dev", // Replace with updatedOrder.user.email in production
+                        subject: newStatus === "SHIPPED"
+                            ? `Your Order #${orderId} is on the way!`
+                            : `Your Order #${orderId} has been delivered!`,
+                        react: OrderStatusEmail({
+                            orderId: orderId,
+                            customerName: updatedOrder.user.name || "Customer",
+                            newStatus: newStatus as "SHIPPED" | "DELIVERED",
+                            // In a real app, you'd pass tracking info here if available
+                        })
+                    });
+                    console.log(`Email sent for status: ${newStatus}`);
+                } catch (emailError) {
+                    console.error("Failed to send status email:", emailError);
+                }
+            }
         });
 
         console.log("Update Success");

@@ -30,6 +30,26 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  addresses Address[]
+  reviews   Review[]
+}
+
+model Address {
+  id        String  @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  street    String
+  city      String
+  state     String
+  zip       String
+  country   String
+  phone     String?
+  isDefault Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Store {
@@ -62,6 +82,7 @@ model Product {
   store   Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
   orderItems OrderItem[]
+  reviews    Review[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -111,6 +132,7 @@ model Order {
   fulfillmentStatus String      @default("Unfulfilled")
   userId            String?
   user              User?       @relation(fields: [userId], references: [id])
+  shippingAddress   Json? // Stores snapshot of address at time of purchase
   orderItems        OrderItem[]
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @default(now()) @updatedAt
@@ -143,4 +165,17 @@ model Visit {
   createdAt DateTime @default(now())
   ipHash    String?
   storeId   String?
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int // 1-5
+  comment   String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
 }

@@ -21,6 +21,7 @@ interface OrderData {
             images: string[];
         };
     }>;
+    shippingAddress: any;
 }
 
 export default function OrderSuccessPage() {
@@ -189,9 +190,15 @@ export default function OrderSuccessPage() {
                                         Shipping Address
                                     </div>
                                     <address className="not-italic text-sm text-slate-900 leading-relaxed">
-                                        John Doe<br />
-                                        123 Nexus Way<br />
-                                        San Francisco, CA 94103
+                                        {orderData.shippingAddress ? (
+                                            <>
+                                                <span className="font-bold block mb-1">{(orderData.shippingAddress as any).name}</span>
+                                                {(orderData.shippingAddress as any).street}<br />
+                                                {(orderData.shippingAddress as any).city}, {(orderData.shippingAddress as any).state} {(orderData.shippingAddress as any).zip}
+                                            </>
+                                        ) : (
+                                            <span className="text-slate-500 italic">No address provided</span>
+                                        )}
                                     </address>
                                 </div>
                             </div>
