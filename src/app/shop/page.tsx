@@ -1,10 +1,11 @@
 import { db } from "@/lib/db";
 import ShopClient from "@/components/shop/ShopClient";
 import { Prisma } from "@prisma/client";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
-export default async function ShopPage({
+async function ShopContent({
     searchParams,
 }: {
     searchParams: Promise<{

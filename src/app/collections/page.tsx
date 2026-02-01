@@ -8,9 +8,11 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { SearchInput } from "@/components/shop/SearchInput";
 
+import { Suspense } from "react";
+
 export const dynamic = "force-dynamic";
 
-export default function CollectionsPage() {
+function CollectionsContent() {
     const { count, setIsOpen } = useCart();
 
     return (
