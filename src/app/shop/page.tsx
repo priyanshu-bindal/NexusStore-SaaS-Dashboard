@@ -101,3 +101,11 @@ async function ShopContent({
         />
     );
 }
+
+export default function ShopPage(props: any) {
+    return (
+        <Suspense fallback={<div className="flex justify-center p-10">Loading products...</div>}>
+            <ShopContent {...props} />
+        </Suspense>
+    );
+}

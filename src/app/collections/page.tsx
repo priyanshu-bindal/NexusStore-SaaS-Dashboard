@@ -125,3 +125,11 @@ function CollectionsContent() {
         </div>
     );
 }
+
+export default function CollectionsPage() {
+    return (
+        <Suspense fallback={<div className="flex justify-center p-10">Loading...</div>}>
+            <CollectionsContent />
+        </Suspense>
+    );
+}
