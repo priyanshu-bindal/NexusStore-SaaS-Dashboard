@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NexusStore
+> A production-ready, multi-vendor e-commerce platform engineered with Next.js 16, Prisma 7, and PostgreSQL.
 
-## Getting Started
+NexusStore is a modern, high-performance e-commerce solution designed to handle complex business requirements, from multi-vendor product management to transactional email automation and real-time analytics.
 
-First, run the development server:
+## 🛠 Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Core:**
+-   ![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat&logo=next.js&logoColor=white) **App Router & Server Actions**
+-   ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white) 
+-   ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)
+-   ![Prisma](https://img.shields.io/badge/Prisma_7-2D3748?style=flat&logo=prisma&logoColor=white)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**UI & Styling:**
+-   ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
+-   **Shadcn UI** (Component Library)
+-   **Lucide React** (Iconography)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Infrastructure & Services:**
+-   **UploadThing** (Scalable File Storage)
+-   **Resend** (Transactional Emails)
+-   **React Email** (Email Templates)
+-   **Recharts** (Data Visualization)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Authentication:**
+-   Custom Auth with **NIST-compliant** password hashing (bcrypt).
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ✨ Key Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🏢 Merchant Dashboard
+A comprehensive command center for store owners.
+-   **Product Management:** Full CRUD capabilities with drag-and-drop image uploading via UploadThing.
+-   **Visual Analytics:** Real-time sales trend visualization and KPI tracking using Recharts.
+-   **Order Fulfillment:** streamlined workflow to manage orders, update statuses (Shipped/Delivered), and trigger automated notifications.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🛍️ Customer Experience
+Designed for conversion and usability.
+-   **Advanced Search & Filtering:** High-performance filtering system maintaining state via URL search parameters, enabling deep-linking and shareability.
+-   **Real-time Ratings:** Dynamic review system aggregating 1-5 star ratings directly from the database using Prisma aggregations.
+-   **Secure Checkout:** Robust cart management and checkout flow ensuring data integrity.
 
-## Deploy on Vercel
+### 📍 Address Book System
+-   Complete address management (CRUD).
+-   **Transaction Safety:** Atomic database transactions ensure "Set as Default" logic correctly toggles flags across multiple records.
+-   **Order Snapshots:** Addresses are snapshotted at the time of purchase to preserve historical order accuracy even if user profile data changes.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 📧 Automated Communications
+-   **Transactional Emails:** HTML templates rendered with React Email and sent via Resend.
+    -   Order Confirmations
+    -   Shipping Updates (with tracking context)
+    -   Delivery Notifications
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🧠 Complex Engineering Challenges
+
+### 1. Snapshotting vs. Referencing
+**Challenge:** Ensuring that historical orders remain accurate even if a user changes their address or a product price updates.
+**Solution:** Implemented **Data Snapshotting** in the Prisma schema (`shippingAddress` JSON field on Order, `price` on OrderItem). This creates an immutable record of the transaction state at the moment of purchase, rather than referencing mutable profile data.
+
+### 2. High-Performance URL State Management
+**Challenge:** Creating a filterable product grid (Category, Price, Sort) that is SEO-friendly and shareable.
+**Solution:** Avoided local React state for filter data. Instead, utilized `useSearchParams` and `useRouter` to push state to the URL. Server Components then read directly from search params to fetch filtered data, ensuring standard browser navigation (Back/Forward) works out of the box.
+
+### 3. Server-Side Data Aggregation
+**Challenge:** Efficiently calculating average product ratings without fetching all reviews to the client.
+**Solution:** Leveraged Prisma's `aggregate` API (`_avg`, `_count`) within Server Server Actions. This creates a highly performant summary query that runs at the database level, returning only the necessary metrics to the frontend.
+
+---
+
+## 🚀 Getting Started
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/nexus-store.git
+    cd nexus-store
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Environment Setup**
+    Create a `.env` file and add your credentials:
+    ```env
+    DATABASE_URL="postgresql://..."
+    RESEND_API_KEY="re_..."
+    UPLOADTHING_SECRET="..."
+    UPLOADTHING_APP_ID="..."
+    NEXTAUTH_SECRET="..."
+    ```
+
+4.  **Database Migration**
+    Push the schema to your database:
+    ```bash
+    npx prisma db push
+    ```
+
+5.  **Run the application**
+    ```bash
+    npm run dev
+    ```
+
+---
+
+## 📄 License
+[MIT](LICENSE)
