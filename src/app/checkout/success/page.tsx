@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -24,7 +24,7 @@ interface OrderData {
     shippingAddress: any;
 }
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
     const searchParams = useSearchParams();
     const orderId = searchParams.get("orderId");
     const [orderData, setOrderData] = useState<OrderData | null>(null);
@@ -39,15 +39,8 @@ export default function OrderSuccessPage() {
 
             try {
                 const response = await fetch(`/api/orders/${orderId}`);
-
-                if (!response.ok) {
-                    setOrderData(null);
-                    return;
-                }
-
                 const data = await response.json();
 
-                // Check if response contains an error
                 if (!response.ok || data.error) {
                     console.error("Failed to fetch order:", data.error || "Unknown error");
                     setOrderData(null);
@@ -64,15 +57,6 @@ export default function OrderSuccessPage() {
 
         fetchOrder();
     }, [orderId]);
-
-    // Calculate delivery date (3-5 days from now)
-    const deliveryDate = new Date();
-    deliveryDate.setDate(deliveryDate.getDate() + 4);
-    const formattedDeliveryDate = deliveryDate.toLocaleDateString('en-US', {
-        weekday: 'long',
-        month: 'short',
-        day: 'numeric'
-    });
 
     // Animation variants
     const containerVariants = {
@@ -115,6 +99,15 @@ export default function OrderSuccessPage() {
             </div>
         );
     }
+
+    // Calculate delivery date based on Order Creation time
+    const deliveryDate = new Date(orderData.createdAt);
+    deliveryDate.setDate(deliveryDate.getDate() + 4);
+    const formattedDeliveryDate = deliveryDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric'
+    });
 
     const subtotal = orderData.orderItems.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0);
     const tax = subtotal * 0.08;
@@ -290,5 +283,17 @@ export default function OrderSuccessPage() {
                 </div>
             </footer>
         </div>
+    );
+}
+
+export default function OrderSuccessPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+            </div>
+        }>
+            <OrderSuccessContent />
+        </Suspense>
     );
 }

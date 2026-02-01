@@ -7,7 +7,7 @@ import { Check, ChevronRight, CreditCard, Lock, Loader2, MapPin, Plus } from "lu
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { AddAddressModal } from "@/components/profile/AddAddressModal";
 
 type Address = {

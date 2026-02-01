@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 export async function addReview(productId: string, rating: number, comment: string) {
     const session = await auth();
 
-    if (!session || !session.user) {
+    if (!session || !session.user || !session.user.id) {
         return { error: "You must be logged in to review a product." };
     }
 
@@ -19,12 +19,10 @@ export async function addReview(productId: string, rating: number, comment: stri
         const userId = session.user.id;
 
         // Check if user already reviewed
-        const existingReview = await db.review.findUnique({
+        const existingReview = await db.review.findFirst({
             where: {
-                userId_productId: {
-                    userId,
-                    productId,
-                },
+                userId,
+                productId,
             },
         });
 
