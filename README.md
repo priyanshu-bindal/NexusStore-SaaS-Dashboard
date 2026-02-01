@@ -108,3 +108,7 @@ Designed for conversion and usability.
 
 ## 📄 License
 [MIT](LICENSE)
+
+<br/>
+
+> **Disclaimer:** This is a personal portfolio project for educational purposes. It is not affiliated with any existing business named NexusStore.
