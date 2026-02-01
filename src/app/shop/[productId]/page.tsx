@@ -11,9 +11,9 @@ import { getProductReviews } from "@/actions/review";
 import { auth } from "@/auth";
 
 interface ProductPageProps {
-    params: {
+    params: Promise<{
         productId: string;
-    };
+    }>;
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
