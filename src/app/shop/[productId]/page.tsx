@@ -19,20 +19,28 @@ interface ProductPageProps {
 export default async function ProductPage({ params }: ProductPageProps) {
     const { productId } = await params;
 
-    // 1. Fetch Product and Recommendations in parallel using hybrid algorithm
-    const [product, relatedProducts] = await Promise.all([
+    // Fetch Product, Recommendations, and Aggregated Rating in parallel
+    const [product, relatedProducts, reviewStats] = await Promise.all([
         db.product.findUnique({
             where: { id: productId },
             include: { store: true }
         }),
-        getProductRecommendations(productId, 4) // Hybrid scoring: 40% category, 20% price, 15% brand, 15% attributes, 10% popularity
+        getProductRecommendations(productId, 4), // Hybrid scoring
+        db.review.aggregate({
+            where: { productId },
+            _avg: { rating: true },
+            _count: { id: true },
+        })
     ]);
 
     if (!product) {
         notFound();
     }
 
-    // 3. Serialize Data
+    const avgRating = reviewStats._avg.rating || 0;
+    const totalReviews = reviewStats._count.id || 0;
+
+    // Serialize Data
     // We sanitize nulls to empty strings for specific fields to satisfy component props
     const serializedProduct = {
         ...product,
@@ -52,15 +60,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
         category: p.category || "",
         brand: p.brand || ""
     }));
-
-    // 2. Fetch Aggregated Rating
-    const reviewStats = await db.review.aggregate({
-        where: { productId },
-        _avg: { rating: true },
-        _count: { id: true },
-    });
-    const avgRating = reviewStats._avg.rating || 0;
-    const totalReviews = reviewStats._count.id || 0;
 
     return (
         <div className="min-h-screen bg-white">

@@ -36,6 +36,9 @@ export default function Checkout() {
 
     // Fetch addresses on mount
     useEffect(() => {
+        // Pre-fetch the success page bundle so it's instantly available after the API call
+        router.prefetch('/checkout/success');
+
         async function fetchAddresses() {
             try {
                 const fetchedAddresses = await getAddresses();
@@ -55,7 +58,7 @@ export default function Checkout() {
             }
         }
         fetchAddresses();
-    }, [isAddressModalOpen]); // Re-fetch when modal closes
+    }, [isAddressModalOpen, router]); // Re-fetch when modal closes
 
     const handlePlaceOrder = async () => {
         if (items.length === 0) return;

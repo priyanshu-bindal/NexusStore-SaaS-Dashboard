@@ -40,6 +40,7 @@ export async function createOrder(
             // 2. Validate Stock & Calculate Total
             let totalAmount = 0;
             const orderItemsData = [];
+            const stockUpdatePromises = [];
 
             for (const item of items) {
                 const product = products.find(p => p.id === item.productId);
@@ -63,24 +64,27 @@ export async function createOrder(
                     size: item.size // Add size here
                 });
 
-                // Decrement Stock
-                const updatedProduct = await tx.product.update({
-                    where: { id: product.id },
-                    data: { stock: { decrement: item.quantity } }
-                });
+                // Instead of sequentially awaiting the updates, prepare promises
+                const isOutOfStock = product.stock - item.quantity === 0;
 
-                // Auto-Status Update: If stock hits 0, set to OUT_OF_STOCK
-                if (updatedProduct.stock === 0) {
-                    await tx.product.update({
+                stockUpdatePromises.push(
+                    tx.product.update({
                         where: { id: product.id },
-                        data: { status: 'OUT_OF_STOCK' }
-                    });
-                }
+                        data: {
+                            stock: { decrement: item.quantity },
+                            // Auto-Status Update: If stock hits 0, set to OUT_OF_STOCK simultaneously
+                            ...(isOutOfStock && { status: 'OUT_OF_STOCK' })
+                        }
+                    })
+                );
             }
 
             if (orderItemsData.length === 0) {
                 throw new Error("No valid products found");
             }
+
+            // Execute all stock decrements concurrently
+            await Promise.all(stockUpdatePromises);
 
             // 3. Create Order
             const order = await tx.order.create({
@@ -96,7 +100,7 @@ export async function createOrder(
                 }
             });
 
-            // 4. Send Confirmation Email
+            // 4. Send Confirmation Email (Fire and forget)
             try {
                 // Fetch full order details with product names
                 const fullOrder = await tx.order.findUnique({
@@ -113,7 +117,8 @@ export async function createOrder(
                 if (fullOrder && process.env.RESEND_API_KEY) {
                     const resend = new Resend(process.env.RESEND_API_KEY);
 
-                    await resend.emails.send({
+                    // FIRE AND FORGET - Do not await
+                    resend.emails.send({
                         from: "NexusStore <onboarding@resend.dev>",
                         to: "delivered@resend.dev", // Replace with session?.user?.email in production
                         subject: `Order Confirmed: #${order.id}`,
@@ -130,11 +135,12 @@ export async function createOrder(
                                 size: item.size || undefined
                             }))
                         })
+                    }).catch(emailError => {
+                        console.error("Background email send failed:", emailError);
                     });
                 }
-            } catch (emailError) {
-                console.error("Failed to send email:", emailError);
-                // Don't fail the order if email fails
+            } catch (authFetchError) {
+                console.error("Failed to fetch full order for email:", authFetchError);
             }
 
             return { success: true, orderId: order.id };
@@ -144,9 +150,12 @@ export async function createOrder(
         console.error("Create Order Error:", error);
         return { error: error.message || "Failed to create order" };
     } finally {
-        revalidatePath("/orders");
-        revalidatePath("/dashboard");
-        revalidatePath("/dashboard/products");
+        // Fire and forget revalidation
+        Promise.all([
+            revalidatePath("/orders"),
+            revalidatePath("/dashboard"),
+            revalidatePath("/dashboard/products")
+        ]).catch(err => console.error(err));
     }
 }
 
@@ -166,7 +175,6 @@ export async function updateOrderStatus(orderId: string, newStatus: string, fulf
             if (!order) throw new Error("Order not found");
 
             // 2. Handle Cancellation Reversal (Stock Restoration)
-            // Only restore if transitioning TO CANCELLED and wasn't ALREADY CANCELLED
             if (newStatus === 'CANCELLED' && order.status !== 'CANCELLED') {
                 console.log("Restoring stock for cancelled order:", orderId);
 
@@ -176,7 +184,6 @@ export async function updateOrderStatus(orderId: string, newStatus: string, fulf
                         data: { stock: { increment: item.quantity } }
                     });
 
-                    // Auto-Status Update: If stock > 0, set back to ACTIVE
                     if (restoredProduct.stock > 0 && restoredProduct.status === 'OUT_OF_STOCK') {
                         await tx.product.update({
                             where: { id: item.productId },
@@ -195,10 +202,9 @@ export async function updateOrderStatus(orderId: string, newStatus: string, fulf
             const updatedOrder = await tx.order.update({
                 where: { id: orderId },
                 data: dataToUpdate,
-                include: { user: true } // Include user to get email
+                include: { user: true }
             });
 
-            // Create Timeline Event
             await tx.timelineEvent.create({
                 data: {
                     orderId: orderId,
@@ -207,36 +213,36 @@ export async function updateOrderStatus(orderId: string, newStatus: string, fulf
                 }
             });
 
-            // 4. Send Status Email (SHIPPED or DELIVERED)
+            // 4. Send Status Email (SHIPPED or DELIVERED) - Fire and forget
             if ((newStatus === "SHIPPED" || newStatus === "DELIVERED") && updatedOrder.user?.email && process.env.RESEND_API_KEY) {
-                try {
-                    const resend = new Resend(process.env.RESEND_API_KEY);
+                const resend = new Resend(process.env.RESEND_API_KEY);
 
-                    await resend.emails.send({
-                        from: "NexusStore <onboarding@resend.dev>",
-                        to: "delivered@resend.dev", // Replace with updatedOrder.user.email in production
-                        subject: newStatus === "SHIPPED"
-                            ? `Your Order #${orderId} is on the way!`
-                            : `Your Order #${orderId} has been delivered!`,
-                        react: OrderStatusEmail({
-                            orderId: orderId,
-                            customerName: updatedOrder.user.name || "Customer",
-                            newStatus: newStatus as "SHIPPED" | "DELIVERED",
-                            // In a real app, you'd pass tracking info here if available
-                        })
-                    });
-                    console.log(`Email sent for status: ${newStatus}`);
-                } catch (emailError) {
-                    console.error("Failed to send status email:", emailError);
-                }
+                resend.emails.send({
+                    from: "NexusStore <onboarding@resend.dev>",
+                    to: "delivered@resend.dev", // Replace with updatedOrder.user.email in production
+                    subject: newStatus === "SHIPPED"
+                        ? `Your Order #${orderId} is on the way!`
+                        : `Your Order #${orderId} has been delivered!`,
+                    react: OrderStatusEmail({
+                        orderId: orderId,
+                        customerName: updatedOrder.user.name || "Customer",
+                        newStatus: newStatus as "SHIPPED" | "DELIVERED",
+                    })
+                }).catch(emailError => {
+                    console.error(`Background email send failed for status ${newStatus}:`, emailError);
+                });
             }
         });
 
         console.log("Update Success");
 
-        revalidatePath(`/orders/${orderId}`);
-        revalidatePath("/orders");
-        revalidatePath("/dashboard/products"); // Ensure inventory reflects changes
+        // Fire and forget revalidation
+        Promise.all([
+            revalidatePath(`/orders/${orderId}`),
+            revalidatePath("/orders"),
+            revalidatePath("/dashboard/products")
+        ]).catch(err => console.error(err));
+
         return { success: true };
     } catch (error) {
         console.error("Failed to update status:", error);
