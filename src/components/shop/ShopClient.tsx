@@ -125,7 +125,7 @@ function ShopClientContent({ products: initialProducts, totalPages = 1, currentP
                 {!isFiltered && (
                     <div className="animate-in fade-in duration-700">
                         <HeroGrid />
-                        <div className="mt-8">
+                        <div className="">
                             <MiniBannerGrid />
                             <CategoryBanner />
                             <SplitFeatureBanner />

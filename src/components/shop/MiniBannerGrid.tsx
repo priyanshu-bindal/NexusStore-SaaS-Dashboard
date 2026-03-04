@@ -56,26 +56,25 @@ const miniBanners = [
 
 export default function MiniBannerGrid() {
     return (
-        <section className="w-full py-8 bg-white max-w-[1440px] mx-auto px-4 md:px-8">
-            <h2 className="text-xl font-bold mb-6">Explore More</h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <section className="w-full px-6 md:px-12 lg:px-20  mx-auto bg-[#F8F8F6]">
+            <div className="mb-6">
+                <span className="uppercase tracking-[0.2em] text-xs text-[#64748B] block mb-1">EXPLORE COLLECTIONS</span>
+                <h2 className="text-3xl font-bold text-[#0F172A] mb-6">Explore More</h2>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {miniBanners.map((banner) => (
                     <Link
                         key={banner.id}
                         href={banner.href}
-                        className="group relative h-48 md:h-64 rounded-xl overflow-hidden block"
+                        className="group relative h-[220px] rounded-2xl overflow-hidden block cursor-pointer"
                     >
                         <div
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                             style={{ backgroundImage: `url('${banner.image}')` }}
                         />
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-100" />
                         <div className="absolute inset-x-0 bottom-0 p-4">
-                            <h3 className="text-white font-bold text-lg mb-1">{banner.title}</h3>
-                            <div className="flex items-center gap-2 text-white/80 text-xs font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all">
-                                <span>Shop Now</span>
-                                <ArrowRight size={12} />
-                            </div>
+                            <h3 className="text-white font-bold text-lg">{banner.title}</h3>
                         </div>
                     </Link>
                 ))}

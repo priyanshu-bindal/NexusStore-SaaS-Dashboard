@@ -11,7 +11,7 @@ export function ShopHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <nav className="fixed top-0 inset-x-0 z-[60] h-16 bg-white/90 backdrop-blur-md border-b border-white/10 transition-all duration-300">
+        <nav className="fixed top-0 inset-x-0 z-[60] h-16 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-none transition-all duration-300">
             <div className="max-w-[1440px] mx-auto px-6 h-full flex items-center justify-between">
                 {/* Left: Menu & Logo */}
                 <div className="flex items-center gap-4">
@@ -33,10 +33,22 @@ export function ShopHeader() {
 
                 {/* Center: Desktop Menu */}
                 <div className="hidden lg:flex items-center gap-8">
-                    <Link href="/" className="text-sm font-medium text-slate-600 hover:text-[#2563eb] transition-colors">Home</Link>
-                    <Link href="/shop" className="text-sm font-medium text-slate-600 hover:text-[#2563eb] transition-colors">Shop</Link>
-                    <Link href="/collections" className="text-sm font-medium text-slate-600 hover:text-[#2563eb] transition-colors">Collections</Link>
-                    <Link href="/about" className="text-sm font-medium text-slate-600 hover:text-[#2563eb] transition-colors">About</Link>
+                    <Link href="/" className="group relative text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+                        Home
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                    <Link href="/shop" className="group relative text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+                        Shop
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                    <Link href="/collections" className="group relative text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+                        Collections
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
+                    <Link href="/about" className="group relative text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+                        About
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
                 </div>
 
                 {/* Search Bar */}
@@ -55,7 +67,7 @@ export function ShopHeader() {
                     >
                         <ShoppingBag size={22} className="text-slate-600" />
                         {count > 0 && (
-                            <span className="absolute top-1 right-1 w-4 h-4 bg-[#2563eb] text-white text-[10px] font-bold flex items-center justify-center rounded-full">
+                            <span className="absolute top-1 right-1 w-4 h-4 bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
                                 {count}
                             </span>
                         )}

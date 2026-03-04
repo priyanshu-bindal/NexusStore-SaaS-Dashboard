@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const carouselSlides = [
@@ -71,15 +70,17 @@ const sideBanners = [
 
 export default function HeroGrid() {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
 
     // Auto-advance carousel
     useEffect(() => {
+        if (isHovered) return;
         const timer = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % carouselSlides.length);
-        }, 5000); // Slower interval (5s instead of 3s)
+        }, 1500);
 
         return () => clearInterval(timer);
-    }, []);
+    }, [isHovered]);
 
     const nextSlide = () => {
         setCurrentIndex((prev) => (prev + 1) % carouselSlides.length);
@@ -90,52 +91,46 @@ export default function HeroGrid() {
     };
 
     return (
-        <section className="w-full max-w-[1440px] mx-auto px-4 md:px-6 pt-0 pb-8">
-            <div className="grid grid-cols-1 lg:grid-cols-10 gap-4 h-[600px] md:h-[500px]">
-
+        <section className="w-full max-w-[1440px] px-6 pt-6 pb-8 mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-[60%_calc(40%-1.5rem)] gap-6 h-[600px] md:h-[500px]">
                 {/* 60% Image Carousel */}
-                <div className="lg:col-span-6 h-full relative rounded-2xl overflow-hidden group">
-                    <AnimatePresence initial={false}>
-                        <motion.div
-                            key={currentIndex}
-                            initial={{ x: "100%" }}
-                            animate={{ x: 0 }}
-                            exit={{ x: "-100%" }}
-                            transition={{
-                                x: { type: "spring", stiffness: 40, damping: 20 },
-                                opacity: { duration: 0.5 }
-                            }}
-                            className="absolute inset-0"
+                <div
+                    className="h-full relative overflow-hidden group rounded-2xl"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    {carouselSlides.map((slide, index) => (
+                        <div
+                            key={slide.id}
+                            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+                                }`}
                         >
-                            <div
-                                className="absolute inset-0 bg-cover bg-center"
-                                style={{ backgroundImage: `url('${carouselSlides[currentIndex].image}')` }}
+                            <img
+                                src={slide.image}
+                                alt={slide.title}
+                                className="w-full h-full object-cover object-center absolute inset-0 transition-transform duration-500 group-hover:scale-105"
                             />
-                            <div className="absolute inset-0 bg-black/30" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-                            <div className="absolute inset-0 flex flex-col justify-center px-6 md:px-12 text-white">
-                                <motion.div
-                                    initial={{ y: 20, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    transition={{ delay: 0.3, duration: 0.5 }}
-                                >
-                                    <span className="uppercase tracking-widest text-sm font-bold mb-4 block">
-                                        {carouselSlides[currentIndex].subtitle}
+                            <div className="absolute inset-0 flex flex-col justify-end px-6 md:px-12 pb-12 text-white items-start">
+                                <div className="flex flex-col items-start w-full">
+                                    <span className="uppercase tracking-[0.2em] text-xs font-bold mb-4 block">
+                                        {slide.subtitle}
                                     </span>
-                                    <h2 className="text-4xl md:text-5xl font-black mb-6 max-w-lg leading-tight">
-                                        {carouselSlides[currentIndex].title}
+                                    <h2 className="text-4xl md:text-5xl font-sans font-extrabold mb-6 max-w-lg leading-tight text-white drop-shadow-sm">
+                                        {slide.title}
                                     </h2>
                                     <Link
-                                        href={carouselSlides[currentIndex].href}
-                                        className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-full font-bold hover:bg-slate-100 transition-colors"
+                                        href={slide.href}
+                                        className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition-colors"
                                     >
-                                        {carouselSlides[currentIndex].cta}
+                                        {slide.cta}
                                         <ArrowRight size={18} />
                                     </Link>
-                                </motion.div>
+                                </div>
                             </div>
-                        </motion.div>
-                    </AnimatePresence>
+                        </div>
+                    ))}
 
                     {/* Navigation Controls */}
                     <div className="absolute bottom-6 right-6 flex gap-2">
@@ -169,37 +164,31 @@ export default function HeroGrid() {
                 </div>
 
                 {/* 40% Side Banners */}
-                <div className="lg:col-span-4 h-full flex flex-col gap-4">
+                <div className="h-full flex flex-col gap-6 min-w-0">
                     {sideBanners.map((banner) => (
                         <Link
                             key={banner.id}
                             href={banner.href}
-                            className="relative flex-1 rounded-2xl overflow-hidden group"
+                            className="relative flex-1 rounded-2xl overflow-hidden group w-full"
                         >
                             <div
-                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                                 style={{ backgroundImage: `url('${banner.image}')` }}
                             />
                             {/* Overlay */}
-                            <div className={cn(
-                                "absolute inset-0 transition-colors duration-300",
-                                banner.darkText ? "bg-white/10 group-hover:bg-white/20" : "bg-black/20 group-hover:bg-black/30"
-                            )} />
+                            <div
+                                className="absolute inset-0 pointer-events-none transition-opacity"
+                                style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, transparent 60%)' }}
+                            />
 
-                            <div className={cn(
-                                "absolute w-full h-full p-8 flex flex-col justify-end items-start transition-transform duration-300 group-hover:translate-x-2",
-                                banner.darkText ? "text-slate-900" : "text-white"
-                            )}>
-                                <span className="text-xs font-bold uppercase tracking-wider mb-2 opacity-80">
+                            <div className="absolute w-full h-full p-6 flex flex-col justify-end items-start transition-transform duration-300 group-hover:translate-x-2">
+                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] mb-1 text-white">
                                     {banner.subtitle}
                                 </span>
-                                <h3 className="text-2xl font-bold mb-4">
+                                <h3 className="text-xl md:text-2xl font-extrabold mb-4 text-white">
                                     {banner.title}
                                 </h3>
-                                <div className={cn(
-                                    "px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors",
-                                    banner.darkText ? "bg-slate-900 text-white" : "bg-white text-black"
-                                )}>
+                                <div className="px-5 py-2 rounded-full text-[10px] md:text-xs font-bold transition-colors bg-white text-black hover:bg-slate-100">
                                     Shop Now
                                 </div>
                             </div>

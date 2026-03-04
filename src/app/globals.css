@@ -2,8 +2,9 @@
 
 @theme {
   --color-primary: #135bec;
-  --color-background-light: #f6f6f8;
-  --color-background-dark: #101622;
+  --color-secondary: #C9A84C;
+  --color-background-light: #F9FAFB;
+  --color-background-dark: #1E293B;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -38,6 +39,8 @@ html,
 body {
   -ms-overflow-style: none;
   scrollbar-width: none;
+  background-color: #F9FAFB;
+  color: #1E293B;
 }
 
 html::-webkit-scrollbar,
