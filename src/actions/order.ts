@@ -119,7 +119,7 @@ export async function createOrder(
 
                     // FIRE AND FORGET - Do not await
                     resend.emails.send({
-                        from: "NexusStore <onboarding@resend.dev>",
+                        from: "Shopystore <onboarding@resend.dev>",
                         to: "delivered@resend.dev", // Replace with session?.user?.email in production
                         subject: `Order Confirmed: #${order.id}`,
                         react: OrderConfirmation({
@@ -218,7 +218,7 @@ export async function updateOrderStatus(orderId: string, newStatus: string, fulf
                 const resend = new Resend(process.env.RESEND_API_KEY);
 
                 resend.emails.send({
-                    from: "NexusStore <onboarding@resend.dev>",
+                    from: "Shopystore <onboarding@resend.dev>",
                     to: "delivered@resend.dev", // Replace with updatedOrder.user.email in production
                     subject: newStatus === "SHIPPED"
                         ? `Your Order #${orderId} is on the way!`

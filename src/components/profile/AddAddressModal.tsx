@@ -64,7 +64,7 @@ export function AddAddressModal({
                                     defaultValue={initialData?.name}
                                     required
                                     placeholder="e.g. Alex Morgan"
-                                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#2563eb]/20 focus:border-[#2563eb] outline-none transition-all text-sm"
+                                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#d97706]/20 focus:border-[#d97706] outline-none transition-all text-sm"
                                 />
                             </div>
 
@@ -75,7 +75,7 @@ export function AddAddressModal({
                                     defaultValue={initialData?.street}
                                     required
                                     placeholder="House number and street name"
-                                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#2563eb]/20 focus:border-[#2563eb] outline-none transition-all text-sm"
+                                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#d97706]/20 focus:border-[#d97706] outline-none transition-all text-sm"
                                 />
                             </div>
 
@@ -87,7 +87,7 @@ export function AddAddressModal({
                                         defaultValue={initialData?.city}
                                         required
                                         placeholder="e.g. New York"
-                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#2563eb]/20 focus:border-[#2563eb] outline-none transition-all text-sm"
+                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#d97706]/20 focus:border-[#d97706] outline-none transition-all text-sm"
                                     />
                                 </div>
                                 <div className="space-y-2">
@@ -97,7 +97,7 @@ export function AddAddressModal({
                                         defaultValue={initialData?.zip}
                                         required
                                         placeholder="e.g. 10029"
-                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#2563eb]/20 focus:border-[#2563eb] outline-none transition-all text-sm"
+                                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#d97706]/20 focus:border-[#d97706] outline-none transition-all text-sm"
                                     />
                                 </div>
                             </div>
@@ -110,7 +110,7 @@ export function AddAddressModal({
                                             name="country"
                                             defaultValue={initialData?.country || ""}
                                             required
-                                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#2563eb]/20 focus:border-[#2563eb] outline-none transition-all text-sm appearance-none"
+                                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#d97706]/20 focus:border-[#d97706] outline-none transition-all text-sm appearance-none"
                                         >
                                             <option value="">Select Country</option>
                                             <option value="US">United States</option>
@@ -132,7 +132,7 @@ export function AddAddressModal({
                                             name="state"
                                             defaultValue={initialData?.state || ""}
                                             required
-                                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#2563eb]/20 focus:border-[#2563eb] outline-none transition-all text-sm appearance-none"
+                                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#d97706]/20 focus:border-[#d97706] outline-none transition-all text-sm appearance-none"
                                         >
                                             <option value="">Select State</option>
                                             <option value="NY">New York</option>
@@ -161,7 +161,7 @@ export function AddAddressModal({
                                     name="phone"
                                     defaultValue={initialData?.phone || ""}
                                     placeholder="(555) 000-0000"
-                                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#2563eb]/20 focus:border-[#2563eb] outline-none transition-all text-sm"
+                                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#d97706]/20 focus:border-[#d97706] outline-none transition-all text-sm"
                                 />
                             </div>
 
@@ -173,7 +173,7 @@ export function AddAddressModal({
                                         defaultChecked={initialData?.isDefault}
                                         className="peer sr-only"
                                     />
-                                    <div className="h-5 w-5 bg-white border-2 border-slate-300 rounded peer-checked:bg-[#2563eb] peer-checked:border-[#2563eb] transition-all"></div>
+                                    <div className="h-5 w-5 bg-white border-2 border-slate-300 rounded peer-checked:bg-[#d97706] peer-checked:border-[#d97706] transition-all"></div>
                                     <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>

@@ -85,7 +85,7 @@ function OrderSuccessContent() {
     if (loading) {
         return (
             <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-amber-500 border-t-transparent"></div>
             </div>
         );
     }
@@ -94,7 +94,7 @@ function OrderSuccessContent() {
         return (
             <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-4">
                 <h1 className="text-2xl font-bold text-slate-900 mb-4">Order not found</h1>
-                <Link href="/shop" className="text-blue-600 hover:text-blue-700 font-medium">
+                <Link href="/shop" className="text-amber-600 hover:text-amber-700 font-medium">
                     Return to Shop
                 </Link>
             </div>
@@ -120,12 +120,11 @@ function OrderSuccessContent() {
             <header className="bg-white border-b border-slate-200 py-5 sticky top-0 z-30">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center md:justify-between items-center">
                     <Link href="/shop" className="flex items-center gap-2">
-                        <div className="size-8 bg-blue-600 rounded-full flex items-center justify-center">
-                            <svg className="size-5 text-white" fill="currentColor" viewBox="0 0 48 48">
-                                <path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
-                            </svg>
-                        </div>
-                        <span className="text-xl font-bold tracking-tight text-slate-900">NexusStore</span>
+                        <img
+                            src="/logo-horizontal.png"
+                            alt="Shopystore Logo"
+                            className="h-10 w-auto object-contain"
+                        />
                     </Link>
                 </div>
             </header>
@@ -151,7 +150,7 @@ function OrderSuccessContent() {
                                 repeat: 0
                             }}
                         >
-                            <CheckCircle className="text-6xl text-blue-600" size={64} />
+                            <CheckCircle className="text-6xl text-amber-600" size={64} />
                         </motion.div>
                         <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
                             Thank you for your order!
@@ -252,11 +251,11 @@ function OrderSuccessContent() {
                     {/* Action Links */}
                     <motion.div className="w-full space-y-6" variants={itemVariants}>
                         <div className="flex justify-center items-center gap-6 text-sm">
-                            <Link href="#" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                            <Link href="#" className="text-amber-600 hover:text-amber-700 font-medium transition-colors">
                                 Need help?
                             </Link>
                             <span className="text-slate-300">|</span>
-                            <Link href="#" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                            <Link href="#" className="text-amber-600 hover:text-amber-700 font-medium transition-colors">
                                 Return Policy
                             </Link>
                         </div>
@@ -273,13 +272,13 @@ function OrderSuccessContent() {
             {/* Footer */}
             <footer className="bg-white border-t border-slate-200 py-8 mt-auto">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center space-y-4">
-                    <p className="text-sm text-slate-500 text-center">
-                        © 2024 NexusStore Inc.
-                    </p>
+                    <div className="h-16 flex items-center justify-center text-sm text-slate-500 font-medium">
+                        © 2024 Shopystore Inc.
+                    </div>
                     <div className="flex space-x-6 text-sm text-slate-500">
-                        <Link href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</Link>
-                        <Link href="#" className="hover:text-blue-600 transition-colors">Terms of Service</Link>
-                        <Link href="#" className="hover:text-blue-600 transition-colors">Help Center</Link>
+                        <Link href="#" className="hover:text-amber-600 transition-colors">Privacy Policy</Link>
+                        <Link href="#" className="hover:text-amber-600 transition-colors">Terms of Service</Link>
+                        <Link href="#" className="hover:text-amber-600 transition-colors">Help Center</Link>
                     </div>
                 </div>
             </footer>

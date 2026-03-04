@@ -26,7 +26,7 @@ export default function DiscountBanner() {
                         Mid-Season Sale
                     </h2>
                     <p className="text-base text-slate-600 max-w-md leading-relaxed">
-                        Get up to <span className="font-bold text-blue-600">50% OFF</span> on selected summer styles.
+                        Get up to <span className="font-bold text-amber-600">50% OFF</span> on selected summer styles.
                     </p>
                 </div>
 

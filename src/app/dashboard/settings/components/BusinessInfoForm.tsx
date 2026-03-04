@@ -43,7 +43,7 @@ export function BusinessInfoForm({ store }: BusinessInfoFormProps) {
                         name="businessEmail"
                         type="email"
                         defaultValue={defaultEmail}
-                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                     />
                 </div>
 
@@ -54,7 +54,7 @@ export function BusinessInfoForm({ store }: BusinessInfoFormProps) {
                         name="phone"
                         type="tel"
                         defaultValue={store.phone || ""}
-                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                     />
                 </div>
 
@@ -66,7 +66,7 @@ export function BusinessInfoForm({ store }: BusinessInfoFormProps) {
                         type="url"
                         defaultValue={store.website || ""}
                         placeholder="https://example.com"
-                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                     />
                 </div>
             </div>
@@ -75,7 +75,7 @@ export function BusinessInfoForm({ store }: BusinessInfoFormProps) {
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center min-w-[120px]"
+                    className="bg-amber-600 text-white px-4 py-2 rounded-md hover:bg-amber-700 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center min-w-[120px]"
                 >
                     {isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                     {isPending ? "Saving..." : "Save Info"}

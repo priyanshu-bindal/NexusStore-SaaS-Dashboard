@@ -40,7 +40,7 @@ export default function OnboardingPage() {
     return (
         <div className="min-h-screen items-center justify-center bg-slate-50 flex p-4">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
-                <div className="bg-[#2563eb] px-8 py-10 text-center relative overflow-hidden">
+                <div className="bg-[#d97706] px-8 py-10 text-center relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
                     <div className="relative z-10">
                         <div className="mx-auto bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-sm shadow-inner">
@@ -61,7 +61,7 @@ export default function OnboardingPage() {
                                 value={storeName}
                                 onChange={(e) => setStoreName(e.target.value)}
                                 required
-                                className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-all placeholder:text-slate-400 font-medium"
+                                className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#d97706] focus:border-transparent transition-all placeholder:text-slate-400 font-medium"
                                 placeholder="e.g. Acme Inc."
                             />
                         </div>
@@ -72,7 +72,7 @@ export default function OnboardingPage() {
                                 id="description"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-all placeholder:text-slate-400 font-medium resize-none"
+                                className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#d97706] focus:border-transparent transition-all placeholder:text-slate-400 font-medium resize-none"
                                 rows={3}
                                 placeholder="Tell us about your store..."
                             />
@@ -81,7 +81,7 @@ export default function OnboardingPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/20 transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full bg-[#d97706] hover:bg-amber-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-amber-500/20 transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                             {loading ? (
                                 <>

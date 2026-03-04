@@ -20,14 +20,14 @@ export default function LoadingSpinner() {
                         duration: 1,
                         ease: "linear",
                     }}
-                    className="absolute h-full w-full rounded-full border-4 border-transparent border-t-[#2563eb] border-r-[#86efac] border-b-[#2563eb] border-l-[#86efac]"
+                    className="absolute h-full w-full rounded-full border-4 border-transparent border-t-[#d97706] border-r-[#86efac] border-b-[#d97706] border-l-[#86efac]"
                 />
 
                 {/* Inner static or pulsating center (optional, for extra detail) */}
                 <motion.div
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                    className="h-2 w-2 rounded-full bg-[#2563eb]"
+                    className="h-2 w-2 rounded-full bg-[#d97706]"
                 />
             </div>
         </motion.div>

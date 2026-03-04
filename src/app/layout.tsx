@@ -12,8 +12,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "NexusStore Landing Page",
-  description: "Built with Next.js and Tailwind CSS",
+  title: "Shopystore Landing Page",
+  description: "Next.js e-commerce application",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({

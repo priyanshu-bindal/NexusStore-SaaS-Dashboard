@@ -66,7 +66,7 @@ export default async function OrderDetailsPage({
     return (
         <div className="flex-1 min-w-0">
             <div className="mb-6">
-                <Link prefetch={false} href="/profile/orders" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-blue-600 transition-colors mb-4">
+                <Link prefetch={false} href="/profile/orders" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-amber-600 transition-colors mb-4">
                     <ArrowLeft size={16} />
                     Back to Orders
                 </Link>
@@ -79,7 +79,7 @@ export default async function OrderDetailsPage({
                             </h1>
                             <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold ring-1 ring-inset uppercase ${isCancelled
                                 ? "bg-red-50 text-red-600 ring-red-600/10"
-                                : "bg-blue-50 text-blue-600 ring-blue-600/10"
+                                : "bg-blue-50 text-amber-600 ring-amber-600/10"
                                 }`}>
                                 {order.status.replace("_", " ")}
                             </span>
@@ -152,7 +152,7 @@ export default async function OrderDetailsPage({
                                 {/* Dynamic Tracking Events */}
                                 {(order.status !== "PENDING" || isCancelled) && (
                                     <div className="relative">
-                                        <div className={`absolute -left-[21px] top-1.5 size-3 rounded-full border-2 border-white box-content ${isCancelled ? "bg-red-500" : "bg-[#2563eb]"}`}></div>
+                                        <div className={`absolute -left-[21px] top-1.5 size-3 rounded-full border-2 border-white box-content ${isCancelled ? "bg-red-500" : "bg-[#d97706]"}`}></div>
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start mb-0.5">
                                                 <p className="text-sm font-bold text-slate-900">
@@ -185,7 +185,7 @@ export default async function OrderDetailsPage({
                                 )}
 
                                 <div className="relative">
-                                    <div className={`absolute -left-[21px] top-1.5 size-3 rounded-full border-2 border-white box-content ${order.status === "PENDING" ? "bg-[#2563eb]" : "bg-slate-300"}`}></div>
+                                    <div className={`absolute -left-[21px] top-1.5 size-3 rounded-full border-2 border-white box-content ${order.status === "PENDING" ? "bg-[#d97706]" : "bg-slate-300"}`}></div>
                                     <div className="flex-1">
                                         <div className="flex justify-between items-start mb-0.5">
                                             <p className="text-sm font-bold text-slate-900">Order Placed</p>
@@ -215,7 +215,7 @@ export default async function OrderDetailsPage({
                                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Transaction ID</p>
                                         <div className="flex items-center gap-2">
                                             <p className="text-sm font-semibold text-slate-900">REF-{order.id.slice(-6).toUpperCase()}</p>
-                                            <Copy size={14} className="text-slate-400 cursor-pointer hover:text-blue-600" />
+                                            <Copy size={14} className="text-slate-400 cursor-pointer hover:text-amber-600" />
                                         </div>
                                     </div>
                                 </div>
@@ -229,7 +229,7 @@ export default async function OrderDetailsPage({
                                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Tracking Number</p>
                                         <div className="flex items-center gap-2">
                                             <p className="text-sm font-semibold text-slate-900">1425 8596 2354</p>
-                                            <Copy size={14} className="text-slate-400 cursor-pointer hover:text-blue-600" />
+                                            <Copy size={14} className="text-slate-400 cursor-pointer hover:text-amber-600" />
                                         </div>
                                     </div>
                                     <div>

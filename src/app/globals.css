@@ -1,10 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #135bec;
-  --color-secondary: #C9A84C;
-  --color-background-light: #F9FAFB;
-  --color-background-dark: #1E293B;
+  --color-primary: #4A2C11;
+  /* Deep Chocolate Brown */
+  --color-primary-hover: #38200C;
+  /* Darker Brown for hover */
+  --color-secondary: #E3D5CA;
+  /* Warm Beige / Tan */
+  --color-secondary-hover: #D5BFAF;
+
+  --color-background-light: #FAFAF9;
+  /* Warm off-white */
+  --color-background-dark: #292524;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -39,8 +46,8 @@ html,
 body {
   -ms-overflow-style: none;
   scrollbar-width: none;
-  background-color: #F9FAFB;
-  color: #1E293B;
+  background-color: #FAFAF9;
+  color: #292524;
 }
 
 html::-webkit-scrollbar,

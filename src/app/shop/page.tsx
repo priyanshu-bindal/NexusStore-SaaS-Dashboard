@@ -1,8 +1,9 @@
 import { db } from "@/lib/db";
 import ShopClient from "@/components/shop/ShopClient";
-import { Prisma } from "@prisma/client";
 import { Suspense } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import DynamicStorefront from "@/components/DynamicStorefront";
+import type { StorefrontSectionData, SectionType, SectionContent } from "@/types/storefront";
 
 export const dynamic = "force-dynamic";
 
@@ -29,17 +30,17 @@ async function ShopContent({
     const skip = (currentPage - 1) * pageSize;
 
     // Filters Construction
-    const where: Prisma.ProductWhereInput = {
+    const where: any = {
         AND: [
             // Search Query
             q ? {
                 OR: [
-                    { name: { contains: q, mode: "insensitive" as Prisma.QueryMode } },
-                    { description: { contains: q, mode: "insensitive" as Prisma.QueryMode } },
+                    { name: { contains: q, mode: "insensitive" } },
+                    { description: { contains: q, mode: "insensitive" } },
                 ],
             } : {},
             // Category
-            category ? { category: { equals: category, mode: "insensitive" as Prisma.QueryMode } } : {},
+            category ? { category: { equals: category, mode: "insensitive" } } : {},
             // Price Range
             {
                 price: {
@@ -48,14 +49,14 @@ async function ShopContent({
                 }
             },
             // Brand
-            brand ? { brand: { equals: brand, mode: "insensitive" as Prisma.QueryMode } } : {},
+            brand ? { brand: { equals: brand, mode: "insensitive" } } : {},
             // Colors (Array contains)
             color ? { colors: { has: color } } : {},
         ]
     };
 
     // Sorting Logic
-    let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: "desc" };
+    let orderBy: any = { createdAt: "desc" };
     if (sort === "price_asc") orderBy = { price: "asc" };
     if (sort === "price_desc") orderBy = { price: "desc" };
     if (sort === "newest") orderBy = { createdAt: "desc" };
@@ -63,19 +64,37 @@ async function ShopContent({
     // For simple Prisma, we default to newest or maybe sort by match? 
     // Prisma fulltext is experimental. Defaulting to created desc for relevance fallback.
 
-    const finalOrderBy: Prisma.ProductOrderByWithRelationInput[] = [
+    const finalOrderBy: any[] = [
         orderBy,
         { id: "asc" }
     ];
 
-    // Execute Query
+    // ── StorefrontSection: fetch ONLY active sections, ordered by position ──────
+    // This is the critical query — `where: { isActive: true }` means toggling a
+    // section to Inactive in the admin immediately stops it rendering here.
+    const rawSections = await db.storefrontSection.findMany({
+        where: { isActive: true },
+        orderBy: { order: "asc" },
+    });
+
+    const storefrontSections: StorefrontSectionData[] = rawSections.map((s: any) => ({
+        id: s.id,
+        type: s.type as SectionType,
+        title: s.title,
+        order: s.order,
+        isActive: s.isActive,
+        content: s.content as unknown as SectionContent,
+        updatedAt: s.updatedAt,
+    }));
+
+    // Execute product query
     const [products, totalCount] = await Promise.all([
         db.product.findMany({
             where,
             orderBy: finalOrderBy,
             take: pageSize,
             skip,
-            include: { store: true } // Optional: include store info if needed
+            include: { store: true }
         }),
         db.product.count({ where })
     ]);
@@ -83,23 +102,29 @@ async function ShopContent({
     const totalPages = Math.ceil(totalCount / pageSize);
 
     // Serialization
-    const formattedProducts = products.map((product) => ({
+    const formattedProducts = products.map((product: any) => ({
         ...product,
         price: product.price.toNumber(),
         createdAt: product.createdAt.toISOString(),
         updatedAt: product.updatedAt.toISOString(),
-        // Mock data for fields if empty during dev
         rating: 4.5,
         reviewCount: Math.floor(Math.random() * 500) + 10,
         isBestSeller: Math.random() > 0.8,
     }));
 
     return (
-        <ShopClient
-            products={formattedProducts}
-            totalPages={totalPages}
-            currentPage={currentPage}
-        />
+        <>
+            {/* ── Dynamic CMS Sections (renders HERO, PROMO, STATS if active) ── */}
+            {/* Falls back gracefully to nothing if DB has no active sections */}
+            <DynamicStorefront sections={storefrontSections} />
+
+            {/* ── Product listing & existing hardcoded banners ── */}
+            <ShopClient
+                products={formattedProducts}
+                totalPages={totalPages}
+                currentPage={currentPage}
+            />
+        </>
     );
 }
 

@@ -74,7 +74,7 @@ export const OrderStatusEmail = ({
                             If you have any questions, simply reply to this email.
                         </Text>
                         <Text style={footer}>
-                            © 2026 NexusStore. All rights reserved.
+                            © 2026 Shopystore. All rights reserved.
                         </Text>
                     </Section>
                 </Container>
@@ -137,7 +137,7 @@ const label = {
 const trackingNumberStyle = {
     fontSize: "18px",
     fontWeight: "bold",
-    color: "#2563eb",
+    color: "#d97706",
     margin: "0",
     fontFamily: "monospace",
 };

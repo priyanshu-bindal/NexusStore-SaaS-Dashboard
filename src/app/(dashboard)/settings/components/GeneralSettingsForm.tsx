@@ -55,7 +55,7 @@ export function GeneralSettingsForm({ defaultValues }: GeneralSettingsFormProps)
                             <Home className="w-4 h-4 text-slate-400" />Store Name
                         </label>
                         <input id="storeName" {...register("storeName")} placeholder="e.g. John's Tech Store"
-                            className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
+                            className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-shadow"
                         />
                         {errors.storeName && <p className="mt-1 text-xs text-red-500">{errors.storeName.message}</p>}
                     </div>
@@ -65,7 +65,7 @@ export function GeneralSettingsForm({ defaultValues }: GeneralSettingsFormProps)
                             <Mail className="w-4 h-4 text-slate-400" />Support Email
                         </label>
                         <input id="supportEmail" type="email" {...register("supportEmail")} placeholder="support@yourstore.com"
-                            className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
+                            className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-shadow"
                         />
                         {errors.supportEmail && <p className="mt-1 text-xs text-red-500">{errors.supportEmail.message}</p>}
                     </div>
@@ -75,7 +75,7 @@ export function GeneralSettingsForm({ defaultValues }: GeneralSettingsFormProps)
                             <Phone className="w-4 h-4 text-slate-400" />Phone Number
                         </label>
                         <input id="phone" type="tel" {...register("phone")} placeholder="+1 (555) 000-0000"
-                            className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
+                            className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-shadow"
                         />
                         {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>}
                     </div>
@@ -85,7 +85,7 @@ export function GeneralSettingsForm({ defaultValues }: GeneralSettingsFormProps)
                             <MapPin className="w-4 h-4 text-slate-400" />Store Address
                         </label>
                         <input id="address" {...register("address")} placeholder="123 Main St, City, State 00000"
-                            className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
+                            className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-shadow"
                         />
                         {errors.address && <p className="mt-1 text-xs text-red-500">{errors.address.message}</p>}
                     </div>
@@ -97,7 +97,7 @@ export function GeneralSettingsForm({ defaultValues }: GeneralSettingsFormProps)
                     </label>
                     <textarea id="description" {...register("description")} rows={3} maxLength={500}
                         placeholder="Briefly describe what your store sells..."
-                        className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow resize-none"
+                        className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-shadow resize-none"
                     />
                     <div className="flex items-center justify-between mt-1">
                         {errors.description ? <p className="text-xs text-red-500">{errors.description.message}</p> : <span />}
@@ -106,7 +106,7 @@ export function GeneralSettingsForm({ defaultValues }: GeneralSettingsFormProps)
                 </div>
 
                 <button type="submit" disabled={isSubmitting}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors shadow-sm"
+                    className="flex items-center gap-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors shadow-sm"
                 >
                     {isSubmitting && <Loader2 size={15} className="animate-spin" />}
                     {isSubmitting ? "Saving…" : "Save Changes"}

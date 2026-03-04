@@ -31,7 +31,7 @@ function Toggle({ checked, onChange, disabled }: { checked: boolean; onChange: (
     return (
         <button type="button" role="switch" aria-checked={checked} disabled={disabled}
             onClick={() => onChange(!checked)}
-            className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? "bg-blue-600" : "bg-slate-200"}`}
+            className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-amber-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? "bg-amber-600" : "bg-slate-200"}`}
         >
             <span aria-hidden="true" className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${checked ? "translate-x-5" : "translate-x-0"}`} />
         </button>
@@ -71,7 +71,7 @@ export function PaymentsForm({ defaultValues }: PaymentsFormProps) {
                             <Globe className="w-4 h-4 text-slate-400" />Default Currency
                         </label>
                         <select id="currency" {...register("currency")}
-                            className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow appearance-none cursor-pointer"
+                            className="w-full px-3 py-2 text-sm text-slate-900 border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-shadow appearance-none cursor-pointer"
                         >
                             {CURRENCIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
                         </select>
@@ -102,7 +102,7 @@ export function PaymentsForm({ defaultValues }: PaymentsFormProps) {
                 </div>
 
                 <button type="submit" disabled={isSubmitting}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors shadow-sm"
+                    className="flex items-center gap-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors shadow-sm"
                 >
                     {isSubmitting && <Loader2 size={15} className="animate-spin" />}
                     {isSubmitting ? "Saving…" : "Save Changes"}

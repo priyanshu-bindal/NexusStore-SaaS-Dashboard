@@ -19,7 +19,7 @@ export default function ProfileContent() {
                     <div className="flex-1 text-center md:text-left">
                         <h2 className="text-xl font-bold text-slate-900 mb-1">{user?.name || "Guest User"}</h2>
                         <p className="text-slate-500 text-sm mb-4">{user?.email}</p>
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-amber-700 border border-blue-100">
                             Platinum Member
                         </span>
                     </div>

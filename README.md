@@ -1,7 +1,7 @@
-    # NexusStore
+# Shopystore
 > A production-ready, multi-vendor e-commerce platform engineered with Next.js 16, Prisma 7, and PostgreSQL.
 
-NexusStore is a modern, high-performance e-commerce solution designed to handle complex business requirements, from multi-vendor product management to transactional email automation and real-time analytics.
+Shopystore is a modern, high-performance e-commerce solution designed to handle complex business requirements, from multi-vendor product management to transactional email automation and real-time analytics.
 
 ## 🛠 Tech Stack
 
@@ -75,7 +75,7 @@ Designed for conversion and usability.
 1.  **Clone the repository**
     ```bash
     git clone https://github.com/priyanshu-bindal/NexusStore-SaaS-Dashboard.git
-    cd nexus-store
+    cd shopy-store
     ```
 
 2.  **Install dependencies**
@@ -111,4 +111,4 @@ Designed for conversion and usability.
 
 <br/>
 
-> **Disclaimer:** This is a personal portfolio project for educational purposes. It is not affiliated with any existing business named NexusStore.
+> **Disclaimer:** This is a personal portfolio project for educational purposes. It is not affiliated with any existing business named Shopystore.

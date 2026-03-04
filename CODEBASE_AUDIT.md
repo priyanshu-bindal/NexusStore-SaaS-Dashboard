@@ -1,4 +1,4 @@
-# NexusStore Codebase Audit & Technical Summary
+# Shopystore Codebase Audit & Technical Summary
 
 **Date:** February 1, 2026
 **Version:** 0.1.0

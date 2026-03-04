@@ -66,7 +66,7 @@ export default async function OrdersPage({
                 return "bg-slate-100 text-slate-600 ring-slate-500/10";
             case "IN_PROGRESS":
             case "PENDING":
-                return "bg-blue-50 text-blue-600 ring-blue-600/10";
+                return "bg-blue-50 text-amber-600 ring-amber-600/10";
             default: // Processing, etc.
                 return "bg-yellow-50 text-yellow-700 ring-yellow-600/20";
         }
@@ -79,7 +79,7 @@ export default async function OrdersPage({
                     <h1 className="text-slate-900 text-3xl font-black leading-tight tracking-[-0.033em]">My Orders</h1>
                     <p className="text-slate-500 mt-1 text-base font-normal">Manage and track your recent purchases</p>
                 </div>
-                <div className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm font-bold w-fit border border-blue-100">
+                <div className="bg-blue-50 text-amber-600 px-3 py-1 rounded-full text-sm font-bold w-fit border border-blue-100">
                     {orders.length} {filter === 'all' ? 'Total Orders' : 'Orders'}
                 </div>
             </div>
@@ -91,7 +91,7 @@ export default async function OrdersPage({
                 {orders.length === 0 ? (
                     <div className="text-center py-20 bg-white rounded-xl border border-slate-200">
                         <p className="text-slate-500 text-lg">You haven't placed any orders yet.</p>
-                        <Link href="/shop" className="text-blue-600 font-bold hover:underline mt-2 inline-block">Start Shopping</Link>
+                        <Link href="/shop" className="text-amber-600 font-bold hover:underline mt-2 inline-block">Start Shopping</Link>
                     </div>
                 ) : (
                     orders.map((order) => (
@@ -157,7 +157,7 @@ export default async function OrdersPage({
                                 <div className="flex gap-3 w-full md:w-auto mt-2 md:mt-0 pt-4 md:pt-0 border-t border-slate-100 md:border-t-0">
                                     {/* Show Track Order for Active Orders, View Details for Completed/Cancelled */}
                                     {['IN_PROGRESS', 'PENDING', 'PAID'].includes(order.status) ? (
-                                        <Link href={`/profile/orders/${order.id}`} className="flex-1 md:flex-none justify-center items-center h-10 px-4 rounded-lg bg-[#2563eb] text-white text-sm font-semibold hover:bg-blue-700 transition-colors shadow-sm whitespace-nowrap flex">
+                                        <Link href={`/profile/orders/${order.id}`} className="flex-1 md:flex-none justify-center items-center h-10 px-4 rounded-lg bg-[#d97706] text-white text-sm font-semibold hover:bg-amber-700 transition-colors shadow-sm whitespace-nowrap flex">
                                             Track Order
                                         </Link>
                                     ) : (

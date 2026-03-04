@@ -50,13 +50,13 @@ export function SettingsShell({ store }: SettingsShellProps) {
                                 className={cn(
                                     "w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors",
                                     isActive
-                                        ? "bg-blue-600 text-white"
+                                        ? "bg-amber-600 text-white"
                                         : "hover:bg-slate-50 text-slate-700"
                                 )}
                             >
                                 <div className={cn(
                                     "size-9 rounded-lg flex items-center justify-center flex-shrink-0",
-                                    isActive ? "bg-blue-500" : "bg-slate-100"
+                                    isActive ? "bg-amber-500" : "bg-slate-100"
                                 )}>
                                     <Icon size={18} className={isActive ? "text-white" : "text-slate-500"} />
                                 </div>

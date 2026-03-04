@@ -7,17 +7,16 @@ interface MerchantWelcomeEmailProps {
 export const MerchantWelcomeEmail: React.FC<Readonly<MerchantWelcomeEmailProps>> = ({
     name,
 }) => (
-    <div style={{ fontFamily: 'sans-serif', padding: '20px', color: '#333' }}>
-        <h1 style={{ color: '#0f172a' }}>Welcome to NexusStore, {name}!</h1>
+    <div style={{ fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
+        <h1 style={{ color: '#0f172a' }}>Welcome to Shopystore, {name}!</h1>
         <p>
-            Thank you for applying to become a merchant on NexusStore.
-            Your application has been received and is currently under review.
+            Thank you for applying to become a merchant on Shopystore.
+            Your application is currently being reviewed by our team.
         </p>
         <p>
-            We will review your details and send you an email within 24 hours regarding your approval status.
+            We will get back to you within 2-3 business days with an update on your status.
         </p>
-        <br />
         <p>Best regards,</p>
-        <p><strong>The NexusStore Team</strong></p>
+        <p><strong>The Shopystore Team</strong></p>
     </div>
 );

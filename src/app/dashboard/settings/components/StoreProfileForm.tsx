@@ -48,7 +48,7 @@ export function StoreProfileForm({ store }: StoreProfileFormProps) {
                         defaultValue={store.name}
                         required
                         minLength={2}
-                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                     />
                 </div>
 
@@ -61,7 +61,7 @@ export function StoreProfileForm({ store }: StoreProfileFormProps) {
                         required
                         pattern="[a-z0-9-]+"
                         title="Only lowercase letters, numbers, and hyphens"
-                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                     />
                     <p className="text-xs text-gray-500">nexusstore.com/shop/<strong>{store.slug}</strong></p>
                 </div>
@@ -75,7 +75,7 @@ export function StoreProfileForm({ store }: StoreProfileFormProps) {
                         maxLength={500}
                         rows={4}
                         onChange={(e) => setDescChars(e.target.value.length)}
-                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
                     />
                     <p className="text-xs text-gray-500 text-right">{descChars}/500</p>
                 </div>
@@ -135,7 +135,7 @@ export function StoreProfileForm({ store }: StoreProfileFormProps) {
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center min-w-[120px]"
+                    className="bg-amber-600 text-white px-4 py-2 rounded-md hover:bg-amber-700 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center min-w-[120px]"
                 >
                     {isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                     {isPending ? "Saving..." : "Save Profile"}

@@ -132,7 +132,7 @@ function OrdersTableContent({ orders, totalPages, currentPage }: { orders: Order
                     <div className="relative flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                         <input
-                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-[#135bec] focus:border-[#135bec] outline-none transition-all"
+                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-[#d97706] focus:border-[#d97706] outline-none transition-all"
                             placeholder="Search by Order ID, Customer..."
                             type="text"
                             defaultValue={searchTerm}
@@ -141,7 +141,7 @@ function OrdersTableContent({ orders, totalPages, currentPage }: { orders: Order
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
                         <select
-                            className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#135bec] focus:border-[#135bec] outline-none min-w-[140px] px-3 py-2.5"
+                            className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#d97706] focus:border-[#d97706] outline-none min-w-[140px] px-3 py-2.5"
                             defaultValue={statusFilter}
                             onChange={(e) => handleStatusChange(e.target.value)}
                         >
@@ -150,7 +150,7 @@ function OrdersTableContent({ orders, totalPages, currentPage }: { orders: Order
                             <option value="PENDING">Pending</option>
                             <option value="REFUNDED">Refunded</option>
                         </select>
-                        <select className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#135bec] focus:border-[#135bec] outline-none min-w-[160px] px-3 py-2.5">
+                        <select className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#d97706] focus:border-[#d97706] outline-none min-w-[160px] px-3 py-2.5">
                             <option>Fulfillment: All</option>
                             <option>Unfulfilled</option>
                             <option>Partially Fulfilled</option>
@@ -158,7 +158,7 @@ function OrdersTableContent({ orders, totalPages, currentPage }: { orders: Order
                         </select>
                         <div className="relative">
                             <input
-                                className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#135bec] focus:border-[#135bec] px-3 py-2.5 outline-none"
+                                className="text-sm border-slate-200 rounded-lg bg-slate-50 focus:ring-[#d97706] focus:border-[#d97706] px-3 py-2.5 outline-none"
                                 type="date"
                                 defaultValue={new Date().toISOString().split('T')[0]}
                             />
@@ -179,7 +179,7 @@ function OrdersTableContent({ orders, totalPages, currentPage }: { orders: Order
                             <tr className="bg-slate-50 border-b border-slate-200">
                                 <th className="px-6 py-4 w-12">
                                     <input
-                                        className="rounded border-slate-300 text-[#135bec] focus:ring-[#135bec] size-4"
+                                        className="rounded border-slate-300 text-[#d97706] focus:ring-[#d97706] size-4"
                                         type="checkbox"
                                         checked={allSelected}
                                         onChange={toggleSelectAll}
@@ -237,7 +237,7 @@ function OrdersTableContent({ orders, totalPages, currentPage }: { orders: Order
                                         className={cn(
                                             "size-8 flex items-center justify-center rounded-lg text-sm font-medium transition-all",
                                             currentPage === p
-                                                ? "bg-[#135bec] text-white font-bold"
+                                                ? "bg-[#d97706] text-white font-bold"
                                                 : "hover:bg-slate-50 text-slate-600"
                                         )}
                                     >
@@ -291,7 +291,7 @@ function OrdersTableContent({ orders, totalPages, currentPage }: { orders: Order
 
 export default function OrdersTable(props: { orders: Order[], totalPages: number, currentPage: number }) {
     return (
-        <Suspense fallback={<div className="min-h-[400px] w-full flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#135bec]" /></div>}>
+        <Suspense fallback={<div className="min-h-[400px] w-full flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#d97706]" /></div>}>
             <OrdersTableContent {...props} />
         </Suspense>
     );
@@ -303,14 +303,14 @@ function OrderRow({ order, selected, onSelect, fulfillmentStatus }: { order: Ord
         <tr className={`transition-colors ${selected ? 'bg-slate-50' : 'hover:bg-slate-50/50'}`}>
             <td className="px-6 py-4">
                 <input
-                    className="rounded border-slate-300 text-[#135bec] focus:ring-[#135bec] size-4"
+                    className="rounded border-slate-300 text-[#d97706] focus:ring-[#d97706] size-4"
                     type="checkbox"
                     checked={selected}
                     onChange={onSelect}
                 />
             </td>
             <td className="px-6 py-4 font-mono font-bold text-sm text-slate-900">
-                <LoaderLink href={`/orders/${order.id}`} className="hover:text-[#135bec] hover:underline transition-colors">
+                <LoaderLink href={`/orders/${order.id}`} className="hover:text-[#d97706] hover:underline transition-colors">
                     #NX-{order.id.slice(-4).toUpperCase()}
                 </LoaderLink>
             </td>

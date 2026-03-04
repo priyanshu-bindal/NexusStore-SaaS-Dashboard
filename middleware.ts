@@ -20,12 +20,22 @@ export default auth((req) => {
     // Dashboard routes specific to merchants
     const isDashboardRoute = pathname.startsWith("/dashboard")
 
+    // Admin routes — Super Admin only
+    const isAdminRoute = pathname.startsWith("/admin")
+
     // 1. Unauthenticated users hitting /checkout, /profile, or /dashboard redirect to /sign-in
     if (!isLoggedIn && (isCustomerProtectedRoute || isDashboardRoute)) {
         return NextResponse.redirect(new URL("/sign-in", req.url))
     }
 
-    // 2. Customers who visit /dashboard should be redirected to /sign-in
+    // 2. /admin/* — must be logged in AND have ADMIN role
+    if (isAdminRoute) {
+        if (!isLoggedIn || (userRole as string) !== "ADMIN") {
+            return NextResponse.redirect(new URL("/sign-in", req.url))
+        }
+    }
+
+    // 3. Customers who visit /dashboard should be redirected to /sign-in
     // Merchants access their dashboard at /dashboard/* only after auth with role=MERCHANT (or ADMIN if applicable).
     if (isLoggedIn && isDashboardRoute) {
         if (userRole !== "MERCHANT" && (userRole as string) !== "ADMIN") {

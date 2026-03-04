@@ -66,7 +66,7 @@ function FilterSidebarContent() {
                 <h3 className="font-bold text-lg text-slate-900">Filters</h3>
                 <button
                     onClick={() => router.push("/shop")}
-                    className="text-xs font-bold text-[#135bec] hover:underline uppercase tracking-wider"
+                    className="text-xs font-bold text-[#d97706] hover:underline uppercase tracking-wider"
                 >
                     Clear All
                 </button>
@@ -84,7 +84,7 @@ function FilterSidebarContent() {
                                 className={cn(
                                     "flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                                     isActive
-                                        ? "bg-[#135bec]/10 text-[#135bec]"
+                                        ? "bg-[#d97706]/10 text-[#d97706]"
                                         : "text-slate-600 hover:bg-slate-50"
                                 )}
                             >
@@ -104,9 +104,9 @@ function FilterSidebarContent() {
                                 type="checkbox"
                                 checked={searchParams.get("brand") === brand}
                                 onChange={() => updateParam("brand", searchParams.get("brand") === brand ? null : brand)}
-                                className="rounded text-[#135bec] focus:ring-[#135bec]/20 border-slate-300 size-4 accent-[#135bec]"
+                                className="rounded text-[#d97706] focus:ring-[#d97706]/20 border-slate-300 size-4 accent-[#d97706]"
                             />
-                            <span className="text-slate-600 group-hover:text-[#135bec] transition-colors text-sm">{brand}</span>
+                            <span className="text-slate-600 group-hover:text-[#d97706] transition-colors text-sm">{brand}</span>
                         </label>
                     ))}
                 </div>
@@ -118,7 +118,7 @@ function FilterSidebarContent() {
                     <div className="relative h-1.5 w-full bg-slate-200 rounded-full mb-6">
                         {/* Visual Rail - Simplified for standard range input limitations */}
                         <div
-                            className="absolute h-1.5 bg-[#135bec] rounded-full"
+                            className="absolute h-1.5 bg-[#d97706] rounded-full"
                             style={{
                                 left: `${(minPrice / 5000) * 100}%`,
                                 right: `${100 - (maxPrice / 5000) * 100}%`
@@ -136,7 +136,7 @@ function FilterSidebarContent() {
                                 type="range" min="0" max="5000" step="10"
                                 value={minPrice}
                                 onChange={(e) => handlePriceChange(e, "min")}
-                                className="w-full accent-[#135bec] h-1.5 bg-transparent appearance-none cursor-pointer z-20 relative"
+                                className="w-full accent-[#d97706] h-1.5 bg-transparent appearance-none cursor-pointer z-20 relative"
                             />
                         </div>
                         <div>
@@ -147,7 +147,7 @@ function FilterSidebarContent() {
                                 type="range" min="0" max="5000" step="10"
                                 value={maxPrice}
                                 onChange={(e) => handlePriceChange(e, "max")}
-                                className="w-full accent-[#135bec] h-1.5 bg-transparent appearance-none cursor-pointer z-20 relative"
+                                className="w-full accent-[#d97706] h-1.5 bg-transparent appearance-none cursor-pointer z-20 relative"
                             />
                         </div>
                     </div>
@@ -160,7 +160,7 @@ function FilterSidebarContent() {
                     {[
                         { name: "Black", hex: "#000000" },
                         { name: "White", hex: "#ffffff", border: true },
-                        { name: "Blue", hex: "#2563eb" },
+                        { name: "Blue", hex: "#d97706" },
                         { name: "Red", hex: "#ef4444" },
                         { name: "Green", hex: "#10b981" },
                     ].map((color) => {
@@ -172,7 +172,7 @@ function FilterSidebarContent() {
                                 title={color.name}
                                 className={cn(
                                     "size-8 rounded-full flex items-center justify-center transition-all relative ring-2 ring-offset-2",
-                                    isSelected ? "ring-[#135bec] scale-110" : "ring-transparent hover:ring-slate-200",
+                                    isSelected ? "ring-[#d97706] scale-110" : "ring-transparent hover:ring-slate-200",
                                     color.border && "border border-slate-200"
                                 )}
                                 style={{ backgroundColor: color.hex }}
@@ -205,7 +205,7 @@ function FilterSection({ title, isOpen, onToggle, children }: { title: string, i
                 onClick={onToggle}
                 className="flex items-center justify-between w-full py-2 group"
             >
-                <span className="font-bold text-sm text-slate-900 group-hover:text-[#135bec] transition-colors">{title}</span>
+                <span className="font-bold text-sm text-slate-900 group-hover:text-[#d97706] transition-colors">{title}</span>
                 {isOpen ? <ChevronUp size={16} className="text-slate-400" /> : <ChevronDown size={16} className="text-slate-400" />}
             </button>
             {isOpen && <div className="mt-2 animate-in slide-in-from-top-2 duration-200 fade-in">{children}</div>}

@@ -50,7 +50,7 @@ export default async function ProductsPage() {
                     </div>
                     <LoaderLink
                         href="/dashboard/products/new"
-                        className="bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-blue-500/20 transition-all flex items-center justify-center gap-2"
+                        className="bg-[#d97706] hover:bg-amber-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2"
                     >
                         <Plus className="size-5" />
                         Add Product
@@ -66,7 +66,7 @@ export default async function ProductsPage() {
                             <input
                                 type="text"
                                 placeholder="Search products..."
-                                className="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-[#2563eb]/10 focus:border-[#2563eb]"
+                                className="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-[#d97706]/10 focus:border-[#d97706]"
                             />
                         </div>
                     </div>
@@ -83,7 +83,7 @@ export default async function ProductsPage() {
                             </p>
                             <LoaderLink
                                 href="/dashboard/products/new"
-                                className="text-[#2563eb] font-medium text-sm hover:underline"
+                                className="text-[#d97706] font-medium text-sm hover:underline"
                             >
                                 Create your first product
                             </LoaderLink>
@@ -126,7 +126,7 @@ export default async function ProductsPage() {
                                             </td>
                                             <td className="px-6 py-4 text-slate-500">{product.category || "-"}</td>
                                             <td className="px-6 py-4 text-right flex items-center justify-end gap-2">
-                                                <button className="text-slate-400 hover:text-[#2563eb] transition-colors text-sm font-medium">
+                                                <button className="text-slate-400 hover:text-[#d97706] transition-colors text-sm font-medium">
                                                     Edit
                                                 </button>
                                                 <form action={async (formData) => {

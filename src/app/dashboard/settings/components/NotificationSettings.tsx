@@ -58,7 +58,7 @@ export function NotificationSettings({ store }: NotificationSettingsProps) {
         <div className="space-y-6 max-w-2xl relative">
             {isPending && (
                 <div className="absolute top-0 right-0 p-2">
-                    <Loader2 className="w-5 h-5 animate-spin text-blue-600" />
+                    <Loader2 className="w-5 h-5 animate-spin text-amber-600" />
                 </div>
             )}
 
@@ -80,7 +80,7 @@ export function NotificationSettings({ store }: NotificationSettingsProps) {
                             aria-checked={getPrefValue(option.id)}
                             disabled={isPending}
                             onClick={() => handleToggle(option.id, getPrefValue(option.id))}
-                            className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${getPrefValue(option.id) ? "bg-blue-600" : "bg-gray-200"
+                            className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-amber-600 focus:ring-offset-2 ${getPrefValue(option.id) ? "bg-amber-600" : "bg-gray-200"
                                 } disabled:opacity-50 disabled:cursor-not-allowed`}
                         >
                             <span

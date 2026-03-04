@@ -62,7 +62,7 @@ export default function HeroSlider() {
                         <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/60 to-transparent"></div>
                     </div>
                     <div className="relative z-10 px-8 md:px-16 h-full flex flex-col justify-center max-w-2xl">
-                        <span className="inline-block px-3 py-1 bg-[#2563eb]/20 text-[#2563eb] text-xs font-bold uppercase tracking-widest rounded mb-3 w-fit">
+                        <span className="inline-block px-3 py-1 bg-[#d97706]/20 text-[#d97706] text-xs font-bold uppercase tracking-widest rounded mb-3 w-fit">
                             {slide.tag}
                         </span>
                         <h1 className="text-3xl md:text-5xl font-black text-white mb-3 leading-tight">
@@ -72,7 +72,7 @@ export default function HeroSlider() {
                             {slide.description}
                         </p>
                         <div className="flex gap-4">
-                            <button className="bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-lg shadow-[#2563eb]/20 cursor-pointer text-sm">
+                            <button className="bg-[#d97706] hover:bg-amber-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-lg shadow-[#d97706]/20 cursor-pointer text-sm">
                                 {slide.ctaPrimary}
                             </button>
                             <button className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold py-2.5 px-6 rounded-xl transition-all cursor-pointer text-sm">
@@ -89,7 +89,7 @@ export default function HeroSlider() {
                     <button
                         key={idx}
                         onClick={() => setCurrentSlide(idx)}
-                        className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${idx === currentSlide ? "w-8 bg-[#2563eb]" : "w-2 bg-white/50 hover:bg-white"
+                        className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${idx === currentSlide ? "w-8 bg-[#d97706]" : "w-2 bg-white/50 hover:bg-white"
                             }`}
                     />
                 ))}

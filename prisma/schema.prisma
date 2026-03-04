@@ -189,3 +189,16 @@ model Review {
 
   @@unique([userId, productId])
 }
+
+// ─── Storefront CMS ────────────────────────────────────────────────────────────
+// Independent model — does NOT reference User, Store, or Product.
+model StorefrontSection {
+  id        String   @id @default(cuid())
+  type      String   // "HERO" | "PROMO" | "STATS"
+  title     String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  content   Json     @default("{}")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

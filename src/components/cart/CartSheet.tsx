@@ -87,7 +87,7 @@ export default function CartSheet() {
                 {/* Header */}
                 <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-white">
                     <h2 className="text-xl font-bold flex items-center gap-2">
-                        <ShoppingBag className="size-5 text-[#2563eb]" />
+                        <ShoppingBag className="size-5 text-[#d97706]" />
                         Your Cart
                         <span className="text-sm font-normal text-slate-400 ml-2">({items.length} items)</span>
                     </h2>
@@ -107,7 +107,7 @@ export default function CartSheet() {
                             <p className="font-medium text-slate-600">Your cart is empty</p>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="text-[#2563eb] font-bold hover:underline"
+                                className="text-[#d97706] font-bold hover:underline"
                             >
                                 Continue Shopping
                             </button>
@@ -177,7 +177,7 @@ export default function CartSheet() {
                         <button
                             type="button"
                             onClick={handleCheckout}
-                            className="block w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-4 text-center rounded-xl shadow-lg shadow-blue-500/20 transition-all cursor-pointer"
+                            className="block w-full bg-[#d97706] hover:bg-amber-700 text-white font-bold py-4 text-center rounded-xl shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
                         >
                             Proceed to Checkout
                         </button>

@@ -47,7 +47,7 @@ export const ImageUpload = ({ value = [], onChange, onRemove }: ImageUploadProps
                         toast.error(`Upload failed: ${error.message}`);
                     }}
                     appearance={{
-                        button: "bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors text-sm font-semibold shadow-sm",
+                        button: "bg-amber-600 text-white px-6 py-3 rounded-md hover:bg-amber-700 transition-colors text-sm font-semibold shadow-sm",
                         allowedContent: "text-slate-400 text-xs mt-2"
                     }}
                     content={{

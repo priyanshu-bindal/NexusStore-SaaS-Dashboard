@@ -94,13 +94,13 @@ async function ProductsContent(props: {
                 <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] relative overflow-hidden">
                     <div className="flex justify-between items-start mb-4">
                         <p className="text-sm font-medium text-slate-500">Total Products</p>
-                        <div className="size-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                        <div className="size-10 bg-blue-50 text-amber-600 rounded-xl flex items-center justify-center">
                             <Package size={20} />
                         </div>
                     </div>
                     <div className="flex items-baseline gap-2">
                         <h3 className="text-3xl font-black text-slate-900">{totalProductsCount.toLocaleString()}</h3>
-                        <span className="text-xs font-bold text-blue-600 flex items-center gap-0.5">
+                        <span className="text-xs font-bold text-amber-600 flex items-center gap-0.5">
                             +4.2%
                         </span>
                     </div>
@@ -110,7 +110,7 @@ async function ProductsContent(props: {
                 <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)]">
                     <div className="flex justify-between items-start mb-4">
                         <p className="text-sm font-medium text-slate-500">Active Listings</p>
-                        <div className="size-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                        <div className="size-10 bg-blue-50 text-amber-600 rounded-xl flex items-center justify-center">
                             <Eye size={20} />
                         </div>
                     </div>

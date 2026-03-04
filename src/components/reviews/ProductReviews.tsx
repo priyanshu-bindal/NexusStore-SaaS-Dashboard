@@ -53,7 +53,7 @@ export function ProductReviews({ productId, reviews, currentUser }: ProductRevie
                 </div>
             ) : (
                 <div className="bg-slate-50 rounded-2xl p-6 text-center">
-                    <p className="text-slate-600">Please <a href="/auth/login" className="text-blue-600 font-bold hover:underline">log in</a> to write a review.</p>
+                    <p className="text-slate-600">Please <a href="/auth/login" className="text-amber-600 font-bold hover:underline">log in</a> to write a review.</p>
                 </div>
             )}
 
@@ -135,7 +135,7 @@ function AddReviewForm({ productId }: { productId: string }) {
                     name="comment"
                     rows={4}
                     placeholder="Tell us what you think about this product..."
-                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all resize-none text-sm"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none transition-all resize-none text-sm"
                     required
                 />
             </div>

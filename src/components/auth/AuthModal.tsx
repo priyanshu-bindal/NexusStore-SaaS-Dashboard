@@ -145,7 +145,7 @@ export default function AuthModal() {
                             setError("");
                         }}
                         className={`flex-1 py-3 text-sm font-semibold transition-colors ${activeTab === "signin"
-                                ? "text-blue-600 border-b-2 border-blue-600"
+                                ? "text-amber-600 border-b-2 border-amber-600"
                                 : "text-slate-500 hover:text-slate-700"
                             }`}
                     >
@@ -157,7 +157,7 @@ export default function AuthModal() {
                             setError("");
                         }}
                         className={`flex-1 py-3 text-sm font-semibold transition-colors ${activeTab === "signup"
-                                ? "text-blue-600 border-b-2 border-blue-600"
+                                ? "text-amber-600 border-b-2 border-amber-600"
                                 : "text-slate-500 hover:text-slate-700"
                             }`}
                     >
@@ -191,7 +191,7 @@ export default function AuthModal() {
                                         onChange={(e) =>
                                             setSignInData({ ...signInData, email: e.target.value })
                                         }
-                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
                                         placeholder="you@example.com"
                                     />
                                 </div>
@@ -213,7 +213,7 @@ export default function AuthModal() {
                                         onChange={(e) =>
                                             setSignInData({ ...signInData, password: e.target.value })
                                         }
-                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
                                         placeholder="••••••••"
                                     />
                                 </div>
@@ -222,7 +222,7 @@ export default function AuthModal() {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 rounded-lg transition-colors"
+                                className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-blue-400 text-white font-semibold py-3 rounded-lg transition-colors"
                             >
                                 {isLoading ? "Signing in..." : "Sign In"}
                             </button>
@@ -245,7 +245,7 @@ export default function AuthModal() {
                                         onChange={(e) =>
                                             setSignUpData({ ...signUpData, name: e.target.value })
                                         }
-                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
                                         placeholder="John Doe"
                                     />
                                 </div>
@@ -267,7 +267,7 @@ export default function AuthModal() {
                                         onChange={(e) =>
                                             setSignUpData({ ...signUpData, email: e.target.value })
                                         }
-                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
                                         placeholder="you@example.com"
                                     />
                                 </div>
@@ -290,7 +290,7 @@ export default function AuthModal() {
                                         onChange={(e) =>
                                             setSignUpData({ ...signUpData, password: e.target.value })
                                         }
-                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all"
                                         placeholder="••••••••"
                                     />
                                 </div>
@@ -302,7 +302,7 @@ export default function AuthModal() {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 rounded-lg transition-colors"
+                                className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-blue-400 text-white font-semibold py-3 rounded-lg transition-colors"
                             >
                                 {isLoading ? "Creating account..." : "Create Account"}
                             </button>

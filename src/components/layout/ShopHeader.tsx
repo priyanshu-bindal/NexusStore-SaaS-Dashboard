@@ -21,33 +21,33 @@ export function ShopHeader() {
                     >
                         <Menu size={24} />
                     </button>
-                    <Link href="/" className="flex items-center gap-3">
-                        <div className="bg-blue-600 p-2 rounded-xl shadow-lg">
-                            <svg className="size-6 text-white" fill="currentColor" viewBox="0 0 48 48">
-                                <path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
-                            </svg>
-                        </div>
-                        <span className="text-xl font-sans font-bold tracking-tight text-slate-900">Nexus<span className="text-blue-600">Store</span></span>
+                    <Link href="/" className="flex items-center gap-2">
+                        <img
+                            src="/logo-icon.png"
+                            alt="Shopystore Icon"
+                            className="h-10 w-auto object-contain"
+                        />
+                        <span className="text-xl md:text-2xl font-bold font-sans tracking-tight text-primary">ShopyStore</span>
                     </Link>
                 </div>
 
                 {/* Center: Desktop Menu */}
                 <div className="hidden lg:flex items-center gap-8">
-                    <Link href="/" className="group relative text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+                    <Link href="/" prefetch={true} className="group relative text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                         Home
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
                     </Link>
-                    <Link href="/shop" className="group relative text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+                    <Link href="/shop" prefetch={true} className="group relative text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                         Shop
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
                     </Link>
-                    <Link href="/collections" className="group relative text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+                    <Link href="/collections" prefetch={true} className="group relative text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                         Collections
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
                     </Link>
-                    <Link href="/about" className="group relative text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">
+                    <Link href="/about" prefetch={true} className="group relative text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                         About
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
                     </Link>
                 </div>
 
@@ -67,7 +67,7 @@ export function ShopHeader() {
                     >
                         <ShoppingBag size={22} className="text-slate-600" />
                         {count > 0 && (
-                            <span className="absolute top-1 right-1 w-4 h-4 bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
+                            <span className="absolute top-1 right-1 w-4 h-4 bg-primary text-secondary text-[10px] font-bold flex items-center justify-center rounded-full">
                                 {count}
                             </span>
                         )}

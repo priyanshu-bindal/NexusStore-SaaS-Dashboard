@@ -118,7 +118,7 @@ function ShopNavigationContent({ onFilterClick }: ShopNavigationProps) {
                             className="p-2.5 bg-white border border-slate-200 rounded-full hover:bg-slate-50 hover:border-slate-300 transition-colors relative group"
                         >
                             <SlidersHorizontal size={20} className="text-slate-700" />
-                            <span className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-white hidden group-hover:block animate-ping" />
+                            <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white hidden group-hover:block animate-ping" />
                         </button>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 {
-  "name": "nexus-store",
+  "name": "shopy-store",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -51,6 +51,7 @@
     "npm": "^11.8.0",
     "pg": "^8.17.2",
     "prisma": "^7.3.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5"

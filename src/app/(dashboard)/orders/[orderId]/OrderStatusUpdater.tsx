@@ -25,7 +25,7 @@ export function OrderStatusUpdater({ orderId, currentStatus, currentFulfillmentS
                         value={status}
                         onChange={(e) => setStatus(e.target.value)}
                         disabled={isPending}
-                        className="w-full md:w-40 bg-slate-50 border-slate-200 rounded-xl text-sm font-medium focus:ring-[#135bec] focus:border-[#135bec] outline-none disabled:opacity-50 transition-all py-2"
+                        className="w-full md:w-40 bg-slate-50 border-slate-200 rounded-xl text-sm font-medium focus:ring-[#d97706] focus:border-[#d97706] outline-none disabled:opacity-50 transition-all py-2"
                     >
                         <option value="PROCESSING">Processing</option>
                         <option value="PAID">Paid</option>
@@ -42,7 +42,7 @@ export function OrderStatusUpdater({ orderId, currentStatus, currentFulfillmentS
                         value={fulfillmentStatus}
                         onChange={(e) => setFulfillmentStatus(e.target.value)}
                         disabled={isPending}
-                        className="w-full md:w-40 bg-slate-50 border-slate-200 rounded-xl text-sm font-medium focus:ring-[#135bec] focus:border-[#135bec] outline-none disabled:opacity-50 transition-all py-2"
+                        className="w-full md:w-40 bg-slate-50 border-slate-200 rounded-xl text-sm font-medium focus:ring-[#d97706] focus:border-[#d97706] outline-none disabled:opacity-50 transition-all py-2"
                     >
                         <option value="Unfulfilled">Unfulfilled</option>
                         <option value="Partially Fulfilled">Partially Fulfilled</option>
@@ -55,7 +55,7 @@ export function OrderStatusUpdater({ orderId, currentStatus, currentFulfillmentS
                         onClick={handleUpdate}
                         disabled={isPending || (status === currentStatus && fulfillmentStatus === currentFulfillmentStatus)}
                         className={cn(
-                            "bg-[#135bec] hover:bg-blue-600 text-white px-6 py-2 rounded-xl font-semibold transition-all text-sm whitespace-nowrap shadow-lg shadow-blue-500/20 flex items-center justify-center min-w-[120px] h-[38px]",
+                            "bg-[#d97706] hover:bg-amber-600 text-white px-6 py-2 rounded-xl font-semibold transition-all text-sm whitespace-nowrap shadow-lg shadow-amber-500/20 flex items-center justify-center min-w-[120px] h-[38px]",
                             isPending && "opacity-80 cursor-wait",
                             (status === currentStatus && fulfillmentStatus === currentFulfillmentStatus && !isPending) && "opacity-50 cursor-not-allowed shadow-none bg-slate-400 hover:bg-slate-400"
                         )}

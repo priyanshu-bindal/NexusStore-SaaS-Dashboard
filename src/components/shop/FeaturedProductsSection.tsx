@@ -38,7 +38,7 @@ export default function FeaturedProductsSection() {
             <div className="flex items-center justify-end mb-8">
                 <Link
                     href="/shop"
-                    className="flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors"
+                    className="flex items-center gap-2 text-sm font-bold text-amber-600 hover:text-amber-700 transition-colors"
                 >
                     View More
                     <ArrowRight size={16} />

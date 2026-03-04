@@ -44,13 +44,13 @@ export const OrderConfirmation = ({
             <Body style={main}>
                 <Container style={container}>
                     <Section>
-                        <Text style={heading}>NexusStore</Text>
+                        <Text style={heading}>Shopystore</Text>
                     </Section>
-                    <Section>
+                    <Section style={{ paddingBottom: "20px" }}>
                         <Text style={title}>Thank you for your order!</Text>
                         <Text style={paragraph}>
-                            We're validating your order details and we'll send you another email
-                            once your items have shipped.
+                            Thank you for your order, {shippingAddress.name}! We've received your order and are getting it ready.
+                            We'll send you another email once your items have shipped.
                         </Text>
                     </Section>
 
@@ -110,11 +110,10 @@ export const OrderConfirmation = ({
 
                     <Section>
                         <Text style={footer}>
-                            If you have any questions, reply to this email or contact our
-                            support team.
+                            If you have any questions, reply to this email or contact us at support@shopystore.com
                         </Text>
                         <Text style={footer}>
-                            © 2026 NexusStore. All rights reserved.
+                            © 2026 Shopystore. All rights reserved.
                         </Text>
                     </Section>
                 </Container>
@@ -178,7 +177,7 @@ const label = {
 const orderIdStyle = {
     fontSize: "16px",
     fontWeight: "bold",
-    color: "#2563eb",
+    color: "#d97706",
     margin: "0",
 };
 

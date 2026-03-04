@@ -31,7 +31,7 @@ export function SettingsTabs({ store }: SettingsTabsProps) {
                         key={tab.value}
                         onClick={() => setActiveTab(tab.value)}
                         className={`text-left px-4 py-2 rounded-md whitespace-nowrap transition-colors ${activeTab === tab.value
-                                ? "bg-blue-50 text-blue-700 font-medium"
+                                ? "bg-blue-50 text-amber-700 font-medium"
                                 : "text-gray-600 hover:bg-gray-100"
                             }`}
                     >

@@ -89,9 +89,9 @@ export function ClientAddressWrapper({ initialAddresses }: { initialAddresses: A
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     {initialAddresses.map((address) => (
-                        <div key={address.id} className={`group relative bg-white rounded-2xl p-6 border transition-all ${address.isDefault ? 'border-[#2563eb] shadow-sm ring-1 ring-[#2563eb]/10' : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'}`}>
+                        <div key={address.id} className={`group relative bg-white rounded-2xl p-6 border transition-all ${address.isDefault ? 'border-[#d97706] shadow-sm ring-1 ring-[#d97706]/10' : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'}`}>
                             {address.isDefault && (
-                                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#eff6ff] text-[#2563eb] px-3 py-1 rounded-full text-xs font-bold">
+                                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#eff6ff] text-[#d97706] px-3 py-1 rounded-full text-xs font-bold">
                                     <Check size={12} strokeWidth={3} />
                                     Default
                                 </div>

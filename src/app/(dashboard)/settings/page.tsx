@@ -5,7 +5,7 @@ import { SettingsShell } from "./components/SettingsShell";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Settings | NexusStore",
+    title: "Settings | Shopystore",
     description: "Manage your store preferences and account settings.",
 };
 

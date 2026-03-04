@@ -12,8 +12,8 @@ export function ViewToggle({ view, setView }: ViewToggleProps) {
             <button
                 onClick={() => setView("grid")}
                 className={`flex items-center justify-center size-8 rounded-md transition-all ${view === "grid"
-                        ? "bg-white text-[#135bec] shadow-sm"
-                        : "text-slate-400 hover:text-[#135bec]"
+                        ? "bg-white text-[#d97706] shadow-sm"
+                        : "text-slate-400 hover:text-[#d97706]"
                     }`}
                 aria-label="Grid View"
             >
@@ -22,8 +22,8 @@ export function ViewToggle({ view, setView }: ViewToggleProps) {
             <button
                 onClick={() => setView("list")}
                 className={`flex items-center justify-center size-8 rounded-md transition-all ${view === "list"
-                        ? "bg-white text-[#135bec] shadow-sm"
-                        : "text-slate-400 hover:text-[#135bec]"
+                        ? "bg-white text-[#d97706] shadow-sm"
+                        : "text-slate-400 hover:text-[#d97706]"
                     }`}
                 aria-label="List View"
             >

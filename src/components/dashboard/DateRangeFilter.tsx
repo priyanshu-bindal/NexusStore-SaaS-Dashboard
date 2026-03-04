@@ -30,7 +30,7 @@ function DateRangeFilterContent() {
                     className={`
                         px-3 py-1.5 text-xs font-bold rounded-md transition-all
                         ${activeRange === range.value
-                            ? "bg-white text-blue-600 shadow-sm border border-slate-200"
+                            ? "bg-white text-amber-600 shadow-sm border border-slate-200"
                             : "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
                         }
                     `}

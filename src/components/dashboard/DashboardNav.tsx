@@ -34,6 +34,7 @@ export function DashboardNav() {
                     <LoaderLink
                         key={link.href}
                         href={link.href}
+                        prefetch={true}
                         className={cn(
                             "relative flex items-center gap-2 px-4 py-2 text-sm font-semibold transition-colors duration-200 rounded-lg",
                             isActive ? "text-white" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -42,7 +43,7 @@ export function DashboardNav() {
                         {isActive && (
                             <motion.div
                                 layoutId="activeNavbarPill"
-                                className="absolute inset-0 bg-blue-600 rounded-lg shadow-md shadow-blue-200"
+                                className="absolute inset-0 bg-primary rounded-lg shadow-md shadow-primary/20"
                                 transition={{
                                     type: "spring",
                                     stiffness: 300,

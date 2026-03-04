@@ -72,13 +72,12 @@ export default function BecomeASellerPage() {
         <div className="bg-[#f8fafc] font-sans text-slate-900 min-h-screen flex items-center justify-center p-4 ">
             <div className="max-w-[480px] w-full bg-white p-8 rounded-xl shadow-xl shadow-slate-200/50 border border-slate-200">
                 <div className="mb-8 text-center">
-                    <Link href="/" className="inline-flex items-center gap-2 mb-6">
-                        <div className="text-blue-600 size-6">
-                            <svg className="w-full h-full" fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
-                            </svg>
-                        </div>
-                        <h2 className="text-xl font-bold tracking-tight">NexusStore</h2>
+                    <Link href="/" className="inline-flex items-center justify-center mb-6">
+                        <img
+                            src="/logo-horizontal.png"
+                            alt="Shopystore Logo"
+                            className="h-12 w-auto object-contain"
+                        />
                     </Link>
                     <h1 className="text-2xl font-bold mb-1">Become a Seller</h1>
                     <p className="text-slate-500 text-sm">
@@ -92,7 +91,7 @@ export default function BecomeASellerPage() {
                             Full Name / Business Name *
                         </label>
                         <input
-                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all outline-none"
+                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600 transition-all outline-none"
                             id="name"
                             name="name"
                             placeholder="Enter you name"
@@ -105,7 +104,7 @@ export default function BecomeASellerPage() {
                             Business Email *
                         </label>
                         <input
-                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all outline-none"
+                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600 transition-all outline-none"
                             id="email"
                             name="email"
                             placeholder="hello@example.com"
@@ -118,7 +117,7 @@ export default function BecomeASellerPage() {
                             Password *
                         </label>
                         <input
-                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all outline-none"
+                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600 transition-all outline-none"
                             id="password"
                             name="password"
                             placeholder="••••••••"
@@ -132,7 +131,7 @@ export default function BecomeASellerPage() {
                             Confirm Password *
                         </label>
                         <input
-                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all outline-none"
+                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600 transition-all outline-none"
                             id="confirmPassword"
                             name="confirmPassword"
                             placeholder="••••••••"
@@ -149,7 +148,7 @@ export default function BecomeASellerPage() {
                             Tell us about your store (Optional)
                         </label>
                         <textarea
-                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all outline-none resize-y min-h-[80px]"
+                            className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600 transition-all outline-none resize-y min-h-[80px]"
                             id="description"
                             name="description"
                             placeholder="What do you sell?"
@@ -167,7 +166,7 @@ export default function BecomeASellerPage() {
 
                 <p className="mt-6 text-center text-xs text-slate-500">
                     Already have an account?{" "}
-                    <Link className="font-bold text-blue-600 hover:underline" href="/sign-in">
+                    <Link className="font-bold text-amber-600 hover:underline" href="/sign-in">
                         Sign in →
                     </Link>
                 </p>

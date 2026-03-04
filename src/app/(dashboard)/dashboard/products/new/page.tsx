@@ -68,7 +68,7 @@ export default function NewProductPage() {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     placeholder="e.g. Premium Wool Sweater"
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#2563eb] transition-all"
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#d97706] transition-all"
                                 />
                             </div>
                             <div className="space-y-2">
@@ -76,7 +76,7 @@ export default function NewProductPage() {
                                 <input
                                     type="text"
                                     placeholder="e.g. Clothing"
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#2563eb] transition-all"
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#d97706] transition-all"
                                 />
                             </div>
                             <div className="col-span-2 space-y-2">
@@ -87,7 +87,7 @@ export default function NewProductPage() {
                                     onChange={(e) => setDescription(e.target.value)}
                                     placeholder="Describe your product features and benefits..."
                                     rows={4}
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#2563eb] transition-all resize-y"
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#d97706] transition-all resize-y"
                                 />
                             </div>
                         </div>
@@ -109,7 +109,7 @@ export default function NewProductPage() {
                                         value={price}
                                         onChange={(e) => setPrice(e.target.value)}
                                         placeholder="0.00"
-                                        className="w-full pl-8 pr-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#2563eb] transition-all"
+                                        className="w-full pl-8 pr-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#d97706] transition-all"
                                     />
                                 </div>
                             </div>
@@ -122,7 +122,7 @@ export default function NewProductPage() {
                                     value={stock}
                                     onChange={(e) => setStock(e.target.value)}
                                     placeholder="100"
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#2563eb] transition-all"
+                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#d97706] transition-all"
                                 />
                             </div>
                         </div>
@@ -141,7 +141,7 @@ export default function NewProductPage() {
                                         value={imageUrl}
                                         onChange={(e) => setImageUrl(e.target.value)}
                                         placeholder="https://..."
-                                        className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#2563eb] transition-all"
+                                        className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#d97706] transition-all"
                                     />
                                 </div>
                             </div>
@@ -153,7 +153,7 @@ export default function NewProductPage() {
                         <button
                             type="submit"
                             disabled={isPending}
-                            className="bg-[#2563eb] hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-blue-500/20 transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="bg-[#d97706] hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                             {isPending ? (
                                 <>

@@ -12,7 +12,7 @@ export function DashboardUserBadge({ storeName, initials }: DashboardUserBadgePr
                 <p className="text-xs font-bold text-slate-900 leading-none">{storeName}</p>
                 <p className="text-[10px] text-slate-500 font-medium mt-1">Premium Partner</p>
             </div>
-            <div className="size-9 bg-[#135bec] rounded-full flex items-center justify-center text-white text-sm font-bold shadow-sm select-none">
+            <div className="size-9 bg-[#d97706] rounded-full flex items-center justify-center text-white text-sm font-bold shadow-sm select-none">
                 {initials}
             </div>
         </div>

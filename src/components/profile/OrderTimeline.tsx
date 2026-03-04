@@ -92,14 +92,14 @@ export function OrderTimeline({ status, createdAt, updatedAt }: OrderTimelinePro
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
-                        className={`absolute left-0 top-5 -translate-y-1/2 h-[2px] rounded-full -z-0 hidden md:block origin-left ${status === "CANCELLED" ? "bg-red-500" : "bg-[#2563eb]"
+                        className={`absolute left-0 top-5 -translate-y-1/2 h-[2px] rounded-full -z-0 hidden md:block origin-left ${status === "CANCELLED" ? "bg-red-500" : "bg-[#d97706]"
                             }`}
                     />
                     <motion.div
                         initial={{ height: 0 }}
                         animate={{ height: `${progress}%` }}
                         transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
-                        className={`absolute left-[19px] top-0 w-[2px] rounded-full -z-0 md:hidden origin-top ${status === "CANCELLED" ? "bg-red-500" : "bg-[#2563eb]"
+                        className={`absolute left-[19px] top-0 w-[2px] rounded-full -z-0 md:hidden origin-top ${status === "CANCELLED" ? "bg-red-500" : "bg-[#d97706]"
                             }`}
                     />
 
@@ -116,7 +116,7 @@ export function OrderTimeline({ status, createdAt, updatedAt }: OrderTimelinePro
                             // Active State (Completed or Current)
                             if (isActive) {
                                 // Default Blue for active steps
-                                bgClass = "bg-[#2563eb] border-[#2563eb] text-white shadow-md shadow-blue-500/20";
+                                bgClass = "bg-[#d97706] border-[#d97706] text-white shadow-md shadow-amber-500/20";
 
                                 // Special Green for Delivered step
                                 if (step.label === "DELIVERED") {
@@ -156,7 +156,7 @@ export function OrderTimeline({ status, createdAt, updatedAt }: OrderTimelinePro
                                         transition={{ delay: 0.3 + (idx * 0.2) }}
                                         className={`md:absolute md:top-14 w-full md:w-40 text-left md:text-center pl-0 md:pl-0 ${positionClass}`}
                                     >
-                                        <p className={`text-[11px] font-extrabold uppercase tracking-wider ${step.label === "DELIVERED" && isActive ? "text-emerald-600" : isCurrent ? "text-[#2563eb]" : isCancelledStep ? "text-red-600" : isCompleted ? "text-slate-900" : "text-slate-300"}`}>
+                                        <p className={`text-[11px] font-extrabold uppercase tracking-wider ${step.label === "DELIVERED" && isActive ? "text-emerald-600" : isCurrent ? "text-[#d97706]" : isCancelledStep ? "text-red-600" : isCompleted ? "text-slate-900" : "text-slate-300"}`}>
                                             {step.label}
                                         </p>
                                     </motion.div>

@@ -40,11 +40,11 @@ export function ProfileSidebar() {
                         className={cn(
                             "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group",
                             isActive("/profile")
-                                ? "bg-blue-50 text-blue-600"
+                                ? "bg-blue-50 text-amber-600"
                                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                         )}
                     >
-                        <User size={20} className={cn("transition-colors", isActive("/profile") ? "text-blue-600 fill-current" : "text-slate-400 group-hover:text-slate-900")} />
+                        <User size={20} className={cn("transition-colors", isActive("/profile") ? "text-amber-600 fill-current" : "text-slate-400 group-hover:text-slate-900")} />
                         <span className="text-sm font-bold">Profile</span>
                     </Link>
 
@@ -53,11 +53,11 @@ export function ProfileSidebar() {
                         className={cn(
                             "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group",
                             isActive("/profile/orders")
-                                ? "bg-blue-50 text-blue-600"
+                                ? "bg-blue-50 text-amber-600"
                                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                         )}
                     >
-                        <Package2 size={20} className={cn("transition-colors", isActive("/profile/orders") ? "text-blue-600" : "text-slate-400 group-hover:text-slate-900")} />
+                        <Package2 size={20} className={cn("transition-colors", isActive("/profile/orders") ? "text-amber-600" : "text-slate-400 group-hover:text-slate-900")} />
                         <span className="text-sm font-medium">Orders</span>
                     </Link>
 
@@ -66,11 +66,11 @@ export function ProfileSidebar() {
                         className={cn(
                             "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group",
                             isActive("/profile/addresses")
-                                ? "bg-blue-50 text-blue-600"
+                                ? "bg-blue-50 text-amber-600"
                                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                         )}
                     >
-                        <MapPin size={20} className={cn("transition-colors", isActive("/profile/addresses") ? "text-blue-600" : "text-slate-400 group-hover:text-slate-900")} />
+                        <MapPin size={20} className={cn("transition-colors", isActive("/profile/addresses") ? "text-amber-600" : "text-slate-400 group-hover:text-slate-900")} />
                         <span className="text-sm font-medium">Addresses</span>
                     </Link>
 
@@ -79,11 +79,11 @@ export function ProfileSidebar() {
                         className={cn(
                             "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group",
                             isActive("/profile/settings")
-                                ? "bg-blue-50 text-blue-600"
+                                ? "bg-blue-50 text-amber-600"
                                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                         )}
                     >
-                        <Settings size={20} className={cn("transition-colors", isActive("/profile/settings") ? "text-blue-600" : "text-slate-400 group-hover:text-slate-900")} />
+                        <Settings size={20} className={cn("transition-colors", isActive("/profile/settings") ? "text-amber-600" : "text-slate-400 group-hover:text-slate-900")} />
                         <span className="text-sm font-medium">Settings</span>
                     </Link>
 

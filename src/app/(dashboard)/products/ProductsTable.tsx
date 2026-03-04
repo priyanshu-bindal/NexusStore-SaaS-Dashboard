@@ -98,7 +98,7 @@ function ProductsTableContent({ products, totalPages, currentPage }: { products:
                     <div className="relative flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                         <input
-                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-[#135bec] focus:border-[#135bec] outline-none transition-all"
+                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-[#d97706] focus:border-[#d97706] outline-none transition-all"
                             placeholder="Search by Product Name, SKU..."
                             type="text"
                             defaultValue={searchTerm}
@@ -214,7 +214,7 @@ function ProductsTableContent({ products, totalPages, currentPage }: { products:
                                     className={cn(
                                         "size-9 flex items-center justify-center rounded-lg text-sm font-bold transition-all",
                                         currentPage === p
-                                            ? "bg-[#135bec] text-white shadow-md shadow-blue-500/20"
+                                            ? "bg-[#d97706] text-white shadow-md shadow-amber-500/20"
                                             : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
                                     )}
                                 >

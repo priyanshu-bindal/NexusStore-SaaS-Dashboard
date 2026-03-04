@@ -16,12 +16,12 @@ export function formatCurrency(amount: number | string | null | undefined) {
 export function getStatusStyles(status: string) {
     switch (status.toUpperCase()) {
         case 'PAID':
-            return 'bg-blue-50 text-blue-600 border border-blue-100';
+            return 'bg-blue-50 text-amber-600 border border-blue-100';
         case 'PROCESSING':
             return 'bg-orange-50 text-orange-500 border border-orange-100';
         case 'SHIPPED':
         case 'DELIVERED':
-            return 'bg-blue-50 text-blue-500 border border-blue-100';
+            return 'bg-blue-50 text-amber-500 border border-blue-100';
         case 'CANCELLED':
         case 'REFUNDED':
             return 'bg-red-50 text-red-500 border border-red-100';
@@ -33,7 +33,7 @@ export function getStatusStyles(status: string) {
 export function getFulfillmentStyles(status: string) {
     switch (status) {
         case 'Fulfilled':
-            return 'bg-blue-50 text-blue-600 border border-blue-100';
+            return 'bg-blue-50 text-amber-600 border border-blue-100';
         case 'Partially Fulfilled':
             return 'bg-sky-50 text-sky-700 border border-sky-100';
         case 'Unfulfilled':

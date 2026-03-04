@@ -110,7 +110,7 @@ export default function Checkout() {
         return (
             <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
                 <div className="flex flex-col items-center gap-4">
-                    <Loader2 className="size-12 animate-spin text-[#2563eb]" />
+                    <Loader2 className="size-12 animate-spin text-[#d97706]" />
                     <p className="text-slate-500 font-medium">Processing your order...</p>
                 </div>
             </div>
@@ -123,7 +123,7 @@ export default function Checkout() {
                 <div className="text-center space-y-4">
                     <h1 className="text-2xl font-bold text-slate-900">Your cart is empty</h1>
                     <p className="text-slate-500">Add some products to your cart to proceed with checkout.</p>
-                    <Link href="/shop" className="inline-block bg-[#2563eb] text-white font-bold py-3 px-8 rounded-xl hover:bg-[#1d4ed8] transition-colors">
+                    <Link href="/shop" className="inline-block bg-[#d97706] text-white font-bold py-3 px-8 rounded-xl hover:bg-[#b45309] transition-colors">
                         Return to Shop
                     </Link>
                 </div>
@@ -138,12 +138,12 @@ export default function Checkout() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <Link href="/shop" className="flex items-center gap-2">
-                            <div className="bg-blue-600 p-1.5 rounded-lg">
+                            <div className="bg-amber-600 p-1.5 rounded-lg">
                                 <svg className="size-5 text-white" fill="currentColor" viewBox="0 0 48 48">
                                     <path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
                                 </svg>
                             </div>
-                            <span className="text-xl font-bold tracking-tight">Nexus<span className="text-blue-600">Store</span></span>
+                            <span className="text-xl font-bold tracking-tight">Nexus<span className="text-amber-600">Store</span></span>
                         </Link>
                         <div className="flex items-center gap-2 text-slate-500 text-sm font-medium bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
                             <Lock className="size-4" />
@@ -162,12 +162,12 @@ export default function Checkout() {
                         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                             <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
                                 <h2 className="font-bold text-lg flex items-center gap-2">
-                                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold">1</span>
+                                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-amber-600 text-white text-xs font-bold">1</span>
                                     Shipping Address
                                 </h2>
                                 <button
                                     onClick={() => setIsAddressModalOpen(true)}
-                                    className="text-sm font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                                    className="text-sm font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1"
                                 >
                                     <Plus size={16} /> Add New
                                 </button>
@@ -184,7 +184,7 @@ export default function Checkout() {
                                         <p className="text-slate-500 mb-4">No saved addresses found.</p>
                                         <button
                                             onClick={() => setIsAddressModalOpen(true)}
-                                            className="bg-blue-600 text-white font-bold py-2.5 px-6 rounded-xl hover:bg-blue-700 transition-colors"
+                                            className="bg-amber-600 text-white font-bold py-2.5 px-6 rounded-xl hover:bg-amber-700 transition-colors"
                                         >
                                             Add Shipping Address
                                         </button>
@@ -194,7 +194,7 @@ export default function Checkout() {
                                         {addresses.map((addr) => (
                                             <label
                                                 key={addr.id}
-                                                className={`relative flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedAddressId === addr.id ? 'border-blue-600 bg-blue-50/50' : 'border-slate-100 hover:border-slate-200'}`}
+                                                className={`relative flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${selectedAddressId === addr.id ? 'border-amber-600 bg-blue-50/50' : 'border-slate-100 hover:border-slate-200'}`}
                                             >
                                                 <div className="mt-1">
                                                     <input
@@ -202,14 +202,14 @@ export default function Checkout() {
                                                         name="shipping_address"
                                                         checked={selectedAddressId === addr.id}
                                                         onChange={() => setSelectedAddressId(addr.id)}
-                                                        className="w-5 h-5 text-blue-600 border-slate-300 focus:ring-blue-500"
+                                                        className="w-5 h-5 text-amber-600 border-slate-300 focus:ring-amber-500"
                                                     />
                                                 </div>
                                                 <div className="flex-1">
                                                     <div className="flex items-center justify-between mb-1">
                                                         <span className="font-bold text-slate-900">{addr.name}</span>
                                                         {addr.isDefault && (
-                                                            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">Default</span>
+                                                            <span className="text-xs bg-blue-100 text-amber-700 px-2 py-0.5 rounded-full font-bold">Default</span>
                                                         )}
                                                     </div>
                                                     <div className="text-sm text-slate-600 leading-relaxed">
@@ -235,15 +235,15 @@ export default function Checkout() {
                                 </h2>
                             </div>
                             <div className="p-6">
-                                <div className="p-4 border border-blue-600/30 bg-blue-50/50 rounded-xl flex items-center gap-4">
+                                <div className="p-4 border border-amber-600/30 bg-blue-50/50 rounded-xl flex items-center gap-4">
                                     <div className="bg-white p-2 rounded-lg border border-slate-200">
-                                        <CreditCard className="text-blue-600 size-6" />
+                                        <CreditCard className="text-amber-600 size-6" />
                                     </div>
                                     <div>
                                         <p className="font-bold text-slate-900 text-sm">Credit Card (Mock)</p>
                                         <p className="text-xs text-slate-500">Ending in 4242</p>
                                     </div>
-                                    <Check className="ml-auto text-blue-600" size={20} />
+                                    <Check className="ml-auto text-amber-600" size={20} />
                                 </div>
                             </div>
                         </div>
@@ -295,7 +295,7 @@ export default function Checkout() {
                                 <div className="border-t border-slate-100 pt-4">
                                     <div className="flex justify-between items-center mb-6">
                                         <span className="font-bold text-lg text-slate-900">Total</span>
-                                        <span className="font-black text-2xl text-blue-600">${finalTotal.toFixed(2)}</span>
+                                        <span className="font-black text-2xl text-amber-600">${finalTotal.toFixed(2)}</span>
                                     </div>
 
                                     <button

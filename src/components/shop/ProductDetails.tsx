@@ -41,7 +41,7 @@ interface ProductDetailsProps {
 const AccordionItem = ({ title, children, isOpen, onClick }: { title: string, children: React.ReactNode, isOpen: boolean, onClick: () => void }) => (
     <div className="border-b border-gray-200">
         <button
-            className="w-full py-4 flex items-center justify-between text-left font-bold text-xs uppercase tracking-widest hover:text-blue-600 transition-colors"
+            className="w-full py-4 flex items-center justify-between text-left font-bold text-xs uppercase tracking-widest hover:text-amber-600 transition-colors"
             onClick={onClick}
         >
             {title}
@@ -299,7 +299,7 @@ export default function ProductDetails({ product, relatedProducts, avgRating, to
                                             <Plus className="size-5" />
                                         </button>
                                     </div>
-                                    <h3 className="font-bold text-sm mb-1 text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                                    <h3 className="font-bold text-sm mb-1 text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-1">
                                         {related.name}
                                     </h3>
                                     <p className="text-sm text-gray-500">

@@ -85,7 +85,7 @@ async function OrdersContent(props: {
                     <h1 className="text-2xl font-black text-slate-900 tracking-tight">Orders</h1>
                     <p className="text-sm text-slate-500">Manage your store transactions and fulfillment.</p>
                 </div>
-                <button className="bg-[#135bec] text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-[0_4px_14px_0_rgba(19,91,236,0.39)] hover:shadow-[0_6px_20px_rgba(19,91,236,0.23)] hover:bg-blue-600 transition-all">
+                <button className="bg-[#d97706] text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-[0_4px_14px_0_rgba(19,91,236,0.39)] hover:shadow-[0_6px_20px_rgba(19,91,236,0.23)] hover:bg-amber-600 transition-all">
                     + Create Order
                 </button>
             </div>

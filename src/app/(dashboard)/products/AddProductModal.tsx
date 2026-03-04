@@ -11,7 +11,7 @@ export function AddProductModal() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="bg-[#135bec] text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-[0_4px_14px_0_rgba(19,91,236,0.39)] hover:shadow-[0_6px_20px_rgba(19,91,236,0.23)] hover:bg-blue-600 transition-all flex items-center gap-2"
+                className="bg-[#d97706] text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-[0_4px_14px_0_rgba(19,91,236,0.39)] hover:shadow-[0_6px_20px_rgba(19,91,236,0.23)] hover:bg-amber-600 transition-all flex items-center gap-2"
             >
                 <Plus size={18} />
                 Add Product

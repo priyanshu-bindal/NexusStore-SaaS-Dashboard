@@ -40,7 +40,7 @@ export default function GlassProductCard({ product }: { product: Product }) {
                         {(product as any).sizes && (product as any).sizes.length > 0 ? (
                             <Link
                                 href={`/shop/${product.id}`}
-                                className="w-auto px-4 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-slate-900/20"
+                                className="w-auto px-4 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold hover:bg-amber-600 transition-colors shadow-lg shadow-slate-900/20"
                             >
                                 Options
                             </Link>
@@ -50,7 +50,7 @@ export default function GlassProductCard({ product }: { product: Product }) {
                                     e.preventDefault();
                                     addToCart(product as any);
                                 }}
-                                className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-blue-600 transition-colors shadow-lg shadow-slate-900/20"
+                                className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-amber-600 transition-colors shadow-lg shadow-slate-900/20"
                             >
                                 <Plus size={20} />
                             </button>

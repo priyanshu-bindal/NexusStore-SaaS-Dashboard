@@ -141,9 +141,9 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
                     <div className="flex items-center gap-4">
                         {/* Reusing the style of the toggles, but could import a client component if interactive navigation matches */}
                         <div className="flex bg-slate-200/50 p-1 rounded-xl border border-slate-300/50">
-                            <a href="?range=7d" className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${range === '7d' ? 'bg-white text-blue-700 shadow-sm border border-slate-200' : 'text-slate-600 hover:text-slate-900'}`}>7D</a>
-                            <a href="?range=30d" className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${range === '30d' || !range ? 'bg-white text-blue-700 shadow-sm border border-slate-200' : 'text-slate-600 hover:text-slate-900'}`}>30D</a>
-                            <a href="?range=90d" className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${range === '90d' ? 'bg-white text-blue-700 shadow-sm border border-slate-200' : 'text-slate-600 hover:text-slate-900'}`}>90D</a>
+                            <a href="?range=7d" className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${range === '7d' ? 'bg-white text-amber-700 shadow-sm border border-slate-200' : 'text-slate-600 hover:text-slate-900'}`}>7D</a>
+                            <a href="?range=30d" className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${range === '30d' || !range ? 'bg-white text-amber-700 shadow-sm border border-slate-200' : 'text-slate-600 hover:text-slate-900'}`}>30D</a>
+                            <a href="?range=90d" className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${range === '90d' ? 'bg-white text-amber-700 shadow-sm border border-slate-200' : 'text-slate-600 hover:text-slate-900'}`}>90D</a>
                         </div>
                         <button className="bg-slate-900 text-white px-6 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-slate-800 transition-all shadow-md group">
                             <Download size={18} className="group-hover:-translate-y-0.5 transition-transform" />
@@ -158,10 +158,10 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
                 {/* Total Sales */}
                 <div className="bg-white/80 backdrop-blur-xl border border-blue-200 hover:border-blue-400 transition-all duration-300 p-6 rounded-3xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="bg-blue-100 text-blue-700 border border-blue-200 p-3 rounded-2xl">
+                        <div className="bg-blue-100 text-amber-700 border border-blue-200 p-3 rounded-2xl">
                             <DollarSign size={28} strokeWidth={2.5} />
                         </div>
-                        <div className="flex items-center gap-1 text-blue-700 text-xs font-bold bg-blue-50 px-2 py-1 rounded-lg border border-blue-100">
+                        <div className="flex items-center gap-1 text-amber-700 text-xs font-bold bg-blue-50 px-2 py-1 rounded-lg border border-blue-100">
                             <TrendingUp size={14} /> +12.5%
                         </div>
                     </div>
@@ -175,10 +175,10 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
                 {/* Profit Margin */}
                 <div className="bg-white/80 backdrop-blur-xl border border-blue-200 hover:border-blue-400 transition-all duration-300 p-6 rounded-3xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="bg-blue-100 text-blue-700 border border-blue-200 p-3 rounded-2xl">
+                        <div className="bg-blue-100 text-amber-700 border border-blue-200 p-3 rounded-2xl">
                             <BarChart3 size={28} strokeWidth={2.5} />
                         </div>
-                        <div className="flex items-center gap-1 text-blue-700 text-xs font-bold bg-blue-50 px-2 py-1 rounded-lg border border-blue-100">
+                        <div className="flex items-center gap-1 text-amber-700 text-xs font-bold bg-blue-50 px-2 py-1 rounded-lg border border-blue-100">
                             <TrendingUp size={14} /> +8.2%
                         </div>
                     </div>
@@ -192,7 +192,7 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
                 {/* New Customers */}
                 <div className="bg-white/80 backdrop-blur-xl border border-blue-200 hover:border-blue-400 transition-all duration-300 p-6 rounded-3xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="bg-blue-100 text-blue-700 border border-blue-200 p-3 rounded-2xl">
+                        <div className="bg-blue-100 text-amber-700 border border-blue-200 p-3 rounded-2xl">
                             <Users size={28} strokeWidth={2.5} />
                         </div>
                         <div className="text-slate-600 text-xs font-bold bg-slate-100 px-2 py-1 rounded-lg">LTV: $240</div>
@@ -207,7 +207,7 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
                 {/* Store Conversion */}
                 <div className="bg-white/80 backdrop-blur-xl border border-blue-200 hover:border-blue-400 transition-all duration-300 p-6 rounded-3xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="bg-blue-100 text-blue-700 border border-blue-200 p-3 rounded-2xl">
+                        <div className="bg-blue-100 text-amber-700 border border-blue-200 p-3 rounded-2xl">
                             <Activity size={28} strokeWidth={2.5} />
                         </div>
                         <div className="flex items-center gap-1 text-rose-700 text-xs font-bold bg-rose-50 px-2 py-1 rounded-lg border border-rose-100">
@@ -232,8 +232,8 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
                     </div>
                     <div className="space-y-7">
                         {[
-                            { label: "Online Store", val: 85, color: "bg-blue-600", shadow: "shadow-blue-200", text: "text-blue-700" },
-                            { label: "Social Media Shops", val: 60, color: "bg-blue-600", shadow: "shadow-blue-200", text: "text-blue-700" },
+                            { label: "Online Store", val: 85, color: "bg-amber-600", shadow: "shadow-blue-200", text: "text-amber-700" },
+                            { label: "Social Media Shops", val: 60, color: "bg-amber-600", shadow: "shadow-blue-200", text: "text-amber-700" },
                             { label: "External Marketplaces", val: 45, color: "bg-slate-400", shadow: "shadow-none", text: "text-slate-600" },
                             { label: "In-Person Sales", val: 30, color: "bg-slate-300", shadow: "shadow-none", text: "text-slate-600" }
                         ].map((item) => (
@@ -254,22 +254,22 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
                 <div className="lg:col-span-4 bg-white/85 backdrop-blur-xl border border-slate-200 shadow-sm p-8 rounded-3xl">
                     <div className="flex items-center justify-between mb-8">
                         <h3 className="font-sans font-extrabold text-xl text-slate-900">Customer Age Groups</h3>
-                        <span className="text-[10px] font-bold text-blue-700 px-2 py-1 rounded bg-blue-50 border border-blue-200">LIVE VIEW</span>
+                        <span className="text-[10px] font-bold text-amber-700 px-2 py-1 rounded bg-blue-50 border border-blue-200">LIVE VIEW</span>
                     </div>
                     <div className="space-y-6">
                         <div className="flex items-center justify-between p-4 bg-blue-50 rounded-2xl border border-blue-100">
                             <div>
-                                <p className="text-[10px] font-black text-blue-700 uppercase tracking-widest mb-1">Top Segment</p>
+                                <p className="text-[10px] font-black text-amber-700 uppercase tracking-widest mb-1">Top Segment</p>
                                 <p className="text-xl font-bold text-slate-900">25 - 40 Years</p>
                             </div>
-                            <p className="text-3xl font-sans font-black text-blue-700">48%</p>
+                            <p className="text-3xl font-sans font-black text-amber-700">48%</p>
                         </div>
                         <div className="flex items-center justify-between p-4 bg-blue-50/50 rounded-2xl border border-blue-100">
                             <div>
-                                <p className="text-[10px] font-black text-blue-700 uppercase tracking-widest mb-1">Growth Segment</p>
+                                <p className="text-[10px] font-black text-amber-700 uppercase tracking-widest mb-1">Growth Segment</p>
                                 <p className="text-xl font-bold text-slate-900">18 - 24 Years</p>
                             </div>
-                            <p className="text-3xl font-sans font-black text-blue-700">32%</p>
+                            <p className="text-3xl font-sans font-black text-amber-700">32%</p>
                         </div>
                         <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-200">
                             <div>
@@ -320,7 +320,7 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
                         <button className="bg-white text-slate-700 px-4 py-2 rounded-xl text-xs font-bold border border-slate-300 hover:bg-slate-50 transition-colors">
                             Filter Logs
                         </button>
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-700 transition-all flex items-center gap-2 shadow-md">
+                        <button className="bg-amber-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-amber-700 transition-all flex items-center gap-2 shadow-md">
                             <FileText size={16} />
                             Ledger PDF
                         </button>
@@ -343,7 +343,7 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
                                 <tr key={row.month} className="border-b border-slate-100 hover:bg-slate-50/80 transition-colors">
                                     <td className="px-8 py-6">
                                         <span className="font-bold text-slate-900 block">{row.month}</span>
-                                        <span className={`text-[10px] font-bold uppercase ${i === 0 ? 'text-blue-700 tracking-tighter' : 'text-slate-500'}`}>
+                                        <span className={`text-[10px] font-bold uppercase ${i === 0 ? 'text-amber-700 tracking-tighter' : 'text-slate-500'}`}>
                                             {i === 0 ? 'Current Month' : 'Completed'}
                                         </span>
                                     </td>
@@ -376,7 +376,7 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
                         <button className="size-9 rounded-lg border border-slate-300 flex items-center justify-center bg-white text-slate-400 cursor-not-allowed">
                             <ChevronLeft size={18} />
                         </button>
-                        <button className="size-9 rounded-lg border border-slate-300 flex items-center justify-center bg-white text-slate-700 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 transition-all">
+                        <button className="size-9 rounded-lg border border-slate-300 flex items-center justify-center bg-white text-slate-700 hover:bg-blue-50 hover:text-amber-700 hover:border-blue-300 transition-all">
                             <ChevronRight size={18} />
                         </button>
                     </div>

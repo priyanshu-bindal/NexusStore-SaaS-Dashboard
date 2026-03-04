@@ -33,7 +33,7 @@ function OrderFiltersContent() {
                         key={tab.id}
                         onClick={() => handleFilterChange(tab.id)}
                         className={`relative px-1 pb-3 pt-2 mr-8 font-medium text-sm border-b-2 transition-colors ${currentFilter === tab.id
-                            ? "text-blue-600 border-blue-600 font-bold"
+                            ? "text-amber-600 border-amber-600 font-bold"
                             : "text-slate-500 border-transparent hover:text-slate-900 hover:border-slate-300"
                             }`}
                     >

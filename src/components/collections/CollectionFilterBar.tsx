@@ -93,7 +93,7 @@ function CollectionFilterBarContent() {
                     <div className="relative" ref={sortRef}>
                         <button
                             onClick={() => setIsSortOpen(!isSortOpen)}
-                            className="flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors focus:outline-none"
+                            className="flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-amber-600 transition-colors focus:outline-none"
                         >
                             <span className="text-slate-500 font-medium">Sort by:</span>
                             <span>{selectedSortLabel}</span>
@@ -117,7 +117,7 @@ function CollectionFilterBarContent() {
                                                 className={cn(
                                                     "w-full text-left px-4 py-2.5 text-sm font-medium transition-colors flex items-center justify-between",
                                                     currentSort === option.value
-                                                        ? "text-blue-600 bg-blue-50"
+                                                        ? "text-amber-600 bg-blue-50"
                                                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                                                 )}
                                             >

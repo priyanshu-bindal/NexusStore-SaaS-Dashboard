@@ -87,7 +87,7 @@ function CollectionGridContent() {
                                         className="object-cover transition duration-500 group-hover:scale-105"
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                     />
-                                    <button className="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow-md hover:bg-blue-600 hover:text-white z-10">
+                                    <button className="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow-md hover:bg-amber-600 hover:text-white z-10">
                                         <Heart size={20} />
                                     </button>
 
@@ -98,12 +98,12 @@ function CollectionGridContent() {
                                 </div>
                                 <div className="flex justify-between items-start px-2">
                                     <div>
-                                        <h3 className="font-bold text-slate-900 text-lg group-hover:text-blue-600 transition cursor-pointer line-clamp-1" title={product.name}>
+                                        <h3 className="font-bold text-slate-900 text-lg group-hover:text-amber-600 transition cursor-pointer line-clamp-1" title={product.name}>
                                             {product.name}
                                         </h3>
                                         <p className="text-slate-500 text-sm">${product.price.toFixed(2)}</p>
                                     </div>
-                                    <button className="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-blue-600 transition hover:rotate-90 shrink-0">
+                                    <button className="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-amber-600 transition hover:rotate-90 shrink-0">
                                         <Plus size={20} />
                                     </button>
                                 </div>
@@ -121,7 +121,7 @@ function CollectionGridContent() {
                                         <span className="bg-white text-black text-xs font-bold uppercase px-3 py-1 rounded-full w-fit mb-4">Limited Edition</span>
                                         <h3 className="text-3xl font-extrabold text-white mb-2">Denim<br />Revolution</h3>
                                         <p className="text-white/80 mb-6 max-w-sm">Timeless quality meets modern cuts.</p>
-                                        <button className="bg-white text-black px-6 py-3 rounded-full font-bold w-fit hover:bg-blue-600 hover:text-white transition">Shop Denim</button>
+                                        <button className="bg-white text-black px-6 py-3 rounded-full font-bold w-fit hover:bg-amber-600 hover:text-white transition">Shop Denim</button>
                                     </div>
                                 </div>
                             )}

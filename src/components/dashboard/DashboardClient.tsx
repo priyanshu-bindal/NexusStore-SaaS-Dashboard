@@ -10,10 +10,15 @@ import {
     Calendar as CalendarIcon,
     Download
 } from "lucide-react";
-import SalesChartComponent from "./SalesChart";
+import dynamic from "next/dynamic";
 import DateRangeFilter from "./DateRangeFilter";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+
+const SalesChartComponent = dynamic(() => import("./SalesChart"), {
+    ssr: false,
+    loading: () => <div className="h-full w-full bg-slate-50 animate-pulse rounded-xl flex items-center justify-center text-slate-400 text-sm font-bold">Loading Chart...</div>
+});
 
 interface DashboardClientProps {
     user: any;
@@ -60,7 +65,7 @@ export default function DashboardClient({
                             <CalendarIcon size={18} />
                             <span className="font-medium">Last 30 Days</span>
                         </div>
-                        <button className="bg-[#135bec] hover:bg-blue-600 text-white text-sm font-bold py-2.5 px-6 rounded-full flex items-center gap-2 shadow-[0_4px_14px_0_rgba(19,91,236,0.39)] hover:shadow-[0_6px_20px_rgba(19,91,236,0.23)] transition-all whitespace-nowrap">
+                        <button className="bg-primary hover:bg-primary-hover text-secondary text-sm font-bold py-2.5 px-6 rounded-full flex items-center gap-2 shadow-[0_4px_14px_0_rgba(74,44,17,0.39)] hover:shadow-[0_6px_20px_rgba(74,44,17,0.23)] transition-all whitespace-nowrap">
                             <Download size={18} />
                             Download Report
                         </button>
@@ -77,7 +82,7 @@ export default function DashboardClient({
                         value={fmt(totalRevenue)}
                         trend={fmtPercent(revenueGrowth)}
                         trendUp={revenueGrowth >= 0}
-                        icon={<CreditCard className="text-blue-600" />}
+                        icon={<CreditCard className="text-amber-600" />}
                         bgColor="bg-blue-50"
                     />
                     {/* Total Orders */}
@@ -86,7 +91,7 @@ export default function DashboardClient({
                         value={fmtNum(totalOrders)}
                         trend="Lifetime"
                         trendUp={true}
-                        icon={<ShoppingCart className="text-blue-600" />}
+                        icon={<ShoppingCart className="text-amber-600" />}
                         bgColor="bg-blue-50"
                     />
                     {/* Active Products */}
@@ -130,7 +135,7 @@ export default function DashboardClient({
                     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)]">
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                             <h3 className="font-bold text-slate-900">Recent Orders</h3>
-                            <button className="text-xs font-bold text-[#135bec] hover:underline">View All</button>
+                            <button className="text-xs font-bold text-[#d97706] hover:underline">View All</button>
                         </div>
                         <div className="divide-y divide-slate-100">
                             {recentOrders.map((order: any) => (
@@ -141,7 +146,7 @@ export default function DashboardClient({
                                     time={new Date(order.createdAt).toLocaleDateString()}
                                     price={fmt(Number(order.totalAmount))}
                                     status={order.status}
-                                    statusColor={order.status === 'PAID' ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-700"}
+                                    statusColor={order.status === 'PAID' ? "bg-blue-100 text-amber-700" : "bg-slate-100 text-slate-700"}
                                 />
                             ))}
                             {recentOrders.length === 0 && (
@@ -201,7 +206,7 @@ function MetricCard({ title, value, trend, trendUp, icon, bgColor }: any) {
                 <div className={`size-12 ${bgColor} rounded-xl flex items-center justify-center`}>
                     {icon}
                 </div>
-                <span className={`flex items-center gap-1 text-xs font-bold ${trendUp ? 'text-blue-600' : 'text-red-500'}`}>
+                <span className={`flex items-center gap-1 text-xs font-bold ${trendUp ? 'text-amber-600' : 'text-red-500'}`}>
                     {trendUp ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
                     {trend}
                 </span>
