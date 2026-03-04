@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { ChevronDown, ChevronUp, Check, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function FilterSidebar() {
+function FilterSidebarContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -187,6 +187,14 @@ export function FilterSidebar() {
             </FilterSection>
 
         </aside>
+    );
+}
+
+export function FilterSidebar() {
+    return (
+        <Suspense fallback={<div className="w-full lg:w-64 h-96 bg-slate-50 animate-pulse rounded-xl" />}>
+            <FilterSidebarContent />
+        </Suspense>
     );
 }
 

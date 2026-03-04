@@ -1,8 +1,19 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import LoadingSpinner from "@/components/LoadingSpinner";
+
+function RouteChangeListener({ setIsLoading }: { setIsLoading: (val: boolean) => void }) {
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        setIsLoading(false);
+    }, [pathname, searchParams, setIsLoading]);
+
+    return null;
+}
 
 type GlobalLoaderContextType = {
     startLoading: () => void;
@@ -13,18 +24,14 @@ const GlobalLoaderContext = createContext<GlobalLoaderContextType | undefined>(u
 
 export function GlobalLoaderProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(false);
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-
-    // Stop the loading spinner when the transition finishes (i.e. pathname/searchParams changes)
-    useEffect(() => {
-        setIsLoading(false);
-    }, [pathname, searchParams]);
 
     return (
         <GlobalLoaderContext.Provider value={{ startLoading: () => setIsLoading(true), stopLoading: () => setIsLoading(false) }}>
             {children}
             {isLoading && <LoadingSpinner />}
+            <Suspense fallback={null}>
+                <RouteChangeListener setIsLoading={setIsLoading} />
+            </Suspense>
         </GlobalLoaderContext.Provider>
     );
 }

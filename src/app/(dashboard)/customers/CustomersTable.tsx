@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { formatCurrency, cn } from "../../../lib/utils";
@@ -23,7 +23,7 @@ interface CustomerUser {
     lastSeen: string; // "2 hours ago" etc
 }
 
-export default function CustomersTable({ users, totalPages, currentPage, totalCustomers }: { users: CustomerUser[], totalPages: number, currentPage: number, totalCustomers: number }) {
+function CustomersTableContent({ users, totalPages, currentPage, totalCustomers }: { users: CustomerUser[], totalPages: number, currentPage: number, totalCustomers: number }) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
@@ -179,5 +179,13 @@ export default function CustomersTable({ users, totalPages, currentPage, totalCu
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function CustomersTable(props: { users: CustomerUser[], totalPages: number, currentPage: number, totalCustomers: number }) {
+    return (
+        <Suspense fallback={<div className="min-h-[400px] w-full flex items-center justify-center bg-white rounded-2xl border border-slate-200" />}>
+            <CustomersTableContent {...props} />
+        </Suspense>
     );
 }

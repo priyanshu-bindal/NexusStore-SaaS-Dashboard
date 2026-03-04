@@ -1,8 +1,9 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function DateRangeFilter() {
+function DateRangeFilterContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const activeRange = searchParams.get("range") || "30d";
@@ -38,5 +39,13 @@ export default function DateRangeFilter() {
                 </button>
             ))}
         </div>
+    );
+}
+
+export default function DateRangeFilter() {
+    return (
+        <Suspense fallback={<div className="flex items-center gap-1 bg-slate-50 p-1 rounded-lg border border-slate-200 h-9 w-64 animate-pulse" />}>
+            <DateRangeFilterContent />
+        </Suspense>
     );
 }

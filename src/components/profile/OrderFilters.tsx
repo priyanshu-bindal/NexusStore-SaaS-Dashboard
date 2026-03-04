@@ -1,8 +1,9 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export function OrderFilters() {
+function OrderFiltersContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const currentFilter = searchParams.get("filter") || "all";
@@ -41,5 +42,13 @@ export function OrderFilters() {
                 ))}
             </div>
         </div>
+    );
+}
+
+export function OrderFilters() {
+    return (
+        <Suspense fallback={<div className="h-12 w-full animate-pulse bg-slate-50 rounded" />}>
+            <OrderFiltersContent />
+        </Suspense>
     );
 }

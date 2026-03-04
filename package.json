@@ -54,5 +54,8 @@
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@next/swc": "15.5.11"
   }
 }

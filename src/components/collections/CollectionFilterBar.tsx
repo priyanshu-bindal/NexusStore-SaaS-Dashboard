@@ -2,7 +2,7 @@
 
 import { SlidersHorizontal, ChevronDown, Check } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useState, useRef, useEffect } from "react";
+import { useCallback, useState, useRef, useEffect, Suspense } from "react";
 import { cn } from "@/lib/utils";
 
 const categories = [
@@ -20,7 +20,7 @@ const sortOptions = [
     { label: "Newest", value: "newest" },
 ];
 
-export default function CollectionFilterBar() {
+function CollectionFilterBarContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const currentCategory = searchParams.get("category") || "";
@@ -133,5 +133,13 @@ export default function CollectionFilterBar() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function CollectionFilterBar() {
+    return (
+        <Suspense fallback={<div className="h-20 w-full animate-pulse bg-slate-50" />}>
+            <CollectionFilterBarContent />
+        </Suspense>
     );
 }

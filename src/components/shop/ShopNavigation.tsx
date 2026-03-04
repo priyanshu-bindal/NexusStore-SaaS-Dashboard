@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { SlidersHorizontal, Search, ChevronDown } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
@@ -37,7 +38,7 @@ const categories = [
     }
 ];
 
-export default function ShopNavigation({ onFilterClick }: ShopNavigationProps) {
+function ShopNavigationContent({ onFilterClick }: ShopNavigationProps) {
     const searchParams = useSearchParams();
     const router = useRouter();
     const activeCategory = searchParams.get("category") || "all";
@@ -123,5 +124,13 @@ export default function ShopNavigation({ onFilterClick }: ShopNavigationProps) {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function ShopNavigation(props: ShopNavigationProps) {
+    return (
+        <Suspense fallback={<div className="h-16 w-full bg-white border-b border-slate-200" />}>
+            <ShopNavigationContent {...props} />
+        </Suspense>
     );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { formatCurrency, cn, getStatusStyles, getFulfillmentStyles } from "../../../lib/utils";
@@ -29,7 +29,7 @@ interface Order {
     customerName?: string;
 }
 
-export default function OrdersTable({ orders, totalPages, currentPage }: { orders: Order[], totalPages: number, currentPage: number }) {
+function OrdersTableContent({ orders, totalPages, currentPage }: { orders: Order[], totalPages: number, currentPage: number }) {
     const router = useRouter();
     // ... (existing code skipped for brevity in tool call, but context needs interface update)
     // actually I can't skip context easily with replace_file_content if I want to update interface AND the row render. 
@@ -286,6 +286,14 @@ export default function OrdersTable({ orders, totalPages, currentPage }: { order
                 </button>
             </div>
         </>
+    );
+}
+
+export default function OrdersTable(props: { orders: Order[], totalPages: number, currentPage: number }) {
+    return (
+        <Suspense fallback={<div className="min-h-[400px] w-full flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#135bec]" /></div>}>
+            <OrdersTableContent {...props} />
+        </Suspense>
     );
 }
 

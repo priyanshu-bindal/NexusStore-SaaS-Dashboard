@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, ShoppingBag, Menu, User, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -39,7 +39,7 @@ type Product = {
     createdAt?: Date | string;
 };
 
-export default function ShopClient({ products: initialProducts, totalPages = 1, currentPage = 1 }: { products: Product[], totalPages?: number, currentPage?: number }) {
+function ShopClientContent({ products: initialProducts, totalPages = 1, currentPage = 1 }: { products: Product[], totalPages?: number, currentPage?: number }) {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const { count, setIsOpen } = useCart();
     const searchParams = useSearchParams();
@@ -211,5 +211,13 @@ export default function ShopClient({ products: initialProducts, totalPages = 1, 
                 </div>
             </footer>
         </div>
+    );
+}
+
+export default function ShopClient(props: { products: Product[], totalPages?: number, currentPage?: number }) {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-white" />}>
+            <ShopClientContent {...props} />
+        </Suspense>
     );
 }

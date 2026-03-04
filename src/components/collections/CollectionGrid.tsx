@@ -2,7 +2,7 @@
 
 import { Plus, Heart, Loader2 } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { getProductsAction } from "@/actions/shop";
 import { useSearchParams } from "next/navigation";
 
@@ -20,7 +20,7 @@ type Product = {
     isBestSeller?: boolean; // mocked in action
 };
 
-export default function CollectionGrid() {
+function CollectionGridContent() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const searchParams = useSearchParams();
@@ -138,5 +138,13 @@ export default function CollectionGrid() {
                 </button>
             </div>
         </main>
+    );
+}
+
+export default function CollectionGrid() {
+    return (
+        <Suspense fallback={<div className="flex justify-center items-center h-96"><Loader2 className="animate-spin text-slate-400" size={32} /></div>}>
+            <CollectionGridContent />
+        </Suspense>
     );
 }

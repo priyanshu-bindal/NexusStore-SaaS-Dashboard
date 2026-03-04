@@ -30,11 +30,11 @@ interface Product {
 }
 
 import { deleteProduct } from "@/actions/product-actions";
-import { useOptimistic, useTransition } from "react";
+import { useOptimistic, useTransition, Suspense } from "react";
 import { EditProductModal } from "./EditProductModal";
 import { DeleteProductModal } from "./DeleteProductModal";
 
-export default function ProductsTable({ products, totalPages, currentPage }: { products: Product[], totalPages: number, currentPage: number }) {
+function ProductsTableContent({ products, totalPages, currentPage }: { products: Product[], totalPages: number, currentPage: number }) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
 
@@ -233,5 +233,13 @@ export default function ProductsTable({ products, totalPages, currentPage }: { p
                 </button>
             </div>
         </>
+    );
+}
+
+export default function ProductsTable(props: { products: Product[], totalPages: number, currentPage: number }) {
+    return (
+        <Suspense fallback={<div className="min-h-[400px] w-full flex items-center justify-center"><Loader2 className="animate-spin text-slate-400" size={32} /></div>}>
+            <ProductsTableContent {...props} />
+        </Suspense>
     );
 }
