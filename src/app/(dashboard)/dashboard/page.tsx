@@ -14,6 +14,7 @@ import {
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import { unstable_cache } from "next/cache";
 import { formatCurrency } from "../../../lib/utils";
 import SalesChartComponent from "@/components/dashboard/SalesChart";
 import DateRangeFilter from "@/components/dashboard/DateRangeFilter";
@@ -43,56 +44,47 @@ export default async function DashboardOverview(props: { searchParams: Promise<{
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
     const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
 
+    const getDashboardStats = unstable_cache(
+        async (storeId: string) => {
+            return await Promise.all([
+                db.order.aggregate({
+                    where: { storeId: storeId, status: "PAID" },
+                    _sum: { totalAmount: true }
+                }),
+                db.product.count({
+                    where: { storeId: storeId }
+                }),
+                db.order.count({
+                    where: { storeId: storeId }
+                }),
+                db.order.aggregate({
+                    where: { storeId: storeId, status: "PAID", createdAt: { gte: thirtyDaysAgo } },
+                    _sum: { totalAmount: true },
+                    _count: true
+                }),
+                db.order.aggregate({
+                    where: { storeId: storeId, status: "PAID", createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo } },
+                    _sum: { totalAmount: true },
+                    _count: true
+                }),
+                db.visit.groupBy({ by: ['ipHash'], where: { createdAt: { gte: thirtyDaysAgo } } }),
+                db.visit.groupBy({ by: ['ipHash'], where: { createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo } } })
+            ]);
+        },
+        ['dashboard-stats'],
+        { revalidate: 300 }
+    );
+
     // 2. Aggregate Data Parallelization
     const [
         totalRevenueData,
-        browsingCount, // active products
+        browsingCount,
         totalOrders,
         currentPeriodStats,
         previousPeriodStats,
         currentVisitsResult,
         previousVisitsResult
-    ] = await Promise.all([
-        // Total Stats
-        db.order.aggregate({
-            where: { storeId: store.id, status: "PAID" },
-            _sum: { totalAmount: true }
-        }),
-        db.product.count({
-            where: { storeId: store.id }
-        }),
-        db.order.count({
-            where: { storeId: store.id }
-        }),
-        // Growth Stats: Revenue & Orders (for Conversion Rate)
-        db.order.aggregate({
-            where: {
-                storeId: store.id,
-                status: "PAID",
-                createdAt: { gte: thirtyDaysAgo }
-            },
-            _sum: { totalAmount: true },
-            _count: true
-        }),
-        db.order.aggregate({
-            where: {
-                storeId: store.id,
-                status: "PAID",
-                createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo }
-            },
-            _sum: { totalAmount: true },
-            _count: true
-        }),
-        // Store Visits Stats (Unique Visitors via ipHash)
-        db.visit.groupBy({
-            by: ['ipHash'],
-            where: { createdAt: { gte: thirtyDaysAgo } }
-        }),
-        db.visit.groupBy({
-            by: ['ipHash'],
-            where: { createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo } }
-        })
-    ]);
+    ] = await getDashboardStats(store.id);
 
     // 3. Process Data & Handle Decimals
     const totalRevenue = Number(totalRevenueData._sum.totalAmount || 0);

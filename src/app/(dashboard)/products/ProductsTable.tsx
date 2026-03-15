@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
@@ -135,7 +136,7 @@ function ProductsTableContent({ products, totalPages, currentPage }: { products:
                                             <div className="flex items-center gap-3">
                                                 <div className="size-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-400 overflow-hidden relative">
                                                     {product.images && product.images[0] ? (
-                                                        <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+                                                        <Image src={product.images[0]} alt={product.name} fill sizes="(max-width: 768px) 100vw, 48px" className="object-cover" />
                                                     ) : (
                                                         <Package size={20} />
                                                     )}

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { formatCurrency } from "@/lib/utils";
 import { redirect } from "next/navigation";
+import { unstable_cache } from "next/cache";
 import {
     Download,
     TrendingUp,
@@ -44,25 +45,28 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
     else startDate.setDate(now.getDate() - 30); // Default 30d
 
     // 2. Fetch Core Data
-    const orderData = await db.order.findMany({
-        where: {
-            storeId: store.id,
-            createdAt: { gte: startDate },
-            status: "PAID" // Assumption based on typical schema
+    const getAnalyticsData = unstable_cache(
+        async (storeId: string, startDateStr: string) => {
+            const start = new Date(startDateStr);
+            const [orderData, customerCount, visitCount] = await Promise.all([
+                db.order.findMany({
+                    where: { storeId, createdAt: { gte: start }, status: "PAID" },
+                    select: { totalAmount: true, createdAt: true }
+                }),
+                db.user.count({
+                    where: { createdAt: { gte: start } }
+                }),
+                db.visit.count({
+                    where: { storeId, createdAt: { gte: start } }
+                })
+            ]);
+            return { orderData, customerCount, visitCount };
         },
-        select: { totalAmount: true, createdAt: true }
-    });
+        ['analytics-data'],
+        { revalidate: 300 }
+    );
 
-    const newCustomersCount = await db.user.count({
-        where: {
-            createdAt: { gte: startDate }
-            // In a real app, strict linkage to store might be needed, 
-            // but for this schema User is global or linked via store owners. 
-            // We'll use global new users as proxy if store-specific user tracking isn't strict, or assume these are "store customers".
-            // Given schema, Users have orders. Realistically:
-            // where: { orders: { some: { storeId: store.id, createdAt: { gte: startDate } } } }
-        }
-    });
+    const { orderData, customerCount: newCustomersCount, visitCount } = await getAnalyticsData(store.id, startDate.toISOString());
 
     // Calculate Metrics
     const totalSales = orderData.reduce((acc, order) => acc + Number(order.totalAmount), 0);
@@ -75,13 +79,6 @@ export default async function AnalyticsPage(props: { searchParams: Promise<{ ran
     const profitMargin = totalSales > 0 ? (netProfit / totalSales) * 100 : 0;
 
     // Store Conversion Logic (Reused/Mocked)
-    // Real logic would query 'Visit' table.
-    const visitCount = await db.visit.count({
-        where: {
-            storeId: store.id,
-            createdAt: { gte: startDate }
-        }
-    });
     // Fallback if no visits tracked yet to avoid division by zero or ugly 0%
     const safeVisitCount = visitCount > 0 ? visitCount : (orderData.length * 25); // Assume 4% conversion if no data
     const conversionRate = (orderData.length / safeVisitCount) * 100;

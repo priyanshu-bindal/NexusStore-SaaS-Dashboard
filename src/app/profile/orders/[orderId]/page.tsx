@@ -1,11 +1,21 @@
+import Image from "next/image";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { redirect, notFound } from "next/navigation";
+import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Truck, Copy } from "lucide-react";
 import { OrderTimeline } from "@/components/profile/OrderTimeline";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+    title: "Order Details",
+    robots: {
+        index: false,
+        follow: false,
+    },
+};
 
 export default async function OrderDetailsPage({
     params
@@ -252,9 +262,9 @@ export default async function OrderDetailsPage({
                         <div className="p-6 flex flex-col gap-4">
                             {order.orderItems.map(item => (
                                 <div key={item.id} className="flex gap-4">
-                                    <div className="size-16 shrink-0 bg-slate-100 rounded-lg border border-slate-200 overflow-hidden">
+                                    <div className="size-16 shrink-0 bg-slate-100 rounded-lg border border-slate-200 overflow-hidden relative">
                                         {item.product.images?.[0] && (
-                                            <img src={item.product.images[0]} alt={item.product.name} className="size-full object-cover" />
+                                            <Image src={item.product.images[0]} alt={item.product.name} fill sizes="(max-width: 768px) 100vw, 64px" className="object-cover" />
                                         )}
                                     </div>
                                     <div className="flex-1 min-w-0">

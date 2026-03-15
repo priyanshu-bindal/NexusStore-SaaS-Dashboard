@@ -70,7 +70,7 @@ export default function StorefrontManager({ initialSections }: Props) {
             if (result.success && result.section) {
                 toast.success(`New ${type} section created!`);
                 // Append locally so it shows immediately at the bottom
-                setSections((prev) => [...prev, result.section as StorefrontSectionData]);
+                setSections((prev) => [...prev, result.section as unknown as StorefrontSectionData]);
 
                 // Optional: scroll to bottom
                 setTimeout(() => {

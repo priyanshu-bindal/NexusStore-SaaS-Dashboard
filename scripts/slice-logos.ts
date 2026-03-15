@@ -49,8 +49,12 @@ async function sliceLogos() {
             .toFile(path.join(outDir, 'logo-vertical.png'));
         console.log('✅ Created logo-vertical.png');
 
-    } catch (e) {
-        console.error('Error slicing logos:', e.message);
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            console.error('Error slicing logos:', e.message);
+        } else {
+            console.error('Error slicing logos:', e);
+        }
     }
 }
 

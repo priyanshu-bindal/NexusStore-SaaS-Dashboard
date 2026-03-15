@@ -74,7 +74,7 @@ Designed for conversion and usability.
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/priyanshu-bindal/NexusStore-SaaS-Dashboard.git
+    git clone https://github.com/priyanshu-bindal/ShopyStore-SaaS-Dashboard.git
     cd shopy-store
     ```
 

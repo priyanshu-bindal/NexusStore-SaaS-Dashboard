@@ -2,12 +2,12 @@ version: "3"
 services:
   db:
     image: postgres:15-alpine
-    container_name: nexus-db
+    container_name: Shopy-db
     restart: always
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: nexusstore
+      POSTGRES_DB: Shopystore
     ports:
       - "5432:5432"
     volumes:

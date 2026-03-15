@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { X, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
@@ -115,9 +116,9 @@ export default function CartSheet() {
                     ) : (
                         items.map((item) => (
                             <div key={`${item.id}-${item.size || 'def'}`} className="flex gap-4">
-                                <div className="size-20 bg-slate-50 rounded-lg flex items-center justify-center p-2 flex-shrink-0 border border-slate-100">
+                                <div className="size-20 relative bg-slate-50 rounded-lg flex items-center justify-center p-2 flex-shrink-0 border border-slate-100 overflow-hidden">
                                     {item.image ? (
-                                        <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
+                                        <Image src={item.image} alt={item.name} fill className="object-contain" sizes="(max-width: 768px) 100vw, 80px" />
                                     ) : (
                                         <ShoppingBag className="size-8 text-slate-300" />
                                     )}

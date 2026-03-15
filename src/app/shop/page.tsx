@@ -5,7 +5,14 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import DynamicStorefront from "@/components/DynamicStorefront";
 import type { StorefrontSectionData, SectionType, SectionContent } from "@/types/storefront";
 
-export const dynamic = "force-dynamic";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Shop All Products | ShopyStore",
+    description: "Browse our complete catalog of premium products, clothing, electronics and more curated from top sellers.",
+};
+
+export const revalidate = 3600;
 
 async function ShopContent({
     searchParams,

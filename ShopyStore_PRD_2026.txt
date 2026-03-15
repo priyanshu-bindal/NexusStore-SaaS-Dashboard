@@ -1,0 +1,587 @@
+SHOPYSTORE
+
+SaaS Dashboard & Storefront
+
+PRODUCT REQUIREMENTS DOCUMENT
+
+Full Audit Analysis · Fixes · Roadmap · 2026 Edition
+
+  ---------------------------- ------------------------------------------
+  Document Version             v1.0 — March 2026
+
+  Product                      ShopyStore SaaS Platform
+
+  Authors                      Engineering / Product Team
+
+  Status                       ACTIVE — Immediate Action Required
+  ---------------------------- ------------------------------------------
+
+Executive Summary
+
+ShopyStore is a multi-tenant SaaS storefront and seller dashboard built
+on a strong modern foundation — React 19, Next.js 15, Prisma, and
+PostgreSQL. However, the audit reveals a cluster of high-severity
+technical debts that are actively hurting performance, SEO visibility,
+and accessibility. This PRD defines the complete remediation plan, 2026
+roadmap additions, and a list of legacy patterns to retire.
+
+  ------------- ------------------- -------------------------------------
+  Severity      Finding             Detail
+
+  🔴 Critical   Image Optimization  6+ views use raw <img> tags — no
+                                    WebP/AVIF compression, no lazy
+                                    loading, guaranteed CLS
+
+  🔴 Critical   SEO Infrastructure  No sitemap.xml, no robots.txt, 24 of
+                Missing             26 pages lack unique <title> or OG
+                                    metadata
+
+  🔴 Critical   Missing 404 Handler No not-found.tsx on dynamic routes —
+                                    invalid product URLs crash to blank
+                                    screens
+
+  🟡 Warning    Accessibility       Only ~5 aria- labels codebase-wide —
+                (A11y)              modals, toasts and dropdowns trap
+                                    screen readers
+
+  🟡 Warning    Heavy Client        Recharts and Framer Motion imported
+                Bundles             directly with no dynamic() lazy
+                                    splitting
+
+  🟡 Warning    No DB Connection    Prisma on Serverless without
+                Pooling             PgBouncer/Accelerate risks exhausting
+                                    connection limits
+
+  🟢 Minor      Strong Architecture React 19 + Next.js 15 + Server
+                Base                Actions + Zod — solid, scalable,
+                                    future-proof foundation
+  ------------- ------------------- -------------------------------------
+
+Step-by-Step Fix Plan
+
+The following five phases must be executed in strict priority order.
+Each phase is a prerequisite for the one that follows in terms of user
+impact and stability.
+
+Phase 1 — Critical Performance Fixes (Week 1)
+
++-----------------------------------------------------------------------+
+| Step 1 Replace All <img> Tags with next/image                         |
+|                                                                       |
+| 1.  Audit every component file: CartSheet, ProductsTable,             |
+|     CustomersTable, ProductReviews, and all avatar renderers.         |
+|                                                                       |
+| 2.  Replace <img src={url} className='w-full h-full object-cover' />  |
+|     with <Image src={url} fill alt='...' sizes='(max-width: 768px)    |
+|     100vw, 48px' />.                                                  |
+|                                                                       |
+| 3.  For fixed-size avatars (48×48px) use <Image src={url} width={48}  |
+|     height={48} alt={name} />. Never omit explicit width/height       |
+|     unless using fill.                                                |
+|                                                                       |
+| 4.  Add the UploadThing domain to next.config.js remotePatterns so    |
+|     Next.js edge caching can resize and serve WebP/AVIF variants.     |
+|                                                                       |
+| 5.  Validate with Lighthouse — CLS score should drop to near 0 and    |
+|     LCP should improve by 40–60% on product pages.                    |
++-----------------------------------------------------------------------+
+
++-----------------------------------------------------------------------+
+| Step 2 Add not-found.tsx to All Dynamic Routes                        |
+|                                                                       |
+| 6.  Create src/app/not-found.tsx as the global fallback with a        |
+|     branded 404 UI, navigation links, and search shortcut.            |
+|                                                                       |
+| 7.  Add route-level not-found.tsx inside app/shop/[productId]/ and    |
+|     app/profile/orders/[orderId]/ for context-aware messaging.        |
+|                                                                       |
+| 8.  For /checkout/success, add a guard: if no order context in        |
+|     state/params, redirect to /shop rather than showing an empty      |
+|     success screen.                                                   |
+|                                                                       |
+| 9.  Test by manually navigating to /shop/nonexistent-id in dev and    |
+|     staging environments.                                             |
++-----------------------------------------------------------------------+
+
++-----------------------------------------------------------------------+
+| Step 3 Generate sitemap.ts and robots.ts                              |
+|                                                                       |
+| 10. Create src/app/sitemap.ts that dynamically queries Prisma for all |
+|     published products and returns MetadataRoute.Sitemap entries.     |
+|                                                                       |
+| 11. Include static routes (/, /shop, /collections, /become-a-seller)  |
+|     with priority: 1.0 and dynamic /shop/[productId] entries with     |
+|     priority: 0.8.                                                    |
+|                                                                       |
+| 12. Create src/app/robots.ts returning allow: '/' for all bots and    |
+|     pointing to the sitemap URL.                                      |
+|                                                                       |
+| 13. After deploy, submit the sitemap URL to Google Search Console and |
+|     Bing Webmaster Tools.                                             |
+|                                                                       |
+| 14. Re-run the site through Screaming Frog or Ahrefs to verify all 26 |
+|     routes are indexable.                                             |
++-----------------------------------------------------------------------+
+
+Phase 2 — SEO & Metadata (Week 2)
+
++-----------------------------------------------------------------------+
+| Step 4 Implement generateMetadata on All Public Routes                |
+|                                                                       |
+| 15. For /shop/[productId], export async function generateMetadata({   |
+|     params }) that fetches the product and returns title,             |
+|     description, openGraph image, and canonical URL.                  |
+|                                                                       |
+| 16. For /shop, /collections, /become-a-seller, /get-started — add     |
+|     static metadata exports with unique, keyword-rich titles (never   |
+|     recycle 'Shopystore Landing Page').                               |
+|                                                                       |
+| 17. For /profile/orders/[orderId], return a noindex robots directive  |
+|     since order detail pages should not be indexed.                   |
+|                                                                       |
+| 18. Add twitter: { card: 'summary_large_image' } to product pages so  |
+|     sharing a product link on Twitter/iMessage shows a rich preview   |
+|     card.                                                             |
+|                                                                       |
+| 19. Validate all OG tags using opengraph.xyz and the Twitter Card     |
+|     Validator before shipping.                                        |
++-----------------------------------------------------------------------+
+
+Phase 3 — Bundle & Speed (Week 2–3)
+
++-----------------------------------------------------------------------+
+| Step 5 Lazy-Load Heavy Dashboard Dependencies                         |
+|                                                                       |
+| 20. Wrap every Recharts import in dynamic(): const AreaChart =        |
+|     dynamic(() => import('./AreaChart'), { ssr: false, loading: () => |
+|     <Skeleton /> }).                                                  |
+|                                                                       |
+| 21. Do the same for Framer Motion on routes that don't need it at     |
+|     initial paint — defer it to after the main content hydrates.      |
+|                                                                       |
+| 22. Run next build && next-bundle-analyzer. Target reducing the       |
+|     dashboard route JS payload from its current size to under 200KB   |
+|     gzipped.                                                          |
+|                                                                       |
+| 23. Enable gzip/brotli compression in your hosting config (Vercel     |
+|     does this by default; verify via response headers).               |
++-----------------------------------------------------------------------+
+
++-----------------------------------------------------------------------+
+| Step 6 Add Prisma Connection Pooling                                  |
+|                                                                       |
+| 24. If deployed to Vercel (Serverless), replace direct Prisma Client  |
+|     calls with Prisma Accelerate or add PgBouncer in front of         |
+|     PostgreSQL.                                                       |
+|                                                                       |
+| 25. In db.ts, use the singleton pattern: const globalForPrisma =      |
+|     global as { prisma?: PrismaClient }; export const db =            |
+|     globalForPrisma.prisma ?? new PrismaClient();                     |
+|                                                                       |
+| 26. Add export const revalidate = 3600 to /shop and /collections      |
+|     route segments so Next.js serves cached HTML from the edge        |
+|     instead of hitting the DB on every request.                       |
+|                                                                       |
+| 27. Use generateStaticParams for top-selling /shop/[productId] pages  |
+|     to pre-render them at build time.                                 |
++-----------------------------------------------------------------------+
+
+Phase 4 — Accessibility (Week 3–4)
+
++-----------------------------------------------------------------------+
+| Step 7 Systematic Aria Label Rollout                                  |
+|                                                                       |
+| 28. Audit every interactive element using eslint-plugin-jsx-a11y —    |
+|     add it to your ESLint config and fix all reported violations.     |
+|                                                                       |
+| 29. Modals: add role='dialog', aria-modal='true', aria-labelledby     |
+|     pointing to the modal title, and trap focus inside using a        |
+|     focus-trap library.                                               |
+|                                                                       |
+| 30. Toast notifications: add role='status' and aria-live='polite' so  |
+|     screen readers announce new messages.                             |
+|                                                                       |
+| 31. Navigation dropdowns: add aria-expanded, aria-haspopup, and       |
+|     aria-controls attributes.                                         |
+|                                                                       |
+| 32. All icon-only buttons (close X, cart icon, kebab menus): add      |
+|     aria-label='Close', aria-label='Open cart', etc.                  |
+|                                                                       |
+| 33. Add a skip-to-content link as the very first focusable element in |
+|     the root layout.                                                  |
++-----------------------------------------------------------------------+
+
+Phase 5 — Animation & Visual Polish (Week 4)
+
++-----------------------------------------------------------------------+
+| Step 8 Fix Tab-Switching & Animation Glitches                         |
+|                                                                       |
+| 34. Wrap all Framer Motion AnimatePresence sections that sit next to  |
+|     unresolved <img> tags — since those are being replaced with       |
+|     next/image in Phase 1, this will largely self-correct.            |
+|                                                                       |
+| 35. Add useReducedMotion() from Framer Motion to all animation        |
+|     components. When the OS prefers reduced motion, skip or simplify  |
+|     transitions.                                                      |
+|                                                                       |
+| 36. For the Page Visibility API: add a                                |
+|     document.addEventListener('visibilitychange') listener in a       |
+|     global useEffect to pause carousels, auto-play videos, and        |
+|     polling fetches when the tab is hidden.                           |
+|                                                                       |
+| 37. Audit all Framer AnimatePresence key props — duplicate or missing |
+|     keys cause ghost elements to persist on tab return, which is the  |
+|     root cause of 'shows twice' glitches.                             |
+|                                                                       |
+| 38. Add a theme-color meta tag and ensure no hard-refresh flash by    |
+|     verifying next-themes is in the root layout (or add it if         |
+|     absent).                                                          |
++-----------------------------------------------------------------------+
+
+Loading States — Where to Add & Where to Remove
+
+ShopyStore already has 6 loading.tsx skeletons in place. The table below
+maps every route to its correct loading approach, flagging gaps and
+over-loading.
+
+  ------------------------ ---------------- ---------------- -----------------
+  Route / Page             Current State    Recommended      Notes
+
+  /shop                    loading.tsx ✓    Keep — good      Add product grid
+                                                             skeleton with
+                                                             aspect-ratio
+                                                             placeholders to
+                                                             prevent CLS
+
+  /shop/[productId]        None             ADD loading.tsx  Show image + text
+                                                             skeleton.
+                                                             Critical —
+                                                             product images
+                                                             cause layout
+                                                             shift
+
+  /collections             loading.tsx ✓    Keep — good      Ensure skeleton
+                                                             matches final
+                                                             grid column count
+
+  /checkout                loading.tsx ✓    Keep             Add Suspense
+                                                             boundary around
+                                                             order summary
+                                                             fetch
+
+  /checkout/success        None             ADD Suspense     Guard with order
+                                                             context check
+                                                             before rendering,
+                                                             or redirect to
+                                                             /shop
+
+  /profile                 loading.tsx ✓    Keep             Merge with
+                                                             address/orders
+                                                             child routes into
+                                                             shared layout
+                                                             skeleton
+
+  /profile/orders          loading.tsx ✓    Keep             Consider Infinite
+                                                             Scroll +
+                                                             Intersection
+                                                             Observer instead
+                                                             of paginated load
+
+  /profile/orders/[id]     None             ADD loading.tsx  Order detail
+                                                             fetches can be
+                                                             slow — add a
+                                                             full-page
+                                                             skeleton
+
+  /dashboard               None             ADD loading.tsx  Analytics widgets
+                                                             are heavy —
+                                                             skeleton prevents
+                                                             dashboard flash
+
+  /(dashboard)/analytics   None             ADD Suspense     Recharts renders
+                                                             client-side —
+                                                             wrap each chart
+                                                             in Suspense with
+                                                             skeleton
+
+  /(dashboard)/orders      None             ADD loading.tsx  Table loads from
+                                                             DB — skeleton
+                                                             with correct row
+                                                             count reduces
+                                                             jank
+
+  /admin                   None             ADD loading.tsx  Admin views
+                                                             should show a
+                                                             minimal spinner
+                                                             until role is
+                                                             confirmed
+
+  /sign-in                 None             REMOVE / None    Auth pages should
+                                                             render instantly
+                                                             — no loading
+                                                             state needed
+
+  /become-a-seller         None             REMOVE / None    Static marketing
+                                                             page — SSG, no
+                                                             loading state
+                                                             required
+
+  /get-started             None             REMOVE / None    Static page —
+                                                             pre-render at
+                                                             build time, zero
+                                                             loading state
+                                                             needed
+  ------------------------ ---------------- ---------------- -----------------
+
+New Features to Add in 2026
+
+These additions elevate ShopyStore from a functional SaaS storefront to
+a competitive, modern product. Prioritized by user impact and
+implementation effort.
+
+Tier 1 — High Impact, Build First
+
++----------------------+----------------------+------------------------+
+| 🔍 AI-Powered Search | 📊 Real-Time         | 🌐                     |
+|                      | Analytics            | Internationalization   |
+| Semantic product     |                      |                        |
+| search using         | WebSocket-based live | next-intl for          |
+| embeddings           | dashboard widgets    | multi-language         |
+| (pgvector + OpenAI). | showing active       | storefronts. Allow     |
+| Users find products  | sessions, live       | sellers to configure   |
+| by describing them   | revenue, and         | their store language.  |
+| in natural language. | conversion funnels   | Support RTL layouts    |
+|                      | per seller tenant.   | for Arabic/Hebrew      |
+|                      |                      | markets.               |
++----------------------+----------------------+------------------------+
+| 🍪 Cookie Consent    | ⭐ Review Moderation | 📦 Inventory Alerts    |
+| (GDPR)               | Queue                |                        |
+|                      |                      | Notify sellers via     |
+| CookieYes or custom  | Seller dashboard     | email (Resend) when    |
+| consent banner.      | panel to             | product stock drops    |
+| Required for EU      | approve/reject       | below a configurable   |
+| traffic — currently  | product reviews      | threshold. Add a       |
+| completely missing.  | before they go       | low-stock badge on the |
+| Blocks Google        | public. Add review   | storefront.            |
+| Analytics from       | sentiment badge      |                        |
+| firing legally.      | using lightweight    |                        |
+|                      | ML.                  |                        |
++----------------------+----------------------+------------------------+
+
+Tier 2 — UX & Conversion Improvements
+
++----------------------+----------------------+------------------------+
+| 🔔 Push              | 💬 Live Chat Widget  | 🎁 Discount & Coupon   |
+| Notifications        |                      | Engine                 |
+|                      | Integrate Tawk.to or |                        |
+| Browser push         | build a custom       | Seller-configurable    |
+| (web-push library)   | Supabase Realtime    | coupon codes with      |
+| for order updates,   | chat between buyers  | usage limits, expiry   |
+| flash sales, and     | and sellers.         | dates, and             |
+| back-in-stock        | Critical for         | percentage/flat        |
+| alerts. Replaces the | high-ticket product  | discount types. Apply  |
+| need for email for   | categories.          | at checkout via Server |
+| transient updates.   |                      | Action.                |
++----------------------+----------------------+------------------------+
+| 📱 Progressive Web   | 🔗 Social Proof Feed | 🤖 AI Product          |
+| App                  |                      | Descriptions           |
+|                      | Show recent          |                        |
+| Add a manifest.json  | purchases ('Rahul    | One-click AI           |
+| and service worker   | from Delhi just      | description generator  |
+| for offline product  | bought X') as a      | in the seller          |
+| browsing and         | dismissible toast.   | dashboard using the    |
+| in                   | Proven conversion    | Anthropic or OpenAI    |
+| stall-to-homescreen. | booster — implement  | API. Sellers paste     |
+| Massive for mobile   | with Server-Sent     | product name + specs   |
+| conversion in        | Events.              | and get SEO-ready      |
+| emerging markets.    |                      | copy.                  |
++----------------------+----------------------+------------------------+
+
+What to Remove — Legacy & Dead Patterns in 2026
+
+These patterns were acceptable in 2022–2024 but are now antipatterns in
+the Next.js 15 App Router era. Removing them reduces bundle weight,
+maintenance overhead, and technical debt.
+
+  --------------------- --------------- ----------------------------------
+  Pattern to Remove     Category        What to Replace It With
+
+  Raw <img> HTML tags   Performance     next/image — automatic WebP/AVIF,
+                                        lazy loading, and CLS prevention
+
+  Hardcoded page        SEO             generateMetadata() export or
+  <title> strings                       metadata object per route in App
+                                        Router
+
+  Client-side Prisma    Architecture    Server Actions and React Server
+  calls                                 Components — move all DB access
+                                        server-side
+
+  Direct Recharts       Bundle          next/dynamic with ssr: false and a
+  imports                               Skeleton fallback component
+
+  next-auth v4 patterns Auth            Auth.js v5 patterns — already
+                                        partially migrated, finish the
+                                        migration
+
+  getServerSideProps /  Routing         App Router fetch() with cache:
+  getStaticProps                        'force-cache' or unstable_cache —
+                                        Pages Router is legacy
+
+  Inline style={{ }}    CSS             Tailwind utility classes —
+  overrides                             maintain design system consistency
+
+  console.log debug     Code Quality    Remove all; add proper error
+  statements                            tracking with Sentry or LogRocket
+
+  jwt: { secret: '...'  Security        Environment variables only —
+  } hardcoding                          AUTH_SECRET must never appear in
+                                        source code
+
+  Any remaining Pages   Architecture    App Router equivalents — Pages
+  Router files                          Router in Next.js 15 is deprecated
+                                        workflow
+  --------------------- --------------- ----------------------------------
+
+Performance Optimization Plan
+
+Ranked by estimated impact. Fix in this exact order for maximum
+Lighthouse score improvement.
+
+Image & Asset Pipeline
+
++----------------------------------+-----------------------------------+
+| Current Problems                 | Fixes to Apply                    |
+|                                  |                                   |
+| -   Raw <img> tags serving       | -   next/image with explicit      |
+|     3000px UploadThing files at  |     sizes prop for responsive     |
+|     48x48px display size         |     srcset generation             |
+|                                  |                                   |
+| -   No WebP or AVIF conversion — | -   Add priority prop to the      |
+|     browsers download full JPEGs |     first product image and hero  |
+|                                  |     images only                   |
+| -   No width/height attributes — |                                   |
+|     CLS score impacted on every  | -   Use placeholder='blur' with   |
+|     product page                 |     blurDataURL for instant       |
+|                                  |     skeleton on load              |
+| -   No priority attribute on     |                                   |
+|     above-the-fold hero images   | -   Configure UploadThing domain  |
+|                                  |     in next.config.js             |
+|                                  |     remotePatterns                |
++----------------------------------+-----------------------------------+
+
+Caching & Data Fetching
+
++----------------------------------+-----------------------------------+
+| Current Problems                 | Fixes to Apply                    |
+|                                  |                                   |
+| -   Every /shop request triggers | -   export const revalidate =     |
+|     a fresh Prisma DB query      |     3600 on /shop and             |
+|                                  |     /collections routes           |
+| -   No generateStaticParams on   |                                   |
+|     product detail pages         | -   generateStaticParams for      |
+|                                  |     top-100 products — pre-render |
+| -   No revalidate config on      |     at build time                 |
+|     high-traffic storefront      |                                   |
+|     routes                       | -   unstable_cache for dashboard  |
+|                                  |     analytics aggregation queries |
+| -   No unstable_cache wrapping   |     (revalidate every 5min)       |
+|     on expensive aggregation     |                                   |
+|     queries                      | -   Prisma Accelerate or          |
+|                                  |     PgBouncer for connection      |
+|                                  |     pooling on serverless         |
++----------------------------------+-----------------------------------+
+
+Tab Switching & Page Visibility
+
+These specific patterns cause the 'things loading again' and 'shows
+twice' bugs on tab switch:
+
+-   Root Cause 1: Framer Motion AnimatePresence keys — missing or
+    duplicated keys cause components to remount on visibility change,
+    appearing to render twice. Fix: audit every AnimatePresence and
+    ensure every child has a stable, unique key.
+
+-   Root Cause 2: SWR / React Query without focus revalidation config —
+    by default, these refetch on window focus. Add refetchOnWindowFocus:
+    false to queries that don't need it (analytics, product lists). Keep
+    it enabled only for cart and order status.
+
+-   Root Cause 3: Polling intervals that don't pause — any setInterval
+    fetch should be paused using the Page Visibility API. Add:
+    document.addEventListener('visibilitychange', () => { if
+    (document.hidden) clearInterval(poll); else startPolling(); })
+
+-   Root Cause 4: Animation restarts — CSS animations with
+    animation-fill-mode: none restart on tab return. Add
+    animation-fill-mode: forwards to all non-looping animations.
+
+Core Web Vitals Targets
+
+  ----------------- ----------------- ----------------- ------------------------
+  Metric            Current           Target After      Key Fix
+                    (Estimated)       Fixes             
+
+  LCP (Largest      > 4s (Poor)       < 2.5s (Good)     next/image + priority
+  Contentful Paint)                                     prop + edge caching
+
+  CLS (Cumulative   > 0.25 (Poor)     < 0.1 (Good)      Explicit image
+  Layout Shift)                                         dimensions + skeleton
+                                                        loaders
+
+  INP (Interaction  Unknown           < 200ms (Good)    Lazy-load Recharts +
+  to Next Paint)                                        reduce main thread
+                                                        blocking
+
+  TTFB (Time to     ~800ms            < 200ms (Good)    generateStaticParams +
+  First Byte)                                           revalidate + edge CDN
+
+  FID / TBT         High (Heavy JS)   < 100ms           Code splitting Framer
+                                                        Motion + dynamic imports
+  ----------------- ----------------- ----------------- ------------------------
+
+Priority Action List — Fix These First
+
+If the team can only ship one sprint of fixes, these five items deliver
+the highest combined impact on performance, SEO, and user experience:
+
++----+-----------------------------------------------------------------+
+| 01 | Replace all legacy <img> tags                                   |
+|    |                                                                 |
+|    | with next/image across CartSheet, ProductsTable,                |
+|    | CustomersTable, ProductReviews and every avatar component.      |
+|    | Impact: CLS eliminated, LCP drops 40–60%, image payload reduced |
+|    | 80%+ via WebP.                                                  |
++----+-----------------------------------------------------------------+
+
++----+-----------------------------------------------------------------+
+| 02 | Create src/app/not-found.tsx                                    |
+|    |                                                                 |
+|    | with a branded 404 page and add route-level handlers inside     |
+|    | /shop/[productId]/ and /profile/orders/[orderId]/. Impact:      |
+|    | eliminates blank-screen crashes on invalid deep-links.          |
++----+-----------------------------------------------------------------+
+
++----+-----------------------------------------------------------------+
+| 03 | Generate sitemap.ts + robots.ts                                 |
+|    |                                                                 |
+|    | with Prisma-powered dynamic product URLs. Submit to Google      |
+|    | Search Console on deploy. Impact: entire storefront becomes     |
+|    | crawlable for the first time.                                   |
++----+-----------------------------------------------------------------+
+
++----+-----------------------------------------------------------------+
+| 04 | Export generateMetadata() on /shop and /shop/[productId]        |
+|    |                                                                 |
+|    | with unique titles, descriptions, and og:image. Impact: product |
+|    | sharing on social media generates rich preview cards instead of |
+|    | blank link previews.                                            |
++----+-----------------------------------------------------------------+
+
++----+-----------------------------------------------------------------+
+| 05 | Configure revalidate + generateStaticParams                     |
+|    |                                                                 |
+|    | on the storefront routes and add Prisma Accelerate for          |
+|    | connection pooling. Impact: TTFB drops from ~800ms to under     |
+|    | 200ms on product pages served from edge cache.                  |
++----+-----------------------------------------------------------------+

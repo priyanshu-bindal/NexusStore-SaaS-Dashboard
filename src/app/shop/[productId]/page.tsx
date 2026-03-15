@@ -1,8 +1,8 @@
-// Force dynamic rendering for fresh data
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import ProductDetails from "@/components/shop/ProductDetails";
 import { getProductRecommendations } from "@/actions/recommendations";
 import { Suspense } from "react";
@@ -14,6 +14,63 @@ interface ProductPageProps {
     params: Promise<{
         productId: string;
     }>;
+}
+
+export async function generateStaticParams() {
+    const topProducts = await db.product.findMany({
+        where: { status: "ACTIVE" },
+        orderBy: { orderItems: { _count: 'desc' } },
+        take: 100,
+        select: { id: true },
+    });
+
+    return topProducts.map((product) => ({
+        productId: product.id,
+    }));
+}
+
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+    const { productId } = await params;
+    const product = await db.product.findUnique({
+        where: { id: productId },
+        select: { name: true, description: true, images: true }
+    });
+
+    if (!product) {
+        return {
+            title: "Product Not Found | ShopyStore",
+            description: "The requested product could not be found.",
+        };
+    }
+
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    
+    return {
+        title: `${product.name} | ShopyStore`,
+        description: product.description.substring(0, 160),
+        alternates: {
+            canonical: `${baseUrl}/shop/${productId}`,
+        },
+        openGraph: {
+            title: product.name,
+            description: product.description.substring(0, 160),
+            url: `${baseUrl}/shop/${productId}`,
+            images: product.images[0] ? [
+                {
+                    url: product.images[0],
+                    width: 800,
+                    height: 600,
+                    alt: product.name,
+                }
+            ] : [],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: product.name,
+            description: product.description.substring(0, 160),
+            images: product.images[0] ? [product.images[0]] : [],
+        },
+    };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {

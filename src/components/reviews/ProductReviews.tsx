@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useActionState, useState } from "react";
 import { StarRating } from "./StarRating";
 import { addReview } from "@/actions/review";
@@ -68,7 +69,7 @@ export function ProductReviews({ productId, reviews, currentUser }: ProductRevie
                                 <div className="flex items-center gap-2">
                                     <div className="h-8 w-8 bg-slate-200 rounded-full flex items-center justify-center overflow-hidden">
                                         {review.user.image ? (
-                                            <img src={review.user.image} alt={review.user.name || "User"} className="h-full w-full object-cover" />
+                                            <Image src={review.user.image} alt={review.user.name || "User"} width={32} height={32} className="h-full w-full object-cover" />
                                         ) : (
                                             <User size={16} className="text-slate-500" />
                                         )}

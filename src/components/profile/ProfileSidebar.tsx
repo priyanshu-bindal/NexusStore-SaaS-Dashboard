@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { User, Package2, Settings, LogOut, MapPin } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -19,7 +20,7 @@ export function ProfileSidebar() {
                 <div className="flex items-center gap-3 mb-6 p-2">
                     <div className="bg-center bg-no-repeat bg-cover rounded-full size-12 bg-slate-100 flex items-center justify-center overflow-hidden">
                         {user?.image ? (
-                            <img src={user.image} alt={user.name || "User"} className="w-full h-full object-cover" />
+                            <Image src={user.image} width={48} height={48} alt={user.name || "User"} className="object-cover w-full h-full" />
                         ) : (
                             <User className="text-slate-400 size-6" />
                         )}

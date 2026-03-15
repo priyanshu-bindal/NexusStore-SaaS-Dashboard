@@ -34,7 +34,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     // Hydrate from localStorage
     useEffect(() => {
         setIsMounted(true);
-        const savedCart = localStorage.getItem("nexus_cart");
+        const savedCart = localStorage.getItem("Shopy_cart");
         if (savedCart) {
             try {
                 setItems(JSON.parse(savedCart));
@@ -47,7 +47,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     // Persist to localStorage
     useEffect(() => {
         if (isMounted) {
-            localStorage.setItem("nexus_cart", JSON.stringify(items));
+            localStorage.setItem("Shopy_cart", JSON.stringify(items));
         }
     }, [items, isMounted]);
 

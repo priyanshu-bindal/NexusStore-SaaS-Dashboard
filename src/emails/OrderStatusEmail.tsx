@@ -44,7 +44,7 @@ export const OrderStatusEmail = ({
             <Body style={main}>
                 <Container style={container}>
                     <Section>
-                        <Text style={heading}>NexusStore</Text>
+                        <Text style={heading}>ShopyStore</Text>
                     </Section>
 
                     <Section>

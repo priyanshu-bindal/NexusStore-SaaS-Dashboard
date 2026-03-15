@@ -11,8 +11,6 @@ import { SearchInput } from "@/components/shop/SearchInput";
 import { Suspense, useState } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
-export const dynamic = "force-dynamic";
-
 function CollectionsContent() {
     const { count, setIsOpen } = useCart();
     const [isMenuOpen, setIsMenuOpen] = useState(false);

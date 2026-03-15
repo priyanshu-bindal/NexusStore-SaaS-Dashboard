@@ -70,7 +70,7 @@ async function main() {
         create: {
             id: merchantId,
             name: 'Master Merchant',
-            email: 'master@nexusstore.com',
+            email: 'master@Shopystore.com',
             role: 'MERCHANT',
         },
     });
@@ -78,9 +78,9 @@ async function main() {
     // Create/Upsert Store
     const store = await prisma.store.upsert({
         where: { userId: merchantId },
-        update: { name: "Nexus Official Store" }, // Ensure name is current
+        update: { name: "Shopy Official Store" }, // Ensure name is current
         create: {
-            name: "Nexus Official Store",
+            name: "Shopy Official Store",
             description: "Premium tech and lifestyle gear.",
             userId: merchantId,
         }
@@ -116,7 +116,7 @@ async function main() {
                     images: [imageUrl],
                     colors: [color],
                     status: 'ACTIVE',
-                    brand: 'Nexus',
+                    brand: 'Shopy',
                     storeId: store.id,
                     // NO userId here!
                 });

@@ -1,12 +1,9 @@
 datasource db {
-  provider = "postgresql"
-  // LEAVE THIS EMPTY: No url, no directUrl. 
-  // Config is now handled in prisma.config.ts
+  provider  = "postgresql"
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
 }
 
 enum Role {

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { notFound, redirect } from "next/navigation";
@@ -140,9 +141,9 @@ export default async function OrderDetailsPage(props: {
                         <div className="divide-y divide-slate-100">
                             {order.orderItems.map((item) => (
                                 <div key={item.id} className="p-6 flex items-center gap-6">
-                                    <div className="size-20 bg-slate-100 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400">
+                                    <div className="size-20 bg-slate-100 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center text-slate-400 relative">
                                         {item.product.images[0] ? (
-                                            <img src={item.product.images[0]} alt={item.product.name} className="w-full h-full object-cover" />
+                                            <Image src={item.product.images[0]} alt={item.product.name} fill sizes="(max-width: 768px) 100vw, 80px" className="object-cover" />
                                         ) : (
                                             <Package size={32} />
                                         )}

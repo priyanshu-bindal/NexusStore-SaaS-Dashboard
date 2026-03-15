@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useTransition, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
@@ -94,9 +95,9 @@ function CustomersTableContent({ users, totalPages, currentPage, totalCustomers 
                                 <tr key={user.id} className="table-row-hover cursor-pointer group transition-colors hover:bg-slate-50/50">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
-                                            <div className="size-10 rounded-full overflow-hidden bg-slate-100 flex-shrink-0">
+                                            <div className="size-10 rounded-full overflow-hidden bg-slate-100 flex-shrink-0 relative">
                                                 {user.image ? (
-                                                    <img alt={user.name || "Customer"} className="w-full h-full object-cover" src={user.image} />
+                                                    <Image alt={user.name || "Customer"} src={user.image} fill sizes="(max-width: 768px) 100vw, 48px" className="object-cover" />
                                                 ) : (
                                                     <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-500 font-bold">
                                                         {(user.name || user.email || "?").charAt(0).toUpperCase()}
