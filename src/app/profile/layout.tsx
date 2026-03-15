@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { ShopHeader } from "@/components/layout/ShopHeader";
 import { ProfileSidebar } from "@/components/profile/ProfileSidebar";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 export default function ProfileLayout({
     children,

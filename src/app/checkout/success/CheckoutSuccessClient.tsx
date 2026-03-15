@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -77,7 +77,7 @@ export default function OrderSuccessContent({ orderId }: { orderId: string }) {
     if (loading) {
         return (
             <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-amber-500 border-t-transparent"></div>
+                <LoadingSpinner />
             </div>
         );
     }

@@ -27,9 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body>
-
+        <a href="#main-content" className="sr-only focus:not-sr-only">Skip to content</a>
         <Providers>
-          {children}
+          <main id="main-content">
+            {children}
+          </main>
           <CartSheet />
           <AuthModal />
         </Providers>

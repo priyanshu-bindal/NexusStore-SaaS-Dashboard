@@ -163,6 +163,7 @@ function ProductsTableContent({ products, totalPages, currentPage }: { products:
                                             <div className="flex items-center justify-end gap-2">
                                                 <EditProductModal product={product} />
                                                 <button
+                                                    aria-label="Delete Product"
                                                     onClick={() => openDeleteModal(product)}
                                                     className="p-1.5 hover:bg-red-50 rounded text-red-300 hover:text-red-500 transition-colors"
                                                     title="Delete Product"

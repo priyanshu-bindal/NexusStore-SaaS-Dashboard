@@ -6,7 +6,7 @@ import { Package, Eye, AlertTriangle, Download, Plus } from "lucide-react";
 import { AddProductModal } from "./AddProductModal";
 
 import { Suspense } from "react";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 export const dynamic = "force-dynamic";
 

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode, useEffect, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 function RouteChangeListener({ setIsLoading }: { setIsLoading: (val: boolean) => void }) {
     const pathname = usePathname();

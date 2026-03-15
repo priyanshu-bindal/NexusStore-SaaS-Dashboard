@@ -93,8 +93,7 @@ export default function CartSheet() {
                         <span className="text-sm font-normal text-slate-400 ml-2">({items.length} items)</span>
                     </h2>
                     <button
-                        onClick={() => setIsOpen(false)}
-                        className="p-2 text-slate-400 hover:text-slate-900 transition-colors rounded-full hover:bg-slate-100"
+                          aria-label="Close"
                     >
                         <X className="size-5" />
                     </button>
@@ -127,8 +126,7 @@ export default function CartSheet() {
                                     <div>
                                         <div className="flex justify-between items-start gap-2">
                                             <h3 className="font-bold text-slate-900 line-clamp-2 text-sm">{item.name}</h3>
-                                            <button
-                                                onClick={() => removeFromCart(item.id, item.size)}
+                                            <button                                                  aria-label="Remove item"                                                onClick={() => removeFromCart(item.id, item.size)}
                                                 className="text-slate-400 hover:text-red-500 transition-colors"
                                             >
                                                 <Trash2 className="size-4" />

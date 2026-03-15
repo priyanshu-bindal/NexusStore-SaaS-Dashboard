@@ -93,7 +93,18 @@ export default function StorefrontManager({ initialSections }: Props) {
 
     return (
         <>
-            <Toaster position="bottom-right" richColors />
+            <Toaster 
+              position="bottom-right" 
+              richColors 
+              toastOptions={{ 
+                classNames: {
+                  toast: 'group-[.toaster]:shadow-lg',
+                },
+                // @ts-ignore - sonner typed properties
+                "aria-live": "polite",
+                role: "status"
+              }} 
+            />
 
             {/* Top Toolbar */}
             <div className="flex flex-wrap items-center justify-end gap-3 mb-6 relative" ref={menuRef}>

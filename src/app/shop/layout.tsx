@@ -1,7 +1,7 @@
 import { trackVisit } from "@/lib/tracking";
 import { ShopHeader } from "@/components/layout/ShopHeader";
 import { Suspense } from "react";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 export const dynamic = "force-dynamic";
 

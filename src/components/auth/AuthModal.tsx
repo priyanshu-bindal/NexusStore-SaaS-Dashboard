@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import FocusTrap from "focus-trap-react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { X, Mail, Lock, User } from "lucide-react";
@@ -107,29 +108,33 @@ export default function AuthModal() {
     };
 
     return (
-        <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200"
-            onClick={handleBackdropClick}
-        >
-            {/* Backdrop with glassmorphism */}
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+        <FocusTrap focusTrapOptions={{ clickOutsideDeactivates: true, onDeactivate: closeModal }}>
+            <div
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200"
+                onClick={handleBackdropClick}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="auth-modal-title"
+            >
+                {/* Backdrop with glassmorphism */}
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
 
-            {/* Modal */}
-            <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200">
-                {/* Close Button */}
-                <button
-                    onClick={closeModal}
-                    className="absolute right-4 top-4 p-2 rounded-full hover:bg-slate-100 transition-colors"
-                    aria-label="Close"
-                >
-                    <X size={20} className="text-slate-600" />
-                </button>
+                {/* Modal */}
+                <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200">
+                    {/* Close Button */}
+                    <button
+                        onClick={closeModal}
+                        className="absolute right-4 top-4 p-2 rounded-full hover:bg-slate-100 transition-colors"
+                        aria-label="Close modal"
+                    >
+                        <X size={20} className="text-slate-600" />
+                    </button>
 
-                {/* Header */}
-                <div className="pt-8 px-8 pb-6 border-b border-slate-100">
-                    <h2 className="text-2xl font-bold text-slate-900">
-                        {activeTab === "signin" ? "Welcome Back" : "Create Account"}
-                    </h2>
+                    {/* Header */}
+                    <div className="pt-8 px-8 pb-6 border-b border-slate-100">
+                        <h2 id="auth-modal-title" className="text-2xl font-bold text-slate-900">
+                            {activeTab === "signin" ? "Welcome Back" : "Create Account"}
+                        </h2>
                     <p className="text-sm text-slate-500 mt-1">
                         {activeTab === "signin"
                             ? "Sign in to continue to checkout"
@@ -310,6 +315,7 @@ export default function AuthModal() {
                     )}
                 </div>
             </div>
-        </div>
+            </div>
+        </FocusTrap>
     );
 }

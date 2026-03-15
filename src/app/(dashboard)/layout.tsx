@@ -65,7 +65,7 @@ export default async function DashboardLayout({
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <button className="size-10 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#d97706] transition-colors">
+                        <button aria-label="Notifications" className="size-10 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#d97706] transition-colors">
                             <Bell size={20} />
                         </button>
                         <div className="h-8 w-px bg-slate-200 mx-1" />

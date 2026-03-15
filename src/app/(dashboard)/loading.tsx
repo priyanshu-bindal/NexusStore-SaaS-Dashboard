@@ -1,5 +1,9 @@
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
-export default function DashboardLoading() {
-    return <LoadingSpinner />;
+export default function Loading() {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <LoadingSpinner />
+    </div>
+  );
 }

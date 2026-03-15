@@ -3,7 +3,7 @@ import { Plus, MapPin, Trash2, Phone, Check } from "lucide-react";
 import { AddAddressModal } from "@/components/profile/AddAddressModal";
 import { ClientAddressWrapper } from "./ClientAddressWrapper";
 import { Suspense } from "react";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 export const dynamic = "force-dynamic";
 

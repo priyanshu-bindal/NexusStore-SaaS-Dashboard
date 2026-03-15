@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import ShopClient from "@/components/shop/ShopClient";
 import { Suspense } from "react";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 import DynamicStorefront from "@/components/DynamicStorefront";
 import type { StorefrontSectionData, SectionType, SectionContent } from "@/types/storefront";
 

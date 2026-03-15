@@ -121,7 +121,7 @@ function CustomersTableContent({ users, totalPages, currentPage, totalCustomers 
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <button className="text-slate-400 hover:text-slate-600 p-1 hover:bg-slate-100 rounded transition-colors">
+                                        <button aria-label="More options" className="text-slate-400 hover:text-slate-600 p-1 hover:bg-slate-100 rounded transition-colors">
                                             <MoreVertical size={18} />
                                         </button>
                                     </td>

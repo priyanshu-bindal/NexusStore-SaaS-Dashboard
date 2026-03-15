@@ -330,7 +330,7 @@ function OrderRow({ order, selected, onSelect, fulfillmentStatus }: { order: Ord
                 {formatCurrency(Number(order.totalAmount))}
             </td>
             <td className="px-6 py-4 text-right">
-                <button className="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-600 transition-colors">
+                <button aria-label="More options" className="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-600 transition-colors">
                     <MoreVertical size={18} />
                 </button>
             </td>

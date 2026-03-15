@@ -92,6 +92,9 @@ function CollectionFilterBarContent() {
                     {/* Custom Sort Dropdown */}
                     <div className="relative" ref={sortRef}>
                         <button
+                            aria-expanded={isSortOpen}
+                            aria-haspopup="true"
+                            aria-controls="sort-dropdown-menu"
                             onClick={() => setIsSortOpen(!isSortOpen)}
                             className="flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-amber-600 transition-colors focus:outline-none"
                         >
@@ -105,7 +108,7 @@ function CollectionFilterBarContent() {
 
                         {/* Dropdown Menu */}
                         {isSortOpen && (
-                            <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                            <div id="sort-dropdown-menu" className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                                 <ul className="py-2">
                                     {sortOptions.map((option) => (
                                         <li key={option.value}>
